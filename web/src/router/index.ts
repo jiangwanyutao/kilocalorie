@@ -34,6 +34,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/meal/photo', name: 'meal-photo', component: () => import('@/views/PhotoRecognize.vue'), meta: { title: '拍照识别', hideTabBar: true } },
   { path: '/meal/delivery', name: 'meal-delivery', component: P, meta: { title: '外卖截图', hideTabBar: true } },
   { path: '/food/search', name: 'food-search', component: P, meta: { title: '搜索食物', hideTabBar: true } },
+  { path: '/food/picker', name: 'food-picker', component: () => import('@/views/FoodPicker.vue'), meta: { title: '食物库', hideTabBar: true } },
   { path: '/food/user/new', name: 'food-user-new', component: P, meta: { title: '添加私人食物', hideTabBar: true } },
 
   { path: '/water', name: 'water', component: () => import('@/views/Water.vue'), meta: { title: '饮水', hideTabBar: true } },

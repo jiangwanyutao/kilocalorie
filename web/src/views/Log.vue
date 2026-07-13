@@ -256,7 +256,12 @@ async function delEntry(id: string) {
           <div class="mright">
             <span class="mkcal num">{{ kcalOf(m.key) }}<span class="ukcal"> kcal</span></span>
             <button class="cam-btn" type="button" @click="router.push(`/meal/photo?type=${m.key}`)" aria-label="拍照识别">📷</button>
-            <button class="add-btn" type="button" @click="openSheet(m.key)" aria-label="搜索添加">＋</button>
+            <button
+              class="add-btn"
+              type="button"
+              @click="router.push({ path: '/food/picker', query: { meal: m.key, ...(dateParam ? { date: dateParam } : {}) } })"
+              aria-label="记一笔"
+            >＋</button>
           </div>
         </header>
 
