@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PwaInstallPrompt from '@/components/PwaInstallPrompt.vue';
+import PwaUpdateBanner from '@/components/PwaUpdateBanner.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -57,6 +58,7 @@ function onTab(t: Tab) {
       </transition>
     </router-view>
 
+    <PwaUpdateBanner />
     <PwaInstallPrompt />
 
     <nav v-if="!hideTabBar" class="tabbar" aria-label="主导航">
