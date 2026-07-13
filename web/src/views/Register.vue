@@ -44,7 +44,7 @@ async function submit() {
         <h1 class="title">创建账号</h1>
       </div>
 
-      <form class="form" @submit.prevent="submit" novalidate>
+      <div class="form">
         <div class="field">
           <span class="lbl">邮箱</span>
           <EmailInput v-model="email" autocomplete="email" />
@@ -58,13 +58,13 @@ async function submit() {
           <PasswordInput v-model="password" autocomplete="new-password" required placeholder="8-64 位 · 含字母和数字" />
         </label>
         <p v-if="errMsg" class="err">{{ errMsg }}</p>
-        <button type="submit" class="primary" :disabled="submitting">
+        <button type="button" class="primary" :disabled="submitting" @click="submit">
           {{ submitting ? '注册中…' : '注册 · 发送验证邮件' }}
         </button>
         <p class="foot">
           已有账号？<router-link to="/login">直接登录</router-link>
         </p>
-      </form>
+      </div>
     </div>
 
     <div v-else class="done">

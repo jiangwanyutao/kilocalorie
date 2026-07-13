@@ -43,7 +43,7 @@ async function submit() {
         <p class="eyebrow">重置密码</p>
         <h1 class="title">设置新密码</h1>
       </div>
-      <form class="form" @submit.prevent="submit" novalidate>
+      <div class="form">
         <label class="field">
           <span class="lbl">新密码</span>
           <PasswordInput v-model="p1" autocomplete="new-password" required placeholder="8-64 位 · 含字母和数字" />
@@ -53,10 +53,10 @@ async function submit() {
           <PasswordInput v-model="p2" autocomplete="new-password" required placeholder="确认" />
         </label>
         <p v-if="errMsg" class="err">{{ errMsg }}</p>
-        <button type="submit" class="primary" :disabled="submitting">
+        <button type="button" class="primary" :disabled="submitting" @click="submit">
           {{ submitting ? '提交中…' : '重置密码' }}
         </button>
-      </form>
+      </div>
     </div>
 
     <div v-else class="done">

@@ -36,16 +36,16 @@ async function submit() {
         <p class="eyebrow">找回密码</p>
         <h1 class="title">输入注册邮箱</h1>
       </div>
-      <form class="form" @submit.prevent="submit" novalidate>
+      <div class="form">
         <label class="field">
           <span class="lbl">邮箱</span>
           <input v-model="email" type="email" autocomplete="email" required placeholder="you@example.com" />
         </label>
         <p v-if="errMsg" class="err">{{ errMsg }}</p>
-        <button type="submit" class="primary" :disabled="submitting">
+        <button type="button" class="primary" :disabled="submitting" @click="submit">
           {{ submitting ? '发送中…' : '发送重置邮件' }}
         </button>
-      </form>
+      </div>
     </div>
 
     <div v-else class="done">
