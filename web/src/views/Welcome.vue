@@ -27,11 +27,11 @@ const router = useRouter();
     </div>
 
     <div class="cta">
-      <button class="primary" @click="router.push({ name: 'register' })">
-        开始写第一页
+      <button class="primary" @click="router.push({ name: 'login' })">
+        登录 · 继续写下一页
       </button>
-      <button class="ghost" @click="router.push({ name: 'login' })">
-        我已有账号 · 登录
+      <button class="ghost" @click="router.push({ name: 'register' })">
+        第一次来 · 注册新账号
       </button>
       <p class="foot">V1 全免费 · AI 内容仅供参考 不构成医疗建议</p>
     </div>
