@@ -16,7 +16,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
-import { IsInt, IsISO8601, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { IsInt, IsISO8601, IsNumber, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 import { Between, MoreThanOrEqual, Repository } from 'typeorm';
 
 import { IdGeneratorService } from '@/common/id-generator.service';
@@ -29,6 +29,8 @@ class CreateExDto {
   @IsInt() @Min(1) @Max(1440) durationMin!: number;
   @IsOptional() @IsISO8601() exTime?: string;
   @IsOptional() @IsString() @Length(0, 200) note?: string;
+  /** 可选 · 用户手动覆盖 kcal · 不填则按 MET × 体重自动算 */
+  @IsOptional() @IsNumber() @Min(0) @Max(9999) kcalBurn?: number;
 }
 
 interface SeedType {
@@ -138,7 +140,8 @@ export class ExerciseService implements OnModuleInit {
     const weightKg = await this.pickWeight(userId);
     const met = Number(type.metValue);
     const hours = dto.durationMin / 60;
-    const kcal = +(met * weightKg * hours).toFixed(2);
+    const autoKcal = +(met * weightKg * hours).toFixed(2);
+    const kcal = dto.kcalBurn != null ? +Number(dto.kcalBurn).toFixed(2) : autoKcal;
     const id = await this.idGen.next('ex_entry');
     const now = new Date();
     await this.repo.insert({

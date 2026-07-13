@@ -34,6 +34,8 @@ export interface AddExercisePayload {
   durationMin: number;
   exTime?: string;
   note?: string;
+  /** 手动覆盖 kcal · 留空则后端按 MET × 体重自动算 */
+  kcalBurn?: number;
 }
 
 export interface ExerciseHistoryEntry {

@@ -12,6 +12,7 @@ const errMsg = ref('');
 const cat = ref<'ALL' | 'A' | 'S' | 'F' | 'M'>('ALL');
 const selected = ref<ExerciseType | null>(null);
 const duration = ref(30);
+const manualKcal = ref<number | null>(null);
 
 /** 估算体重 · 后端会用真实最新体重覆盖 · 这里只作预览 */
 const PREVIEW_WEIGHT = 60;
@@ -52,9 +53,11 @@ function estimateKcal(met: number, min: number): number {
 function pick(t: ExerciseType) {
   selected.value = t;
   if (duration.value < 5) duration.value = 30;
+  manualKcal.value = null;
 }
 function cancel() {
   selected.value = null;
+  manualKcal.value = null;
 }
 
 const previewKcal = computed(() =>
@@ -68,8 +71,10 @@ async function submit() {
     day.value = await exerciseApi.add({
       typeId: selected.value.id,
       durationMin: duration.value,
+      kcalBurn: manualKcal.value != null && manualKcal.value >= 0 ? Number(manualKcal.value) : undefined,
     });
     selected.value = null;
+    manualKcal.value = null;
   } catch (e) {
     errMsg.value = pickErrMsg(e, '添加失败');
   }
@@ -129,9 +134,19 @@ function fmt(iso: string): string {
           <button type="button" class="rec-close" @click="cancel" aria-label="取消">×</button>
         </div>
         <Stepper v-model="duration" :min="1" :max="600" :step="5" :decimals="0" label="时长" hint="分钟" />
+        <label class="manual-kcal">
+          <span class="mk-lbl">卡路里（可选 · 留空自动算）</span>
+          <input
+            v-model.number="manualKcal"
+            type="number" min="0" max="9999" inputmode="numeric"
+            :placeholder="`自动 ≈ ${previewKcal} kcal`"
+          />
+        </label>
         <p class="rec-est num">
-          ≈ {{ previewKcal }} <em>kcal</em>
-          <span class="rec-est-hint">按 60 kg 估算 · 实际按你最新体重</span>
+          ≈ {{ manualKcal != null && manualKcal >= 0 ? manualKcal : previewKcal }} <em>kcal</em>
+          <span class="rec-est-hint">
+            {{ manualKcal != null && manualKcal >= 0 ? '手动 · Watch/器械显示的值' : '按 60 kg 估算 · 实际按你最新体重' }}
+          </span>
         </p>
         <button type="button" class="primary" @click="submit">
           + 记录 {{ duration }} 分钟
@@ -253,6 +268,10 @@ function fmt(iso: string): string {
 .rec-name { margin: 0; font-size: var(--font-size-body); font-weight: 600; color: var(--color-on-surface); }
 .rec-meta { margin: 2px 0 0; font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); }
 .rec-close { width: 32px; height: 32px; border-radius: var(--radius-full); background: transparent; color: var(--color-outline); font-size: 20px; }
+.manual-kcal { display: flex; flex-direction: column; gap: 4px; }
+.mk-lbl { font-size: var(--font-size-label); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-on-surface-variant); }
+.manual-kcal input { height: 44px; padding: 0 var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--color-outline-variant); background: var(--color-surface-container-lowest); font-size: var(--font-size-body); font-family: var(--font-family-num); color: var(--color-on-surface); }
+.manual-kcal input:focus { outline: none; border-color: var(--color-primary); }
 .rec-est { margin: 4px 0; font-size: 30px; font-weight: 600; color: var(--color-primary); line-height: 1; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .rec-est em { font-size: var(--font-size-caption); font-weight: 400; color: var(--color-on-surface-variant); font-style: normal; font-family: var(--font-family-sans); }
 .rec-est-hint { font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); font-weight: 400; font-family: var(--font-family-sans); }
