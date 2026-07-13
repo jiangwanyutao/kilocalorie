@@ -158,26 +158,7 @@ export class FoodService implements OnModuleInit {
   }
 
   async search(q?: string, cat?: string, limit = 30) {
-    const qb = this.stdRepo
-      .createQueryBuilder('f')
-      .where("f.del_flag = 'N'")
-      .andWhere("f.status = 'A'");
-    if (q && q.trim()) {
-      const raw = q.trim();
-      const low = raw.toLowerCase();
-      qb.andWhere(
-        new Brackets((sub) => {
-          sub
-            .where('f.food_name LIKE :fn', { fn: `%${raw}%` })
-            .orWhere('LOWER(f.spell_code) LIKE :sp', { sp: `${low}%` })
-            .orWhere('f.brand LIKE :br', { br: `%${raw}%` });
-        }),
-      );
-    }
-    if (cat) qb.andWhere('f.cat_code = :c', { c: cat });
-    qb.orderBy('f.food_name', 'ASC').limit(Math.min(limit, 100));
-    const list = await qb.getMany();
-    return list.map((f) => ({
+    const mapFood = (f: FoodStd) => ({
       id: f.id,
       foodName: f.foodName,
       spellCode: f.spellCode,
@@ -190,7 +171,55 @@ export class FoodService implements OnModuleInit {
       carbG: Number(f.carbG),
       protG: Number(f.protG),
       fatG: Number(f.fatG),
-    }));
+    });
+
+    if (!q || !q.trim()) {
+      const qb = this.stdRepo.createQueryBuilder('f')
+        .where("f.del_flag = 'N'").andWhere("f.status = 'A'");
+      if (cat) qb.andWhere('f.cat_code = :c', { c: cat });
+      qb.orderBy('f.food_name', 'ASC').limit(Math.min(limit, 100));
+      return (await qb.getMany()).map(mapFood);
+    }
+
+    const raw = q.trim();
+    const run = async (keywords: string[]) => {
+      const qb = this.stdRepo.createQueryBuilder('f')
+        .where("f.del_flag = 'N'").andWhere("f.status = 'A'");
+      qb.andWhere(new Brackets((sub) => {
+        keywords.forEach((kw, i) => {
+          const p = `n${i}`;
+          const sp = `s${i}`;
+          const b = `b${i}`;
+          const method = i === 0 ? 'where' : 'orWhere';
+          sub[method](`f.food_name LIKE :${p}`, { [p]: `%${kw}%` });
+          sub.orWhere(`LOWER(f.spell_code) LIKE :${sp}`, { [sp]: `${kw.toLowerCase()}%` });
+          sub.orWhere(`f.brand LIKE :${b}`, { [b]: `%${kw}%` });
+        });
+      }));
+      if (cat) qb.andWhere('f.cat_code = :c', { c: cat });
+      qb.orderBy('LENGTH(f.food_name)', 'ASC').addOrderBy('f.food_name', 'ASC')
+        .limit(Math.min(limit, 100));
+      return qb.getMany();
+    };
+
+    let list = await run([raw]);
+
+    // 精确命中过少 + 中文 2 字以上 · 拆 2-gram 模糊查
+    if (list.length < 3 && /[一-龥]/.test(raw) && raw.length >= 2) {
+      const grams: string[] = [];
+      for (let i = 0; i < raw.length - 1; i++) grams.push(raw.slice(i, i + 2));
+      const uniq = Array.from(new Set(grams));
+      if (uniq.length > 0) {
+        const fuzzy = await run(uniq);
+        const seen = new Set(list.map((f) => f.id));
+        for (const f of fuzzy) {
+          if (!seen.has(f.id)) { list.push(f); seen.add(f.id); }
+          if (list.length >= limit) break;
+        }
+      }
+    }
+
+    return list.slice(0, limit).map(mapFood);
   }
 }
 
