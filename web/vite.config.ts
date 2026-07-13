@@ -27,6 +27,10 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         navigateFallbackDenylist: [/^\/api/],
+        // 部署新版后 · 老 SW 引用的旧 chunk hash 会 404 · 需要新 SW 立即接管
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
       },
       manifest: {
         name: '千卡日记',

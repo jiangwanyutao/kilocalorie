@@ -92,3 +92,15 @@ router.afterEach((to) => {
   const t = (to.meta?.title as string) || '';
   document.title = t ? `${t} · 千卡日记` : '千卡日记';
 });
+
+/** 动态 import chunk 404（部署新版后老 index.js 引用了旧 hash）· 兜底自动刷新一次 */
+router.onError((err) => {
+  const msg = err instanceof Error ? err.message : String(err);
+  const isChunkFail = /Failed to fetch dynamically imported module|Importing a module script failed|Loading chunk/i.test(msg);
+  if (!isChunkFail) return;
+  const RELOAD_KEY = 'qk.reloaded-at';
+  const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
+  if (Date.now() - last < 10_000) return;
+  sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+  window.location.reload();
+});
