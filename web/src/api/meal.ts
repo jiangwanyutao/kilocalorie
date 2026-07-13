@@ -100,7 +100,12 @@ export interface VisionResult {
 export interface DayKcal {
   /** local YYYY-MM-DD */
   date: string;
+  /** 食物摄入 */
   kcal: number;
+  /** 结构化训练消耗 */
+  burned: number;
+  /** Apple 活动能量 */
+  active: number;
 }
 
 export const mealApi = {

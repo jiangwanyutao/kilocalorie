@@ -60,8 +60,9 @@ const pct = computed(() => (stats.value?.pct ?? 0) / 100);
 const today = new Date();
 const todayIso = today.toISOString().slice(0, 10);
 
-/** 已拉到的 daily kcal 汇总 · key=YYYY-MM-DD */
-const dayKcal = ref<Map<string, number>>(new Map());
+interface DayInfo { kcal: number; burned: number; active: number; }
+/** 已拉到的 daily 三项汇总 · key=YYYY-MM-DD */
+const dayInfo = ref<Map<string, DayInfo>>(new Map());
 
 function isoOf(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -70,9 +71,9 @@ function isoOf(d: Date): string {
 async function loadRange(from: string, to: string) {
   try {
     const list: DayKcal[] = await mealApi.days(from, to);
-    const next = new Map(dayKcal.value);
-    for (const d of list) next.set(d.date, d.kcal);
-    dayKcal.value = next;
+    const next = new Map(dayInfo.value);
+    for (const d of list) next.set(d.date, { kcal: d.kcal, burned: d.burned, active: d.active });
+    dayInfo.value = next;
   } catch { /* silent · 不阻塞主视图 */ }
 }
 
@@ -82,12 +83,13 @@ const dateStrip = computed(() => {
     const d = new Date(today);
     d.setDate(d.getDate() + i);
     const iso = isoOf(d);
+    const info = dayInfo.value.get(iso);
     arr.push({
       day: d.getDate(),
       wd: ['日','一','二','三','四','五','六'][d.getDay()],
       isToday: i === 0,
       iso,
-      kcal: dayKcal.value.get(iso),
+      kcal: info?.kcal,
     });
   }
   return arr;
@@ -138,12 +140,16 @@ const monthGrid = computed(() => {
   const first = new Date(y, m, 1);
   const firstWd = first.getDay();
   const daysInMonth = new Date(y, m + 1, 0).getDate();
-  const cells: { day: number | null; iso?: string; isToday?: boolean; logged?: boolean; kcal?: number }[] = [];
+  const cells: { day: number | null; iso?: string; isToday?: boolean; logged?: boolean;
+    kcal?: number; out?: number }[] = [];
   for (let i = 0; i < firstWd; i++) cells.push({ day: null });
   for (let d = 1; d <= daysInMonth; d++) {
     const iso = isoOf(new Date(y, m, d));
-    const kcal = dayKcal.value.get(iso);
-    cells.push({ day: d, iso, isToday: iso === todayIso, logged: kcal != null && kcal > 0, kcal });
+    const info = dayInfo.value.get(iso);
+    const kcal = info?.kcal ?? 0;
+    const out = (info?.burned ?? 0) + (info?.active ?? 0);
+    cells.push({ day: d, iso, isToday: iso === todayIso,
+      logged: kcal > 0 || out > 0, kcal: kcal || undefined, out: out || undefined });
   }
   while (cells.length < 42) cells.push({ day: null });
   return cells;
@@ -269,7 +275,8 @@ const meals = computed(() =>
           @click="pickDay(c.iso)"
         >
           <span v-if="c.day" class="mc-day num">{{ c.day }}</span>
-          <span v-if="c.logged && c.kcal" class="mc-kcal num">{{ Math.round(c.kcal) }}</span>
+          <span v-if="c.kcal" class="mc-kcal num in">{{ c.kcal }}</span>
+          <span v-if="c.out" class="mc-kcal num out">-{{ c.out }}</span>
         </button>
       </div>
       <div class="mc-legend">
@@ -586,15 +593,22 @@ const meals = computed(() =>
 
 .mc-day { font-size: 15px; line-height: 1; font-weight: 500; }
 .mc-kcal {
-  font-size: 10px; line-height: 1;
-  color: var(--color-primary);
+  font-size: 9px; line-height: 1;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 2px 5px;
-  background: var(--color-primary-fixed);
-  border-radius: 8px;
-  min-width: 26px;
+  letter-spacing: 0.01em;
+  padding: 2px 4px;
+  border-radius: 6px;
+  min-width: 24px;
   text-align: center;
+}
+.mc-kcal.in {
+  color: var(--color-primary);
+  background: var(--color-primary-fixed);
+}
+.mc-kcal.out {
+  color: var(--color-secondary);
+  background: var(--color-secondary-container);
+  margin-top: 1px;
 }
 
 /* 今日：主色渐变 · 突出但不刺眼 */
@@ -604,7 +618,8 @@ const meals = computed(() =>
   box-shadow: 0 6px 14px rgba(165, 51, 20, 0.32);
 }
 .mc-cell.today .mc-day { font-weight: 700; color: inherit; }
-.mc-cell.today .mc-kcal {
+.mc-cell.today .mc-kcal.in,
+.mc-cell.today .mc-kcal.out {
   background: rgba(255, 255, 255, 0.24);
   color: var(--color-on-primary);
 }
@@ -614,8 +629,12 @@ const meals = computed(() =>
   background: var(--color-secondary-container);
   color: var(--color-on-secondary-container);
 }
-.mc-cell.logged .mc-kcal {
-  background: rgba(83, 101, 35, 0.14);
+.mc-cell.logged .mc-kcal.in {
+  background: rgba(165, 51, 20, 0.14);
+  color: var(--color-primary);
+}
+.mc-cell.logged .mc-kcal.out {
+  background: rgba(83, 101, 35, 0.20);
   color: var(--color-secondary);
 }
 

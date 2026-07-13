@@ -226,17 +226,50 @@ export class MealService {
     }
     const fromZ = this.zeroTime(from);
     const toZ = new Date(this.zeroTime(to)); toZ.setDate(toZ.getDate() + 1);
-    const entries = await this.entryRepo.find({
-      where: { userId, mealDate: Between(fromZ, toZ), delFlag: 'N' },
-      select: ['mealDate', 'totalKcal'],
-    });
-    const map = new Map<string, number>();
+    const isoKey = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+    const [entries, exs, steps] = await Promise.all([
+      this.entryRepo.find({
+        where: { userId, mealDate: Between(fromZ, toZ), delFlag: 'N' },
+        select: ['mealDate', 'totalKcal'],
+      }),
+      this.exRepo.find({
+        where: { userId, exDate: Between(fromZ, toZ), delFlag: 'N' },
+        select: ['exDate', 'kcalBurn'],
+      }),
+      this.stepsRepo.find({
+        where: { userId, stepDate: Between(fromZ, toZ), delFlag: 'N' },
+        select: ['stepDate', 'kcalBurn'],
+      }),
+    ]);
+
+    const foodMap = new Map<string, number>();
     for (const e of entries) {
-      const d = new Date(e.mealDate);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      map.set(key, (map.get(key) ?? 0) + Number(e.totalKcal));
+      const k = isoKey(new Date(e.mealDate));
+      foodMap.set(k, (foodMap.get(k) ?? 0) + Number(e.totalKcal));
     }
-    return Array.from(map.entries()).map(([date, kcal]) => ({ date, kcal: Math.round(kcal) }));
+    const burnMap = new Map<string, number>();
+    for (const e of exs) {
+      const k = isoKey(new Date(e.exDate));
+      burnMap.set(k, (burnMap.get(k) ?? 0) + Number(e.kcalBurn));
+    }
+    const activeMap = new Map<string, number>();
+    for (const s of steps) {
+      if (!s.kcalBurn) continue;
+      const k = isoKey(new Date(s.stepDate));
+      activeMap.set(k, (activeMap.get(k) ?? 0) + Number(s.kcalBurn));
+    }
+
+    const allDates = new Set<string>([...foodMap.keys(), ...burnMap.keys(), ...activeMap.keys()]);
+    return Array.from(allDates)
+      .sort()
+      .map((date) => ({
+        date,
+        kcal: Math.round(foodMap.get(date) ?? 0),
+        burned: Math.round(burnMap.get(date) ?? 0),
+        active: Math.round(activeMap.get(date) ?? 0),
+      }));
   }
 
   async today(userId: string) {
