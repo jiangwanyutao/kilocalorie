@@ -222,6 +222,129 @@ function servingKcal(f: FoodStdItem): number {
   return Math.round((f.kcal * f.portionG) / 100);
 }
 
+/** 依食物名 + 品牌 + cat_code 智能选 emoji 图标 */
+function iconOf(f: FoodStdItem): string {
+  const n = f.foodName;
+  const b = f.brand ?? '';
+  // 品牌优先
+  if (b.includes('库迪') || b.includes('瑞幸') || b.includes('星巴克') || b === 'Manner') {
+    if (/星冰乐|冰乐|冷萃/.test(n)) return '🥤';
+    if (/星冰|奶昔/.test(n)) return '🍦';
+    if (/可颂|面包/.test(n)) return '🥐';
+    if (/柠檬|果茶|冷萃/.test(n)) return '🍋';
+    return '☕';
+  }
+  if (b.includes('麦当劳') || b.includes('肯德基') || b.includes('汉堡王') || b.includes('塔斯汀') || b.includes('华莱士')) {
+    if (/汉堡|堡/.test(n)) return '🍔';
+    if (/薯条|华夫脆薯/.test(n)) return '🍟';
+    if (/鸡翅|鸡腿|鸡块|全鸡|辣翅|吮指|嫩汁|鸡米花|上校/.test(n)) return '🍗';
+    if (/派/.test(n)) return '🥧';
+    if (/可乐|雪碧|百事|饮料/.test(n)) return '🥤';
+    if (/冰淇淋|圆筒|蛋筒|甜筒/.test(n)) return '🍦';
+    if (/粥/.test(n)) return '🍚';
+    if (/汤/.test(n)) return '🍲';
+    if (/满分/.test(n)) return '🥪';
+    return '🍔';
+  }
+  if (b.includes('蜜雪') || b.includes('喜茶') || b.includes('一点点')) {
+    if (/柠檬/.test(n)) return '🍋';
+    if (/冰淇淋|蛋筒|圣代/.test(n)) return '🍦';
+    if (/芒/.test(n)) return '🥭';
+    if (/葡萄/.test(n)) return '🍇';
+    if (/桃/.test(n)) return '🍑';
+    if (/莓|草莓/.test(n)) return '🍓';
+    if (/柚|橙/.test(n)) return '🍊';
+    if (/菠萝/.test(n)) return '🍍';
+    return '🧋';
+  }
+  // 关键字匹配
+  if (/汉堡|堡/.test(n)) return '🍔';
+  if (/薯条|薯片|洋葱圈/.test(n)) return '🍟';
+  if (/鸡翅|鸡腿|鸡块|辣翅/.test(n)) return '🍗';
+  if (/牛排|排骨|肉排/.test(n)) return '🥩';
+  if (/沙拉/.test(n)) return '🥗';
+  if (/三明治|贝果|吐司|面包|可颂/.test(n)) return '🥪';
+  if (/寿司|饭团/.test(n)) return '🍣';
+  if (/披萨/.test(n)) return '🍕';
+  if (/蛋糕|布朗尼|马卡龙|慕斯|提拉米苏|蛋挞/.test(n)) return '🍰';
+  if (/冰淇淋|雪糕|圣代|蛋筒/.test(n)) return '🍦';
+  if (/饼干|奥利奥|曲奇|威化|夹心/.test(n)) return '🍪';
+  if (/巧克力/.test(n)) return '🍫';
+  if (/糖|棒棒|软糖|棉花糖/.test(n)) return '🍬';
+  if (/煎饼|烧饼|饼|烙饼|锅贴/.test(n)) return '🫓';
+  if (/饺子|烧麦|包子|馄饨|云吞|蒸饺/.test(n)) return '🥟';
+  if (/面|拉面|拌面|捞面|小面|粉|米粉|粿条|凉皮|米线|烩面/.test(n)) return '🍜';
+  if (/粥/.test(n)) return '🍚';
+  if (/饭|盖饭|便当|拌饭|炒饭/.test(n)) return '🍱';
+  if (/米饭|杂粮/.test(n)) return '🍚';
+  if (/汤/.test(n)) return '🍲';
+  if (/火锅|串|烤/.test(n)) return '🍢';
+  if (/寿喜锅/.test(n)) return '🍲';
+  if (/奶茶|波霸|珍珠奶茶/.test(n)) return '🧋';
+  if (/拿铁|摩卡|美式|卡布奇诺|咖啡|玛奇朵/.test(n)) return '☕';
+  if (/可乐|雪碧|芬达|汽水/.test(n)) return '🥤';
+  if (/啤酒|白酒|红酒|威士忌/.test(n)) return '🍺';
+  if (/牛奶|酸奶|奶粉|炼乳|牛乳/.test(n)) return '🥛';
+  if (/豆浆|豆奶/.test(n)) return '🥛';
+  if (/柠檬/.test(n)) return '🍋';
+  if (/芒果/.test(n)) return '🥭';
+  if (/苹果/.test(n)) return '🍎';
+  if (/香蕉/.test(n)) return '🍌';
+  if (/葡萄|提子/.test(n)) return '🍇';
+  if (/草莓|莓/.test(n)) return '🍓';
+  if (/桃/.test(n)) return '🍑';
+  if (/樱桃|车厘子/.test(n)) return '🍒';
+  if (/橙|橘|柑/.test(n)) return '🍊';
+  if (/西瓜/.test(n)) return '🍉';
+  if (/菠萝|凤梨/.test(n)) return '🍍';
+  if (/椰/.test(n)) return '🥥';
+  if (/梨/.test(n)) return '🍐';
+  if (/牛油果/.test(n)) return '🥑';
+  if (/番茄|西红柿|圣女果/.test(n)) return '🍅';
+  if (/玉米/.test(n)) return '🌽';
+  if (/胡萝卜/.test(n)) return '🥕';
+  if (/西兰花|花菜|花椰菜/.test(n)) return '🥦';
+  if (/蘑菇|香菇|平菇|杏鲍菇|金针/.test(n)) return '🍄';
+  if (/辣椒/.test(n)) return '🌶';
+  if (/白菜|生菜|菠菜|芥兰|菜心|空心菜|苋菜/.test(n)) return '🥬';
+  if (/黄瓜/.test(n)) return '🥒';
+  if (/茄子/.test(n)) return '🍆';
+  if (/南瓜/.test(n)) return '🎃';
+  if (/花生|坚果|杏仁|开心果|核桃|腰果|松子|榛子|夏威夷/.test(n)) return '🥜';
+  if (/瓜子/.test(n)) return '🌻';
+  if (/蟹/.test(n)) return '🦀';
+  if (/虾/.test(n)) return '🦐';
+  if (/鱿鱼|章鱼|墨鱼/.test(n)) return '🦑';
+  if (/鱼|三文鱼|带鱼|草鱼|鲈鱼|鲳鱼|鳕鱼|巴沙|龙利/.test(n)) return '🐟';
+  if (/贝|扇贝|生蚝|蛤蜊/.test(n)) return '🦪';
+  if (/蛋|鸡蛋|鸭蛋|鹌鹑蛋|皮蛋/.test(n)) return '🥚';
+  if (/猪|牛|羊|肉/.test(n)) return '🥩';
+  // 兜底按 cat_code
+  const catFallback: Record<string, string> = {
+    '01': '🍚', '02': '🥬', '03': '🍎', '04': '🥩', '05': '🐟',
+    '06': '🥚', '07': '🥜', '08': '🥤', '09': '🥐', '11': '🍽', '12': '🍬',
+  };
+  return catFallback[f.catCode] || '🍽';
+}
+
+/** 图标背景色 · 依 cat_code 分组 · 更柔和 */
+function iconBg(code: string): string {
+  const map: Record<string, string> = {
+    '01': 'linear-gradient(135deg, #fef6e2 0%, #fbe9c5 100%)',
+    '02': 'linear-gradient(135deg, #eaf5df 0%, #d4ecc0 100%)',
+    '03': 'linear-gradient(135deg, #fce8e8 0%, #f8d0d0 100%)',
+    '04': 'linear-gradient(135deg, #f3e0d5 0%, #e6c7b3 100%)',
+    '05': 'linear-gradient(135deg, #dceeff 0%, #b8daff 100%)',
+    '06': 'linear-gradient(135deg, #fef2d4 0%, #fbe4a9 100%)',
+    '07': 'linear-gradient(135deg, #ede1cd 0%, #dcc9a8 100%)',
+    '08': 'linear-gradient(135deg, #dfe9f7 0%, #b8caea 100%)',
+    '09': 'linear-gradient(135deg, #f8e5cd 0%, #f1cea0 100%)',
+    '11': 'linear-gradient(135deg, #f0e2d3 0%, #dfc5a6 100%)',
+    '12': 'linear-gradient(135deg, #ecd8f0 0%, #dab9e0 100%)',
+  };
+  return map[code] || 'var(--color-surface-container)';
+}
+
 /** 分类下彩色圆点（依 cat_code · 视觉区分） */
 function dotColor(code: string): string {
   const map: Record<string, string> = {
@@ -282,8 +405,8 @@ function dotColor(code: string): string {
 
         <ul v-else class="food-list">
           <li v-for="f in items" :key="f.id" class="row" @click="pickFood(f)">
-            <div class="icon" :style="{ background: 'var(--color-surface-container)' }" aria-hidden="true">
-              <span class="i-emoji">🍽</span>
+            <div class="icon" :style="{ background: iconBg(f.catCode) }" aria-hidden="true">
+              <span class="i-emoji">{{ iconOf(f) }}</span>
             </div>
             <div class="row-body">
               <p class="rn">
@@ -411,8 +534,8 @@ function dotColor(code: string): string {
 .food-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .row { display: grid; grid-template-columns: 52px 1fr 36px; gap: 10px; align-items: center; padding: 10px 12px; background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); border: 1px solid var(--color-outline-variant); cursor: pointer; transition: background var(--duration-fast); }
 .row:active { background: var(--color-surface-container); }
-.icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; }
-.i-emoji { font-size: 26px; }
+.icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.05); }
+.i-emoji { font-size: 28px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08)); }
 .row-body { min-width: 0; }
 .rn { margin: 0; font-size: var(--font-size-body); font-weight: 500; color: var(--color-on-surface); display: flex; align-items: center; gap: 6px; }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
