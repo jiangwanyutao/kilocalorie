@@ -274,7 +274,7 @@ function dotColor(code: string): string {
         <div v-else-if="items.length === 0" class="empty">
           <p v-if="activeCat === '__fav__'">还没收藏 · 点右上角 ♡</p>
           <p v-else-if="activeCat === '__used__'">还没常用 · 记过几笔后自动出现</p>
-          <p v-else-if="activeCat === '__mine__' || activeCat === '__custom__'">自建食物库 · 建设中</p>
+          <p v-else-if="activeCat === '__mine__' || activeCat === '__custom__'">还没自建食物 · 点下方 "自定义添加"</p>
           <p v-else-if="q">没找到 "{{ q }}"</p>
           <p v-else>这个分类还没数据</p>
           <p class="e-hint">点下方"自定义添加"手动录入</p>
@@ -388,7 +388,7 @@ function dotColor(code: string): string {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); display: flex; flex-direction: column; padding-bottom: calc(env(safe-area-inset-bottom) + 88px); }
+.wrap { height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); display: flex; flex-direction: column; overflow: hidden; }
 
 /* 顶部搜索 */
 .search-row { display: flex; gap: 8px; padding: var(--space-md) var(--space-margin-mobile) var(--space-sm); }
@@ -398,16 +398,16 @@ function dotColor(code: string): string {
 .s-clear { width: 24px; height: 24px; border-radius: 50%; background: var(--color-surface-container-high); color: var(--color-outline); font-size: 14px; padding: 0; }
 .unit-btn { flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: var(--radius-full); background: var(--color-surface-container-lowest); border: 1px solid var(--color-outline-variant); color: var(--color-on-surface); font-size: var(--font-size-caption); display: inline-flex; align-items: center; gap: 4px; }
 
-/* 主区：左侧 tabs + 右侧列表 */
-.main { flex: 1; display: grid; grid-template-columns: 88px 1fr; gap: 0; min-height: 0; }
+/* 主区：左侧 tabs + 右侧列表 · 各自独立滚动 · 页面 body 不滚 */
+.main { flex: 1; display: grid; grid-template-columns: 88px 1fr; gap: 0; min-height: 0; overflow: hidden; }
 
-.sidebar { display: flex; flex-direction: column; gap: 4px; padding: 8px 6px 8px 12px; background: var(--color-surface-container); overflow-y: auto; scrollbar-width: none; }
+.sidebar { display: flex; flex-direction: column; gap: 4px; padding: 8px 6px 8px 12px; background: var(--color-surface-container); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; min-height: 0; }
 .sidebar::-webkit-scrollbar { display: none; }
 .side-tab { padding: 12px 0; background: transparent; color: var(--color-on-surface-variant); font-size: var(--font-size-caption); text-align: center; border-radius: var(--radius-md); transition: all var(--duration-fast); }
 .side-tab.on { background: var(--color-surface); color: var(--color-primary); font-weight: 600; box-shadow: 0 2px 6px rgba(29, 25, 23, 0.06); }
 .side-divider { height: 1px; background: var(--color-outline-variant); margin: 4px 12px; }
 
-.list-wrap { padding: 8px 12px 8px 10px; overflow-y: auto; }
+.list-wrap { padding: 8px 12px calc(env(safe-area-inset-bottom) + 96px) 10px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
 .food-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .row { display: grid; grid-template-columns: 52px 1fr 36px; gap: 10px; align-items: center; padding: 10px 12px; background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); border: 1px solid var(--color-outline-variant); cursor: pointer; transition: background var(--duration-fast); }
 .row:active { background: var(--color-surface-container); }
