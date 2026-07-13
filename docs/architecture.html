@@ -1,0 +1,1806 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>千卡日记 · 架构 & Schema v0.3</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --ground: #FAF9F5; --ground-alt: #F3F0E7; --ground-sunk: #EFEBDE;
+  --ink: #1D1917; --muted: #5C5852; --faint: #8A857D; --rule: #E3E0D6;
+  --accent: #C64B2A; --accent-soft: #F0E4D5;
+  --support: #6C7F3A; --support-soft: #E9EBD8;
+  --warn: #B3781A; --warn-soft: #F5E9CE;
+  --code-bg: #F5F1E6; --code-key: #A0451A; --code-type: #6C7F3A; --code-str: #8A5B1D; --code-cmt: #999085;
+  --font-cn: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans CN",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono: ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+    --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+    --accent: #E86A44; --accent-soft: #2A211A;
+    --support: #A2B770; --support-soft: #23281A;
+    --warn: #D9A143; --warn-soft: #2B2416;
+    --code-bg: #100D08; --code-key: #E67F52; --code-type: #B0C078; --code-str: #C89B5F; --code-cmt: #6A6459;
+  }
+}
+:root[data-theme="light"] {
+  --ground: #FAF9F5; --ground-alt: #F3F0E7; --ground-sunk: #EFEBDE;
+  --ink: #1D1917; --muted: #5C5852; --faint: #8A857D; --rule: #E3E0D6;
+  --accent: #C64B2A; --accent-soft: #F0E4D5;
+  --support: #6C7F3A; --support-soft: #E9EBD8;
+  --warn: #B3781A; --warn-soft: #F5E9CE;
+  --code-bg: #F5F1E6; --code-key: #A0451A; --code-type: #6C7F3A; --code-str: #8A5B1D; --code-cmt: #999085;
+}
+:root[data-theme="dark"] {
+  --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+  --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+  --accent: #E86A44; --accent-soft: #2A211A;
+  --support: #A2B770; --support-soft: #23281A;
+  --warn: #D9A143; --warn-soft: #2B2416;
+  --code-bg: #100D08; --code-key: #E67F52; --code-type: #B0C078; --code-str: #C89B5F; --code-cmt: #6A6459;
+}
+body { background: var(--ground); color: var(--ink); font-family: var(--font-cn); font-size: 15px; line-height: 1.72; margin: 0; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 44px 24px 120px; }
+
+.masthead { padding-bottom: 28px; border-bottom: 1px solid var(--rule); margin-bottom: 40px; }
+.masthead .brand { font-size: 11px; color: var(--faint); letter-spacing: 0.28em; margin-bottom: 14px; text-transform: uppercase; }
+.masthead .brand .dot { color: var(--accent); margin: 0 6px; }
+.masthead h1 { font-weight: 700; font-size: 38px; margin: 0 0 10px; letter-spacing: -0.015em; line-height: 1.18; }
+.masthead .subtitle { color: var(--muted); font-size: 15.5px; margin: 0 0 20px; max-width: 620px; line-height: 1.6; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.meta span::before { content: '·'; margin-right: 28px; color: var(--rule); }
+.meta span:first-child::before { content: none; margin-right: 0; }
+.meta b { color: var(--ink); font-weight: 500; margin-left: 6px; }
+
+.toc { background: var(--ground-alt); border-radius: 10px; padding: 22px 26px; margin: 36px 0 48px; font-size: 14px; }
+.toc h4 { margin: 0 0 14px; font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; }
+.toc ol { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 32px; }
+.toc li { padding: 5px 0; break-inside: avoid; }
+.toc .n { font-family: var(--font-mono); color: var(--faint); font-size: 12px; margin-right: 12px; }
+.toc a { color: var(--ink); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+
+section { margin-top: 60px; scroll-margin-top: 24px; }
+section > h2 { font-size: 26px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+section > h2 .num { font-family: var(--font-mono); font-size: 14px; color: var(--accent); font-weight: 500; margin-right: 14px; }
+section > .desc { color: var(--muted); font-size: 14.5px; margin: 6px 0 22px; max-width: 640px; }
+section > .rule { height: 1px; background: var(--rule); margin: 0 0 28px; }
+
+h3 { font-size: 17px; font-weight: 600; margin: 32px 0 10px; }
+h4 { font-size: 13px; font-weight: 600; margin: 22px 0 8px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+p { margin: 0 0 12px; }
+ul, ol { margin: 8px 0 16px; padding-left: 22px; }
+li { margin: 5px 0; }
+strong { color: var(--ink); font-weight: 600; }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--ground-alt); padding: 1px 6px; border-radius: 4px; color: var(--accent); border: 1px solid var(--rule); }
+
+.callout { border-radius: 10px; padding: 18px 22px; margin: 22px 0; font-size: 14px; line-height: 1.66; border-left: 3px solid; }
+.callout .tag { display: block; font-size: 11px; letter-spacing: 0.2em; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
+.callout p:last-child { margin-bottom: 0; }
+.callout ul { margin: 4px 0 0; padding-left: 20px; }
+.callout ul li { margin: 5px 0; }
+.callout.decision { background: var(--accent-soft); border-color: var(--accent); }
+.callout.decision .tag { color: var(--accent); }
+.callout.risk { background: var(--warn-soft); border-color: var(--warn); }
+.callout.risk .tag { color: var(--warn); }
+.callout.note { background: var(--support-soft); border-color: var(--support); }
+.callout.note .tag { color: var(--support); }
+
+.tblwrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 10px 14px; text-align: left; vertical-align: top; }
+thead th { background: var(--ground-alt); font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; border-bottom: 1px solid var(--rule); text-transform: uppercase; }
+tbody tr + tr td { border-top: 1px solid var(--rule); }
+td.mono { font-family: var(--font-mono); font-size: 12.5px; }
+td.num { text-align: right; font-family: var(--font-mono); }
+
+.badge { display: inline-block; font-size: 10.5px; padding: 2px 8px; border-radius: 999px; font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; }
+.badge.p0 { background: var(--accent); color: #fff; }
+.badge.p1 { background: var(--accent-soft); color: var(--accent); }
+.badge.p2 { background: var(--ground-alt); color: var(--faint); border: 1px solid var(--rule); }
+.badge.new { background: var(--support-soft); color: var(--support); }
+.badge.rsvd { background: var(--warn-soft); color: var(--warn); }
+
+.topo { border: 1px solid var(--rule); border-radius: 10px; padding: 22px; margin: 20px 0; background: var(--ground); overflow-x: auto; }
+.topo .row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
+.topo .row:last-child { margin-bottom: 0; }
+.topo .arrow { text-align: center; color: var(--faint); font-family: var(--font-mono); font-size: 18px; margin: 4px 0; letter-spacing: 0.15em; }
+.topo .box { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; background: var(--ground); min-width: 130px; text-align: center; }
+.topo .box b { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--ink); margin-bottom: 3px; }
+.topo .box span { color: var(--faint); font-size: 11px; }
+.topo .box.hi { background: var(--accent-soft); border-color: var(--accent); }
+.topo .box.hi b { color: var(--accent); }
+.topo .box.svc { background: var(--support-soft); border-color: var(--support); }
+.topo .box.svc b { color: var(--support); }
+.topo .box.data { background: var(--warn-soft); border-color: var(--warn); }
+.topo .box.data b { color: var(--warn); }
+
+pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; margin: 12px 0 20px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; color: var(--ink); tab-size: 2; }
+pre .k { color: var(--code-key); font-weight: 600; }
+pre .t { color: var(--code-type); }
+pre .s { color: var(--code-str); }
+pre .c { color: var(--code-cmt); font-style: italic; }
+pre .n { color: var(--ink); }
+
+.tbl-card { border: 1px solid var(--rule); border-radius: 10px; margin: 24px 0; background: var(--ground); overflow: hidden; }
+.tbl-card > header { background: var(--ground-alt); padding: 12px 18px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--rule); }
+.tbl-card > header .tname { font-family: var(--font-mono); font-size: 14.5px; font-weight: 600; color: var(--accent); }
+.tbl-card > header .tcn { color: var(--ink); font-size: 14px; font-weight: 500; }
+.tbl-card > header .tdesc { color: var(--faint); font-size: 12.5px; margin-left: auto; }
+.tbl-card > pre { border: none; border-radius: 0; margin: 0; background: var(--ground); }
+
+.dict-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin: 16px 0 24px; }
+.dict-card { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; background: var(--ground); font-size: 12.5px; }
+.dict-card .dtype { font-family: var(--font-mono); color: var(--accent); font-size: 12px; margin-bottom: 6px; }
+.dict-card .dname { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.dict-card table { font-size: 12px; }
+.dict-card th, .dict-card td { padding: 3px 6px; }
+.dict-card thead th { background: var(--ground-alt); }
+
+.mod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin: 14px 0 24px; }
+.mod { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; background: var(--ground); }
+.mod b { display: block; font-family: var(--font-mono); color: var(--accent); font-size: 13px; margin-bottom: 4px; }
+.mod .cn { color: var(--ink); font-weight: 500; font-size: 13px; margin-bottom: 6px; }
+.mod ul { margin: 0; padding-left: 16px; font-size: 12px; color: var(--muted); }
+.mod ul li { margin: 2px 0; }
+.mod ul li code { font-size: 11px; padding: 0 4px; background: var(--ground-alt); border: none; color: var(--ink); }
+
+.footer { margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 12px; text-align: center; letter-spacing: 0.1em; text-transform: uppercase; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .wrap { padding: 32px 18px 80px; }
+  .masthead h1 { font-size: 28px; }
+  section > h2 { font-size: 20px; }
+  .toc ol { columns: 1; }
+  pre { font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brand">千卡日记 <span class="dot">·</span> Architecture &amp; Schema</div>
+  <h1>架构方案 &amp; Postgres Schema · V0.3</h1>
+  <p class="subtitle">Docker Compose 部署拓扑、模块划分、状态字典体系、V1 全部表 DDL、AI Agent 与三层记忆架构。严格遵守 HIS 数据库规范。<br><em style="color:var(--support)">v0.3 增补：12 个 Agent Tools · 记忆版本化 · 用户确认闭环 · 记忆管理页 · 食物库分层建库</em></p>
+  <div class="meta">
+    <span>版本<b>0.3</b></span>
+    <span>状态<b>待评审</b></span>
+    <span>更新<b>2026-07-09</b></span>
+    <span>依赖<b>PRD v0.1</b></span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h4>目录</h4>
+  <ol>
+    <li><span class="n">01</span><a href="#s1">部署拓扑</a></li>
+    <li><span class="n">02</span><a href="#s2">技术栈</a></li>
+    <li><span class="n">03</span><a href="#s3">数据库规范复述</a></li>
+    <li><span class="n">04</span><a href="#s4">主键生成方案</a></li>
+    <li><span class="n">05</span><a href="#s5">通用字段</a></li>
+    <li><span class="n">06</span><a href="#s6">状态字典</a></li>
+    <li><span class="n">07</span><a href="#s7">模块与表清单</a></li>
+    <li><span class="n">08</span><a href="#s8">DDL · 系统</a></li>
+    <li><span class="n">09</span><a href="#s9">DDL · 用户</a></li>
+    <li><span class="n">10</span><a href="#s10">DDL · 食物</a></li>
+    <li><span class="n">11</span><a href="#s11">DDL · 饮食</a></li>
+    <li><span class="n">12</span><a href="#s12">DDL · 饮水/运动/体测</a></li>
+    <li><span class="n">13</span><a href="#s13">DDL · 断食/AI/Health</a></li>
+    <li><span class="n">14</span><a href="#s14">DDL · 订阅预留</a></li>
+    <li><span class="n">15</span><a href="#s15">索引策略</a></li>
+    <li><span class="n">16</span><a href="#s16">API 契约</a></li>
+    <li><span class="n">17</span><a href="#s17">docker-compose</a></li>
+    <li><span class="n">18</span><a href="#s18">AI Agent 与三层记忆</a></li>
+    <li><span class="n">19</span><a href="#s19">下一步 / 待议</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2><span class="num">01</span>部署拓扑</h2>
+  <p class="desc">单机 Docker Compose 部署到用户内网 Linux 服务器，通过已备案 HTTPS 域名对外。</p>
+  <div class="rule"></div>
+
+  <div class="topo">
+    <div class="row"><div class="box"><b>iOS / Android</b><span>浏览器 · 加桌面 PWA</span></div></div>
+    <div class="arrow">▼ HTTPS ▼</div>
+    <div class="row"><div class="box hi"><b>Nginx</b><span>反向代理 · TLS · 静态资源</span></div></div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="box hi"><b>web (Vue)</b><span>Vite 构建产物</span></div>
+      <div class="box svc"><b>api (NestJS)</b><span>REST · JWT · 业务</span></div>
+    </div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="box data"><b>postgres 15</b><span>主库</span></div>
+      <div class="box data"><b>redis 7</b><span>会话 · 限流 · ID 序列</span></div>
+      <div class="box data"><b>minio</b><span>图片对象存储</span></div>
+    </div>
+    <div class="arrow">▲ 出向调用 ▲</div>
+    <div class="row">
+      <div class="box"><b>DeepSeek V4</b><span>Vision · Chat</span></div>
+      <div class="box"><b>阿里 qwen-vl</b><span>备胎</span></div>
+      <div class="box"><b>阿里邮件推送</b><span>SMTP</span></div>
+    </div>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">部署要点</span>
+    <ul>
+      <li>Nginx 独立容器承担 TLS 终止；证书用 Let's Encrypt + certbot 自动续期</li>
+      <li>web 容器构建产物 nginx 直接 serve；api 容器 NestJS 常驻</li>
+      <li>postgres / redis / minio 各挂本地卷；宿主机 <code>/data/qianka/</code> 下按服务分子目录</li>
+      <li>每日 <code>pg_dump</code> 到 <code>/backup</code>，保留 14 天；MinIO bucket 版本控制</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span>技术栈</h2>
+  <p class="desc">从 PRD 沉淀，此处不改。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>层</th><th>组件</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>前端</td><td>Vue 3 + Vite + Pinia + vue-router + vite-plugin-pwa + Dexie</td><td>PWA · IndexedDB 离线镜像</td></tr>
+        <tr><td>UI</td><td>自定义 tokens + 少量组件</td><td>避开模板感</td></tr>
+        <tr><td>后端</td><td>NestJS 10 + TypeORM</td><td>模块化 · 装饰器 · 中文字段注释原生支持</td></tr>
+        <tr><td>数据库</td><td>PostgreSQL 15+ 带 <code>pgvector</code> 扩展</td><td>严格 HIS 规范 + 向量检索</td></tr>
+        <tr><td>缓存</td><td>Redis 7+</td><td>会话 · 限流 · 主键序列 · <strong>短期对话上下文</strong></td></tr>
+        <tr><td>对象存储</td><td>MinIO（S3 兼容）</td><td>图片 · 用户导出 · 知识库原始文档</td></tr>
+        <tr><td>反代</td><td>Nginx 1.27</td><td>HTTPS · gzip · 静态</td></tr>
+        <tr><td>邮件</td><td><strong>QQ 邮箱 SMTP</strong>（<code>smtp.qq.com:465</code>）</td><td>MVP 期免费够用；量大切阿里/SendCloud（<code>MailProvider</code> 适配器）</td></tr>
+        <tr><td>AI 视觉</td><td>DeepSeek V4 Vision（qwen-vl 备胎）</td><td><code>VisionProvider</code> 适配层</td></tr>
+        <tr><td>AI 对话</td><td>DeepSeek Chat + <strong>LangGraph.js Agent</strong> + Tools + 三层记忆</td><td>AI 搭子（详见 §19）</td></tr>
+        <tr><td>Embedding</td><td><strong>阿里 text-embedding-v3</strong>（1024 维）</td><td>中文效果好 · 约 0.7 元/百万 token · <code>EmbeddingProvider</code> 适配层</td></tr>
+        <tr><td>AI 框架</td><td><strong>LangChain.js + LangGraph.js</strong></td><td>Agent · Tools · Memory · RAG · 完美兼容 NestJS DI</td></tr>
+        <tr><td>容器化</td><td>Docker Compose</td><td>单机部署</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span>数据库规范复述</h2>
+  <p class="desc">下面 30+ 张表 DDL 全部按这些约束书写。</p>
+  <div class="rule"></div>
+
+  <div class="callout decision">
+    <span class="tag">强约束</span>
+    <ul>
+      <li><strong>字符串</strong>：一律 <code>varchar(n)</code>，禁用 <code>char</code>、<code>text</code>（大字段用 <code>jsonb</code>）</li>
+      <li><strong>主键</strong>：字符串自增，如 <code>000001</code>；每张表按预估数据量定长度</li>
+      <li><strong>状态</strong>：一律 <code>varchar(1)</code> 或 <code>varchar(2)</code>，用数字或字母；禁用 <code>boolean</code></li>
+      <li><strong>时间</strong>：一律 <code>timestamp</code>，含年月日时分秒；禁用 <code>date</code>、<code>time</code></li>
+      <li><strong>金额/精度</strong>：<code>decimal(10, 4)</code></li>
+      <li><strong>整数</strong>：能用 <code>int2</code> 不用 <code>int4</code>，能用 <code>int4</code> 不用 <code>int8</code></li>
+      <li><strong>外键 / 触发器</strong>：不使用；代码层保证一致性</li>
+      <li><strong>唯一约束</strong>：非 ID 主键改唯一索引</li>
+      <li><strong>软删</strong>：<code>del_flag varchar(1)</code>（N/Y）+ <code>delete_time timestamp</code></li>
+      <li><strong>命名</strong>：模块前缀 + 见名知意 + 中文注释；字段名 &lt; 20 字符</li>
+      <li><strong>业务字段固定长度</strong>：<code>user_id varchar(6)</code>、<code>spell_code varchar(20)</code></li>
+    </ul>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span>主键生成方案</h2>
+  <p class="desc">字符串自增在 Postgres 无原生支持，用 Redis + 应用层生成。</p>
+  <div class="rule"></div>
+
+  <h3>方案：Redis INCR + 左补零</h3>
+  <p>每张表对应一个 Redis key（如 <code>id:user_info</code>、<code>id:meal_entry</code>）。NestJS 通过统一的 <code>IdGeneratorService</code> 拿下一个序号，然后左补零到目标长度。</p>
+
+  <pre><span class="c">// NestJS IdGeneratorService（示意）</span>
+<span class="k">async</span> <span class="n">next</span>(table: <span class="t">string</span>, len: <span class="t">number</span>): <span class="t">Promise</span>&lt;<span class="t">string</span>&gt; {
+  <span class="k">const</span> n = <span class="k">await</span> <span class="n">redis</span>.<span class="n">incr</span>(<span class="s">`id:${table}`</span>);
+  <span class="k">const</span> s = <span class="n">n</span>.<span class="n">toString</span>();
+  <span class="k">if</span> (s.length &gt; len) <span class="k">throw new</span> <span class="t">Error</span>(<span class="s">`ID overflow for ${table}`</span>);
+  <span class="k">return</span> s.<span class="n">padStart</span>(len, <span class="s">'0'</span>);
+}</pre>
+
+  <div class="callout note">
+    <span class="tag">兜底</span>
+    <ul>
+      <li>Redis 崩溃：启动时用 Postgres <code>SELECT max(id::int)</code> 回填 Redis 键值，保证不重发</li>
+      <li>Redis 需持久化：<code>appendonly yes</code> + 定期快照</li>
+      <li>并发安全：Redis INCR 是原子操作，天然无冲突</li>
+      <li>不用 Postgres <code>SEQUENCE</code> 是因为字符串补零需应用层做，且规范禁用触发器</li>
+    </ul>
+  </div>
+
+  <h3>各表主键长度分配</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>表</th><th class="num">长度</th><th>上限</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">user_info</td><td class="num">6</td><td class="num">1,000,000</td><td>严守 HIS 规范；到上限迁 10 位</td></tr>
+        <tr><td class="mono">food_std</td><td class="num">6</td><td class="num">1,000,000</td><td>V1 100+ 条，够到天荒地老</td></tr>
+        <tr><td class="mono">food_user</td><td class="num">10</td><td class="num">10 亿</td><td>每人可能十几条，量随用户涨</td></tr>
+        <tr><td class="mono">meal_entry</td><td class="num">12</td><td class="num">1 万亿</td><td>每人日均 4 条，10 万用户 5 年 &lt; 10 亿</td></tr>
+        <tr><td class="mono">meal_item</td><td class="num">14</td><td class="num">100 万亿</td><td>meal_entry × 平均 3 项</td></tr>
+        <tr><td class="mono">water_entry / ex_entry</td><td class="num">12</td><td class="num">1 万亿</td><td>同 meal</td></tr>
+        <tr><td class="mono">body_weight / body_measure</td><td class="num">10</td><td class="num">10 亿</td><td>低频记录</td></tr>
+        <tr><td class="mono">body_steps</td><td class="num">12</td><td class="num">1 万亿</td><td>Apple Health 每日 1 条</td></tr>
+        <tr><td class="mono">meal_photo / ai_msg / ai_conv</td><td class="num">12</td><td class="num">1 万亿</td><td>AI 交互体量最大</td></tr>
+        <tr><td class="mono">sys_* / user_verify / hlth_import</td><td class="num">10</td><td class="num">10 亿</td><td>系统辅助表</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span>通用字段</h2>
+  <p class="desc">除字典表外，所有业务表必须带这 7 个字段。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">create_time</td><td class="mono">timestamp</td><td>创建时间，NOT NULL DEFAULT CURRENT_TIMESTAMP</td></tr>
+        <tr><td class="mono">create_by</td><td class="mono">varchar(6)</td><td>创建人 user_id（系统操作用 <code>000000</code>）</td></tr>
+        <tr><td class="mono">update_time</td><td class="mono">timestamp</td><td>更新时间，NOT NULL DEFAULT CURRENT_TIMESTAMP</td></tr>
+        <tr><td class="mono">update_by</td><td class="mono">varchar(6)</td><td>最后更新人 user_id</td></tr>
+        <tr><td class="mono">del_flag</td><td class="mono">varchar(1)</td><td>删除标志：N=正常 Y=已删；默认 N</td></tr>
+        <tr><td class="mono">delete_time</td><td class="mono">timestamp</td><td>删除时间，NULL 表示未删</td></tr>
+        <tr><td class="mono">delete_by</td><td class="mono">varchar(6)</td><td>删除人 user_id</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span>状态字典</h2>
+  <p class="desc">所有枚举值走 <code>sys_dict</code> 统一维护。</p>
+  <div class="rule"></div>
+
+  <div class="dict-grid">
+    <div class="dict-card"><div class="dtype">gender</div><div class="dname">性别</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>M</td><td>男</td></tr><tr><td>F</td><td>女</td></tr><tr><td>U</td><td>未设置</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">meal_type</div><div class="dname">餐次</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>B</td><td>早餐</td></tr><tr><td>L</td><td>午餐</td></tr><tr><td>D</td><td>晚餐</td></tr><tr><td>S</td><td>加餐</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">activity_lvl</div><div class="dname">活动等级</div>
+      <table><thead><tr><th>code</th><th>系数</th><th>名称</th></tr></thead><tbody>
+      <tr><td>1</td><td>1.20</td><td>静坐</td></tr><tr><td>2</td><td>1.375</td><td>轻度</td></tr><tr><td>3</td><td>1.55</td><td>中度</td></tr><tr><td>4</td><td>1.725</td><td>高度</td></tr><tr><td>5</td><td>1.90</td><td>极重</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">goal_type</div><div class="dname">目标类型</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>M</td><td>维持</td></tr><tr><td>L1</td><td>温和减脂</td></tr><tr><td>L2</td><td>标准减脂</td></tr><tr><td>G1</td><td>温和增肌</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">food_src</div><div class="dname">食物来源</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>S</td><td>内置</td></tr><tr><td>U</td><td>用户自建</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">entry_src</div><div class="dname">记录来源</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>M</td><td>手动</td></tr><tr><td>A</td><td>AI 拍照</td></tr><tr><td>D</td><td>外卖截图</td></tr><tr><td>H</td><td>Apple Health</td></tr><tr><td>V</td><td>语音</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">portion_mode</div><div class="dname">份量粒度</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>P</td><td>按份</td></tr><tr><td>G</td><td>按克</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">drink_type</div><div class="dname">饮品类型</div>
+      <table><thead><tr><th>code</th><th>系数</th></tr></thead><tbody>
+      <tr><td>W</td><td>1.00 白水</td></tr><tr><td>T</td><td>0.95 茶</td></tr><tr><td>C</td><td>0.90 咖啡</td></tr><tr><td>J</td><td>0.85 果汁</td></tr><tr><td>S</td><td>0.80 汤</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">food_cat</div><div class="dname">食物分类</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>01</td><td>主食</td></tr><tr><td>02</td><td>蔬菜</td></tr><tr><td>03</td><td>水果</td></tr><tr><td>04</td><td>肉禽</td></tr><tr><td>05</td><td>水产</td></tr><tr><td>06</td><td>蛋奶</td></tr><tr><td>07</td><td>豆制品</td></tr><tr><td>08</td><td>坚果</td></tr><tr><td>09</td><td>零食</td></tr><tr><td>10</td><td>饮料</td></tr><tr><td>11</td><td>调味</td></tr><tr><td>12</td><td>菜肴</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">fast_plan</div><div class="dname">轻断食方案</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>14</td><td>14:10</td></tr><tr><td>16</td><td>16:8</td></tr><tr><td>18</td><td>18:6</td></tr><tr><td>52</td><td>5:2</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">ai_persona</div><div class="dname">AI 搭子人设</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>T</td><td>温柔知心</td></tr><tr><td>D</td><td>毒舌教练</td></tr><tr><td>F</td><td>闺蜜风</td></tr><tr><td>N</td><td>专业营养师</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">vip_lvl</div><div class="dname">会员等级（预留）</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>0</td><td>免费</td></tr><tr><td>1</td><td>月度</td></tr><tr><td>2</td><td>年度</td></tr><tr><td>3</td><td>终身</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">mem_type</div><div class="dname">AI 长期记忆类型</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>F</td><td>事实（我是女，30 岁）</td></tr><tr><td>P</td><td>偏好（不吃香菜）</td></tr><tr><td>G</td><td>目标（3 个月减 5 kg）</td></tr><tr><td>H</td><td>习惯（每天 7 点起床）</td></tr></tbody></table></div>
+    <div class="dict-card"><div class="dtype">kb_status</div><div class="dname">知识库文档状态</div>
+      <table><thead><tr><th>code</th><th>名称</th></tr></thead><tbody>
+      <tr><td>D</td><td>草稿</td></tr><tr><td>P</td><td>处理中（分块+向量化）</td></tr><tr><td>A</td><td>已上线</td></tr><tr><td>X</td><td>已下线</td></tr></tbody></table></div>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span>模块与表清单</h2>
+  <p class="desc">共 11 个模块，30 张表（V1 P0/P1 共 24 张，付费墙预留 3 张，V2+ 起再落地的不算入）。</p>
+  <div class="rule"></div>
+
+  <div class="mod-grid">
+    <div class="mod"><b>sys_</b><span class="cn">系统</span><ul>
+      <li><code>sys_dict</code> 字典</li><li><code>sys_login_log</code> 登录日志</li><li><code>sys_op_log</code> 操作日志</li></ul></div>
+    <div class="mod"><b>user_</b><span class="cn">用户</span><ul>
+      <li><code>user_info</code> 主表</li><li><code>user_auth</code> 密码</li><li><code>user_session</code> 会话</li><li><code>user_verify</code> 验证/重置</li><li><code>user_goal</code> 目标</li><li><code>user_remind</code> 提醒</li></ul></div>
+    <div class="mod"><b>food_</b><span class="cn">食物库</span><ul>
+      <li><code>food_std</code> 内置</li><li><code>food_user</code> 私人</li></ul></div>
+    <div class="mod"><b>meal_</b><span class="cn">饮食</span><ul>
+      <li><code>meal_entry</code> 就餐</li><li><code>meal_item</code> 条目</li><li><code>meal_photo</code> 拍照</li></ul></div>
+    <div class="mod"><b>water_</b><span class="cn">饮水</span><ul>
+      <li><code>water_entry</code> 饮水</li></ul></div>
+    <div class="mod"><b>ex_</b><span class="cn">运动</span><ul>
+      <li><code>ex_type</code> 类型</li><li><code>ex_entry</code> 记录</li></ul></div>
+    <div class="mod"><b>body_</b><span class="cn">体测</span><ul>
+      <li><code>body_weight</code> 体重</li><li><code>body_measure</code> 围度/体脂</li><li><code>body_steps</code> 步数</li></ul></div>
+    <div class="mod"><b>fast_</b><span class="cn">轻断食</span><ul>
+      <li><code>fast_session</code> 断食会话</li></ul></div>
+    <div class="mod"><b>ai_</b><span class="cn">AI Agent + 记忆</span><ul>
+      <li><code>ai_conv</code> 会话</li>
+      <li><code>ai_msg</code> 消息</li>
+      <li><code>ai_usage</code> 用量</li>
+      <li><code>ai_memory</code> 长期记忆 + 向量</li>
+      <li><code>ai_memory_log</code> 记忆变更历史</li>
+      <li><code>ai_kb_doc</code> 私域知识库文档</li>
+      <li><code>ai_kb_chunk</code> 知识库切片 + 向量</li></ul></div>
+    <div class="mod"><b>hlth_</b><span class="cn">Apple Health 桥</span><ul>
+      <li><code>hlth_import</code> XML 导入</li></ul></div>
+    <div class="mod"><b>sub_</b><span class="cn">订阅（预留）</span><ul>
+      <li><code>sub_plan</code> 计划</li><li><code>sub_order</code> 订单</li><li><code>sub_member</code> 会员</li></ul></div>
+  </div>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span>DDL · 系统 sys_*</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sys_dict</span><span class="tcn">系统字典</span><span class="tdesc">所有枚举统一存放</span></header>
+<pre><span class="k">CREATE TABLE</span> sys_dict (
+  id            <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,          <span class="c">-- 字典 ID</span>
+  dict_type     <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,          <span class="c">-- 字典类型 如 meal_type</span>
+  dict_code     <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,          <span class="c">-- 字典编码 如 B/L/D/S</span>
+  dict_name     <span class="t">varchar</span>(50)  <span class="k">NOT NULL</span>,          <span class="c">-- 字典名称</span>
+  ext_val       <span class="t">varchar</span>(50),                    <span class="c">-- 扩展值 如活动系数 1.375</span>
+  sort_no       <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 0,     <span class="c">-- 排序号</span>
+  remark        <span class="t">varchar</span>(200),                   <span class="c">-- 备注</span>
+  del_flag      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,   <span class="c">-- 删除标志</span>
+  create_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by     <span class="t">varchar</span>(6),
+  update_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by     <span class="t">varchar</span>(6),
+  delete_time   <span class="t">timestamp</span>,
+  delete_by     <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sys_dict <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_sys_dict_type_code <span class="k">ON</span> sys_dict(dict_type, dict_code) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_sys_dict_type <span class="k">ON</span> sys_dict(dict_type) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> sys_dict <span class="k">IS</span> <span class="s">'系统字典表'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sys_login_log</span><span class="tcn">登录日志</span></header>
+<pre><span class="k">CREATE TABLE</span> sys_login_log (
+  id            <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,          <span class="c">-- 日志 ID</span>
+  user_id       <span class="t">varchar</span>(6),                     <span class="c">-- 用户 ID 失败可能空</span>
+  login_email   <span class="t">varchar</span>(80),                    <span class="c">-- 登录邮箱</span>
+  login_ip      <span class="t">varchar</span>(45)  <span class="k">NOT NULL</span>,          <span class="c">-- 登录 IP</span>
+  login_ua      <span class="t">varchar</span>(200),                   <span class="c">-- User-Agent</span>
+  login_status  <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,          <span class="c">-- 状态 S 成功 F 失败 O 登出</span>
+  fail_reason   <span class="t">varchar</span>(50),                    <span class="c">-- 失败原因</span>
+  login_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by     <span class="t">varchar</span>(6),
+  update_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by     <span class="t">varchar</span>(6),
+  del_flag      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time   <span class="t">timestamp</span>,
+  delete_by     <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sys_login_log <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_login_log_user <span class="k">ON</span> sys_login_log(user_id, login_time <span class="k">DESC</span>);
+<span class="k">CREATE INDEX</span> ix_login_log_time <span class="k">ON</span> sys_login_log(login_time <span class="k">DESC</span>);
+<span class="k">COMMENT ON TABLE</span> sys_login_log <span class="k">IS</span> <span class="s">'登录日志'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sys_op_log</span><span class="tcn">操作日志</span><span class="tdesc">敏感操作审计</span></header>
+<pre><span class="k">CREATE TABLE</span> sys_op_log (
+  id            <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,          <span class="c">-- 日志 ID</span>
+  user_id       <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,          <span class="c">-- 操作人</span>
+  op_type       <span class="t">varchar</span>(20)  <span class="k">NOT NULL</span>,          <span class="c">-- 类型 delete_account/export_data 等</span>
+  op_module     <span class="t">varchar</span>(20),                    <span class="c">-- 模块名</span>
+  op_desc       <span class="t">varchar</span>(200),                   <span class="c">-- 描述</span>
+  op_ip         <span class="t">varchar</span>(45),                    <span class="c">-- IP</span>
+  op_status     <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,          <span class="c">-- S 成功 F 失败</span>
+  op_time       <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by     <span class="t">varchar</span>(6),
+  update_time   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by     <span class="t">varchar</span>(6),
+  del_flag      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time   <span class="t">timestamp</span>,
+  delete_by     <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sys_op_log <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_op_log_user <span class="k">ON</span> sys_op_log(user_id, op_time <span class="k">DESC</span>);
+<span class="k">COMMENT ON TABLE</span> sys_op_log <span class="k">IS</span> <span class="s">'操作日志'</span>;</pre>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span>DDL · 用户 user_*</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_info</span><span class="tcn">用户主表</span><span class="tdesc">基础信息 + 身体数据</span></header>
+<pre><span class="k">CREATE TABLE</span> user_info (
+  id             <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID 严守 HIS 6 位</span>
+  nickname       <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 昵称</span>
+  email          <span class="t">varchar</span>(80)  <span class="k">NOT NULL</span>,         <span class="c">-- 登录邮箱</span>
+  avatar_key     <span class="t">varchar</span>(128),                   <span class="c">-- 头像 MinIO object key</span>
+  gender         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'U'</span>,  <span class="c">-- 性别 M/F/U</span>
+  birth_year     <span class="t">int2</span>,                           <span class="c">-- 出生年份</span>
+  height_cm      <span class="t">decimal</span>(5,1),                   <span class="c">-- 身高 cm</span>
+  activity_lvl   <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'2'</span>,  <span class="c">-- 活动等级 1-5</span>
+  bmr_kcal       <span class="t">int2</span>,                           <span class="c">-- 缓存 BMR</span>
+  tdee_kcal      <span class="t">int2</span>,                           <span class="c">-- 缓存 TDEE</span>
+  vip_lvl        <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'0'</span>,  <span class="c">-- 会员等级 0 免费</span>
+  vip_expire     <span class="t">timestamp</span>,                      <span class="c">-- 会员过期</span>
+  reg_ip         <span class="t">varchar</span>(45),                    <span class="c">-- 注册 IP</span>
+  reg_ua         <span class="t">varchar</span>(200),                   <span class="c">-- 注册 UA</span>
+  email_verified <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,  <span class="c">-- 邮箱是否已验证 N/Y</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- 状态 A 正常 D 已注销 F 冻结</span>
+  last_login     <span class="t">timestamp</span>,                      <span class="c">-- 最后登录时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_info <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_user_email <span class="k">ON</span> user_info(email) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> user_info <span class="k">IS</span> <span class="s">'用户主表'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_auth</span><span class="tcn">密码认证</span><span class="tdesc">与主表分离防误查</span></header>
+<pre><span class="k">CREATE TABLE</span> user_auth (
+  id             <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 同 user_info.id</span>
+  pwd_hash       <span class="t">varchar</span>(80)  <span class="k">NOT NULL</span>,         <span class="c">-- bcrypt hash</span>
+  pwd_ver        <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 1,   <span class="c">-- 密码版本 改密后 +1 旧 token 失效</span>
+  pwd_reset_at   <span class="t">timestamp</span>,                      <span class="c">-- 最近一次改密时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_auth <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">COMMENT ON TABLE</span> user_auth <span class="k">IS</span> <span class="s">'用户密码认证'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_session</span><span class="tcn">会话</span><span class="tdesc">JWT refresh token</span></header>
+<pre><span class="k">CREATE TABLE</span> user_session (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 会话 ID</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID</span>
+  refresh_token  <span class="t">varchar</span>(64)  <span class="k">NOT NULL</span>,         <span class="c">-- refresh token</span>
+  device_info    <span class="t">varchar</span>(200),                   <span class="c">-- 设备信息</span>
+  ip_addr        <span class="t">varchar</span>(45),                    <span class="c">-- IP</span>
+  expire_time    <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 过期时间</span>
+  revoked        <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,  <span class="c">-- 是否吊销 N/Y</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_session <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_user_session_token <span class="k">ON</span> user_session(refresh_token) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_user_session_user <span class="k">ON</span> user_session(user_id) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> user_session <span class="k">IS</span> <span class="s">'用户会话'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_verify</span><span class="tcn">邮箱验证 / 密码重置</span></header>
+<pre><span class="k">CREATE TABLE</span> user_verify (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 验证 ID</span>
+  user_id        <span class="t">varchar</span>(6),                     <span class="c">-- 用户 ID 注册前可能空</span>
+  email          <span class="t">varchar</span>(80)  <span class="k">NOT NULL</span>,         <span class="c">-- 目标邮箱</span>
+  verify_type    <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- V 注册 R 密码重置 E 换绑</span>
+  verify_token   <span class="t">varchar</span>(64)  <span class="k">NOT NULL</span>,         <span class="c">-- 一次性 token</span>
+  used_flag      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,  <span class="c">-- 是否已用 N/Y</span>
+  expire_time    <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 过期时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_verify <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_user_verify_token <span class="k">ON</span> user_verify(verify_token) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_user_verify_email <span class="k">ON</span> user_verify(email, verify_type) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> user_verify <span class="k">IS</span> <span class="s">'邮箱验证与密码重置'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_goal</span><span class="tcn">目标配置</span><span class="tdesc">带版本历史</span></header>
+<pre><span class="k">CREATE TABLE</span> user_goal (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 目标记录 ID</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID</span>
+  goal_type      <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- M/L1/L2/G1</span>
+  target_wt      <span class="t">decimal</span>(5,2),                   <span class="c">-- 目标体重 kg</span>
+  kcal_goal      <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 每日卡路里目标</span>
+  carb_pct       <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 50,   <span class="c">-- 碳水占比 %</span>
+  prot_pct       <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 25,   <span class="c">-- 蛋白占比 %</span>
+  fat_pct        <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 25,   <span class="c">-- 脂肪占比 %</span>
+  water_ml       <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 2000, <span class="c">-- 每日饮水目标 ml</span>
+  is_current     <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'Y'</span>,  <span class="c">-- 是否当前生效 Y/N</span>
+  effective_at   <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_goal <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_user_goal_user <span class="k">ON</span> user_goal(user_id, is_current) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> user_goal <span class="k">IS</span> <span class="s">'用户目标配置'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">user_remind</span><span class="tcn">提醒配置</span></header>
+<pre><span class="k">CREATE TABLE</span> user_remind (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID</span>
+  remind_kind    <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- B/L/D/W 饮水/F 断食</span>
+  enabled        <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'Y'</span>,  <span class="c">-- 是否开启 Y/N</span>
+  remind_hour    <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 提醒小时 0-23</span>
+  remind_min     <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 提醒分钟 0-59</span>
+  quiet_from     <span class="t">int2</span>,                           <span class="c">-- 静默起 小时</span>
+  quiet_to       <span class="t">int2</span>,                           <span class="c">-- 静默止 小时</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_user_remind <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_user_remind_uk <span class="k">ON</span> user_remind(user_id, remind_kind) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> user_remind <span class="k">IS</span> <span class="s">'用户提醒配置'</span>;</pre>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>DDL · 食物 food_*</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">food_std</span><span class="tcn">内置食物库</span><span class="tdesc">V1 100+ 条 营养师人工维护</span></header>
+<pre><span class="k">CREATE TABLE</span> food_std (
+  id             <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 食物 ID</span>
+  food_name      <span class="t">varchar</span>(50)  <span class="k">NOT NULL</span>,         <span class="c">-- 食物名称</span>
+  spell_code     <span class="t">varchar</span>(20),                    <span class="c">-- 拼音码 中文搜索用</span>
+  cat_code       <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- 分类字典 01-12</span>
+  alias          <span class="t">varchar</span>(100),                   <span class="c">-- 别名 逗号分隔</span>
+  brand          <span class="t">varchar</span>(50),                    <span class="c">-- 品牌 预包装食品</span>
+  unit_g         <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 100,  <span class="c">-- 基准克数</span>
+  portion_g      <span class="t">int2</span>,                           <span class="c">-- 一份 = 多少克</span>
+  portion_desc   <span class="t">varchar</span>(30),                    <span class="c">-- 一份的描述</span>
+  kcal           <span class="t">decimal</span>(6,2) <span class="k">NOT NULL</span>,         <span class="c">-- 卡路里 (kcal/基准克)</span>
+  carb_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,  <span class="c">-- 碳水 g</span>
+  prot_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,  <span class="c">-- 蛋白 g</span>
+  fat_g          <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,  <span class="c">-- 脂肪 g</span>
+  fiber_g        <span class="t">decimal</span>(6,2),                   <span class="c">-- 膳食纤维 g</span>
+  sugar_g        <span class="t">decimal</span>(6,2),                   <span class="c">-- 糖 g</span>
+  sodium_mg      <span class="t">decimal</span>(8,2),                   <span class="c">-- 钠 mg</span>
+  cholesterol_mg <span class="t">decimal</span>(8,2),                   <span class="c">-- 胆固醇 mg</span>
+  micro_json     <span class="t">jsonb</span>,                          <span class="c">-- 微量元素扩展 钙铁锌+维生素</span>
+  low_cal_flag   <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,  <span class="c">-- 低卡标签 Y/N</span>
+  high_prot_flag <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,  <span class="c">-- 高蛋白标签 Y/N</span>
+  source_ref     <span class="t">varchar</span>(100),                   <span class="c">-- 数据来源标注</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- A 正常 D 已下架</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_food_std <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_food_std_spell <span class="k">ON</span> food_std(spell_code) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_food_std_cat <span class="k">ON</span> food_std(cat_code) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_food_std_name <span class="k">ON</span> food_std(food_name) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> food_std <span class="k">IS</span> <span class="s">'内置食物库'</span>;</pre>
+  </div>
+
+  <h3>食物库数据源与分层建库</h3>
+  <div class="callout decision">
+    <span class="tag">V1 分层建库方案</span>
+    <ul>
+      <li><strong>基础层 · 2000 条</strong>：直接 seed 开源 JSON <a href="https://github.com/Sanotsu/china-food-composition-data" target="_blank"><code>Sanotsu/china-food-composition-data</code></a>（《中国食物成分表·标准版第 6 版》的开源转换），涵盖能量+宏营养+微量元素，<code>source_ref = '中国食物成分表标准版第6版·中国营养学会2018'</code></li>
+      <li><strong>菜肴层 · 200 条</strong>：营养师团队 + AI 补录常见中餐菜肴（宫保鸡丁/麻婆豆腐/番茄鸡蛋面 …），官方表以食材为主缺成品菜</li>
+      <li><strong>品牌预包装层 · 200 条</strong>：星巴克 / 瑞幸 / Manner / 麦当劳 / 肯德基 / 喜茶 / 奈雪 / 海底捞 —— 人工从各品牌官网公开的营养信息表录入</li>
+      <li><strong>V1 就绪总量 ~ 2400 条</strong>，覆盖大众场景足够；长尾靠用户私人库（<code>food_user</code>）自然填补</li>
+    </ul>
+  </div>
+  <div class="callout risk">
+    <span class="tag">不做的</span>
+    <ul>
+      <li><strong>爬薄荷健康 / 春雨 / 咕咚</strong> —— 数据是他们的核心资产，法律风险高</li>
+      <li><strong>用付费按次 API</strong>（如 TianAPI）—— 每次搜索都要外部请求，延迟 + 费用不划算</li>
+      <li><strong>V2 起</strong>再考虑：用户提交食物 → 审核入库的 UGC 流程；或找专业机构合作购买扩展数据集</li>
+    </ul>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">food_user</span><span class="tcn">用户私人食物</span></header>
+<pre><span class="k">CREATE TABLE</span> food_user (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 用户食物 ID</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID</span>
+  food_name      <span class="t">varchar</span>(50)  <span class="k">NOT NULL</span>,
+  spell_code     <span class="t">varchar</span>(20),
+  cat_code       <span class="t">varchar</span>(2),
+  unit_g         <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 100,
+  portion_g      <span class="t">int2</span>,
+  portion_desc   <span class="t">varchar</span>(30),
+  kcal           <span class="t">decimal</span>(6,2) <span class="k">NOT NULL</span>,
+  carb_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  prot_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  fat_g          <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  micro_json     <span class="t">jsonb</span>,
+  photo_key      <span class="t">varchar</span>(128),                   <span class="c">-- 参考图 MinIO key</span>
+  use_count      <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 使用次数 排序用</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_food_user <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_food_user_uid <span class="k">ON</span> food_user(user_id, use_count <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_food_user_spell <span class="k">ON</span> food_user(user_id, spell_code) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> food_user <span class="k">IS</span> <span class="s">'用户私人食物库'</span>;</pre>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>DDL · 饮食 meal_*</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">meal_entry</span><span class="tcn">就餐记录</span></header>
+<pre><span class="k">CREATE TABLE</span> meal_entry (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,         <span class="c">-- 就餐 ID</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 用户 ID</span>
+  meal_date      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 就餐当天 0 点</span>
+  meal_time      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 实际就餐时间</span>
+  meal_type      <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- B/L/D/S</span>
+  entry_src      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'M'</span>,  <span class="c">-- M/A/D/V</span>
+  total_kcal     <span class="t">decimal</span>(7,2) <span class="k">NOT NULL DEFAULT</span> 0,  <span class="c">-- 该餐总卡（冗余）</span>
+  total_carb     <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  total_prot     <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  total_fat      <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  photo_id       <span class="t">varchar</span>(12),                    <span class="c">-- 关联 meal_photo.id</span>
+  note           <span class="t">varchar</span>(200),                   <span class="c">-- 备注</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_meal_entry <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_meal_entry_user_date <span class="k">ON</span> meal_entry(user_id, meal_date <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_meal_entry_time <span class="k">ON</span> meal_entry(user_id, meal_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> meal_entry <span class="k">IS</span> <span class="s">'就餐记录'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">meal_item</span><span class="tcn">食物条目</span></header>
+<pre><span class="k">CREATE TABLE</span> meal_item (
+  id             <span class="t">varchar</span>(14)  <span class="k">NOT NULL</span>,         <span class="c">-- 条目 ID</span>
+  entry_id       <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,         <span class="c">-- 所属 meal_entry.id</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 冗余 便于按用户查询</span>
+  food_id        <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 食物 ID 长度取 food_user 上限</span>
+  food_src       <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- S 内置 U 私人</span>
+  food_name      <span class="t">varchar</span>(50)  <span class="k">NOT NULL</span>,         <span class="c">-- 冗余食物名 防历史失效</span>
+  portion_mode   <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'P'</span>,  <span class="c">-- P 份 G 克</span>
+  portion_qty    <span class="t">decimal</span>(6,2) <span class="k">NOT NULL</span>,         <span class="c">-- 份量数值</span>
+  actual_g       <span class="t">decimal</span>(7,2) <span class="k">NOT NULL</span>,         <span class="c">-- 折算实际克数</span>
+  kcal           <span class="t">decimal</span>(7,2) <span class="k">NOT NULL</span>,         <span class="c">-- 条目卡路里</span>
+  carb_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  prot_g         <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  fat_g          <span class="t">decimal</span>(6,2) <span class="k">NOT NULL DEFAULT</span> 0,
+  ai_confidence  <span class="t">decimal</span>(3,2),                   <span class="c">-- AI 置信度 0-1</span>
+  sort_no        <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 0,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_meal_item <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_meal_item_entry <span class="k">ON</span> meal_item(entry_id) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_meal_item_user_food <span class="k">ON</span> meal_item(user_id, food_id) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> meal_item <span class="k">IS</span> <span class="s">'就餐食物条目'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">meal_photo</span><span class="tcn">拍照原图</span><span class="tdesc">拍照 / 外卖截图元信息</span></header>
+<pre><span class="k">CREATE TABLE</span> meal_photo (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  entry_id       <span class="t">varchar</span>(12),                    <span class="c">-- 关联 meal_entry.id</span>
+  photo_type     <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- M 餐食 D 外卖截图</span>
+  object_key     <span class="t">varchar</span>(128) <span class="k">NOT NULL</span>,         <span class="c">-- MinIO object key</span>
+  bucket_name    <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- bucket 名</span>
+  mime_type      <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 内容类型</span>
+  file_size      <span class="t">int4</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 字节数</span>
+  width_px       <span class="t">int2</span>,
+  height_px      <span class="t">int2</span>,
+  ai_provider    <span class="t">varchar</span>(20),                    <span class="c">-- deepseek/qwen</span>
+  ai_raw         <span class="t">jsonb</span>,                          <span class="c">-- AI 原始返回</span>
+  ai_cost        <span class="t">decimal</span>(10,4),                  <span class="c">-- 本次识别费用</span>
+  recognize_time <span class="t">timestamp</span>,                      <span class="c">-- 识别完成时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_meal_photo <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_meal_photo_user <span class="k">ON</span> meal_photo(user_id, create_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_meal_photo_entry <span class="k">ON</span> meal_photo(entry_id) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> meal_photo <span class="k">IS</span> <span class="s">'饮食拍照原图'</span>;</pre>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>DDL · 饮水 / 运动 / 体测</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">water_entry</span><span class="tcn">饮水记录</span></header>
+<pre><span class="k">CREATE TABLE</span> water_entry (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  drink_time     <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 饮水时间</span>
+  drink_date     <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 当日 0 点 汇总用</span>
+  drink_type     <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'W'</span>,  <span class="c">-- W/T/C/J/S</span>
+  volume_ml      <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 实际饮用毫升</span>
+  effective_ml   <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 折算等效饮水毫升</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_water_entry <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_water_entry_user_date <span class="k">ON</span> water_entry(user_id, drink_date <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> water_entry <span class="k">IS</span> <span class="s">'饮水记录'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ex_type</span><span class="tcn">运动类型库</span><span class="tdesc">MET 系数字典</span></header>
+<pre><span class="k">CREATE TABLE</span> ex_type (
+  id             <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  type_name      <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 名称</span>
+  spell_code     <span class="t">varchar</span>(20),                    <span class="c">-- 拼音码</span>
+  category       <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- A 有氧 S 力量 F 柔韧 M 综合</span>
+  met_value      <span class="t">decimal</span>(4,2) <span class="k">NOT NULL</span>,         <span class="c">-- MET 值</span>
+  intensity      <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- L 低 M 中 H 高</span>
+  icon_key       <span class="t">varchar</span>(30),                    <span class="c">-- 图标 key</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ex_type <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ex_type_spell <span class="k">ON</span> ex_type(spell_code) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ex_type <span class="k">IS</span> <span class="s">'运动类型库'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ex_entry</span><span class="tcn">运动记录</span></header>
+<pre><span class="k">CREATE TABLE</span> ex_entry (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  type_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- ex_type.id</span>
+  type_name      <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 冗余名称</span>
+  ex_date        <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 当日 0 点</span>
+  ex_time        <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 实际时间</span>
+  duration_min   <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 时长 分钟</span>
+  weight_kg      <span class="t">decimal</span>(5,2),                   <span class="c">-- 冗余体重 估算用</span>
+  kcal_burn      <span class="t">decimal</span>(6,2) <span class="k">NOT NULL</span>,         <span class="c">-- 消耗卡路里</span>
+  note           <span class="t">varchar</span>(200),
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ex_entry <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ex_entry_user_date <span class="k">ON</span> ex_entry(user_id, ex_date <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ex_entry <span class="k">IS</span> <span class="s">'运动记录'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">body_weight</span><span class="tcn">体重记录</span></header>
+<pre><span class="k">CREATE TABLE</span> body_weight (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  meas_time      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,
+  meas_date      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 当日 0 点</span>
+  weight_kg      <span class="t">decimal</span>(5,2) <span class="k">NOT NULL</span>,         <span class="c">-- 体重 kg</span>
+  bmi            <span class="t">decimal</span>(4,2),                   <span class="c">-- BMI 后端算好存</span>
+  entry_src      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'M'</span>,  <span class="c">-- M 手动 H Apple Health</span>
+  note           <span class="t">varchar</span>(100),
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_body_weight <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_body_weight_user_date <span class="k">ON</span> body_weight(user_id, meas_date <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> body_weight <span class="k">IS</span> <span class="s">'体重记录'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">body_measure</span><span class="tcn">围度与体脂</span></header>
+<pre><span class="k">CREATE TABLE</span> body_measure (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  meas_time      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,
+  meas_date      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,
+  waist_cm       <span class="t">decimal</span>(4,1),                   <span class="c">-- 腰围</span>
+  hip_cm         <span class="t">decimal</span>(4,1),                   <span class="c">-- 臀围</span>
+  chest_cm       <span class="t">decimal</span>(4,1),                   <span class="c">-- 胸围</span>
+  thigh_cm       <span class="t">decimal</span>(4,1),                   <span class="c">-- 大腿围</span>
+  arm_cm         <span class="t">decimal</span>(4,1),                   <span class="c">-- 上臂围</span>
+  body_fat_pct   <span class="t">decimal</span>(4,1),                   <span class="c">-- 体脂率</span>
+  muscle_kg      <span class="t">decimal</span>(5,2),                   <span class="c">-- 肌肉量</span>
+  water_pct      <span class="t">decimal</span>(4,1),                   <span class="c">-- 水分率</span>
+  note           <span class="t">varchar</span>(100),
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_body_measure <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_body_measure_user_date <span class="k">ON</span> body_measure(user_id, meas_date <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> body_measure <span class="k">IS</span> <span class="s">'围度与体脂记录'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">body_steps</span><span class="tcn">步数记录</span><span class="tdesc">主要由 Apple Health 灌入</span></header>
+<pre><span class="k">CREATE TABLE</span> body_steps (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  step_date      <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 当日 0 点</span>
+  step_count     <span class="t">int4</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 步数</span>
+  distance_m     <span class="t">int4</span>,                           <span class="c">-- 距离米</span>
+  kcal_burn      <span class="t">decimal</span>(6,2),                   <span class="c">-- 消耗估算</span>
+  entry_src      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'H'</span>,  <span class="c">-- H Apple Health M 手动</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_body_steps <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_body_steps_uk <span class="k">ON</span> body_steps(user_id, step_date) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> body_steps <span class="k">IS</span> <span class="s">'每日步数'</span>;</pre>
+  </div>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>DDL · 轻断食 / AI / Apple Health 桥</h2>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">fast_session</span><span class="tcn">轻断食会话</span></header>
+<pre><span class="k">CREATE TABLE</span> fast_session (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  plan_code      <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- 14/16/18/52</span>
+  start_time     <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 开始时间</span>
+  end_time       <span class="t">timestamp</span>,                      <span class="c">-- 实际结束时间</span>
+  plan_end_time  <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 计划结束时间</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'R'</span>,  <span class="c">-- R 进行中 C 完成 A 中止</span>
+  actual_hours   <span class="t">decimal</span>(4,2),                   <span class="c">-- 实际断食小时数</span>
+  note           <span class="t">varchar</span>(200),
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_fast_session <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_fast_session_user <span class="k">ON</span> fast_session(user_id, start_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_fast_session_running <span class="k">ON</span> fast_session(user_id) <span class="k">WHERE</span> status = <span class="s">'R'</span> <span class="k">AND</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> fast_session <span class="k">IS</span> <span class="s">'轻断食会话'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_conv</span><span class="tcn">AI 对话会话</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_conv (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  persona_code   <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'T'</span>,  <span class="c">-- T/D/F/N</span>
+  title          <span class="t">varchar</span>(50),                    <span class="c">-- 会话标题 首条摘要</span>
+  msg_count      <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 消息数</span>
+  last_msg_time  <span class="t">timestamp</span>,                      <span class="c">-- 最后一条时间</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- A 活跃 C 归档</span>
+  bg_key         <span class="t">varchar</span>(128),                   <span class="c">-- 自定义聊天背景图 MinIO key</span>
+  avatar_key     <span class="t">varchar</span>(128),                   <span class="c">-- 自定义搭子头像 MinIO key</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_conv <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_conv_user <span class="k">ON</span> ai_conv(user_id, last_msg_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ai_conv <span class="k">IS</span> <span class="s">'AI 搭子会话'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_msg</span><span class="tcn">AI 对话消息</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_msg (
+  id             <span class="t">varchar</span>(14)  <span class="k">NOT NULL</span>,
+  conv_id        <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,         <span class="c">-- 所属会话</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 冗余</span>
+  role           <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- U 用户 A 助手 S 系统</span>
+  content        <span class="t">jsonb</span>        <span class="k">NOT NULL</span>,         <span class="c">-- 消息内容 支持多模态</span>
+  content_text   <span class="t">varchar</span>(4000),                  <span class="c">-- 纯文本副本 搜索用</span>
+  token_in       <span class="t">int4</span>,                           <span class="c">-- 输入 token</span>
+  token_out      <span class="t">int4</span>,                           <span class="c">-- 输出 token</span>
+  cost           <span class="t">decimal</span>(10,4),                  <span class="c">-- 费用</span>
+  provider       <span class="t">varchar</span>(20),                    <span class="c">-- deepseek/qwen</span>
+  model_name     <span class="t">varchar</span>(30),                    <span class="c">-- 模型名</span>
+  msg_time       <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_msg <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_msg_conv <span class="k">ON</span> ai_msg(conv_id, msg_time <span class="k">ASC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ai_msg <span class="k">IS</span> <span class="s">'AI 搭子消息'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_usage</span><span class="tcn">AI 用量额度</span><span class="tdesc">付费墙基础数据</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_usage (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  usage_date     <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,         <span class="c">-- 用量当天 0 点</span>
+  usage_kind     <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- PH 拍照 CH 对话 DL 外卖</span>
+  used_count     <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 0,
+  quota_count    <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 当日配额</span>
+  total_cost     <span class="t">decimal</span>(10,4) <span class="k">NOT NULL DEFAULT</span> 0,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_usage <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_ai_usage_uk <span class="k">ON</span> ai_usage(user_id, usage_date, usage_kind) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ai_usage <span class="k">IS</span> <span class="s">'AI 用量额度'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_memory</span><span class="tcn">AI 长期记忆</span><span class="tdesc">每用户独立 + pgvector 向量检索</span></header>
+<pre><span class="c">-- 前置：需在库上启用 pgvector 扩展</span>
+<span class="c">-- CREATE EXTENSION IF NOT EXISTS vector;</span>
+
+<span class="k">CREATE TABLE</span> ai_memory (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 归属用户 · 检索时 WHERE user_id</span>
+  mem_type       <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- F 事实 P 偏好 G 目标 H 习惯</span>
+  mem_content    <span class="t">varchar</span>(500) <span class="k">NOT NULL</span>,         <span class="c">-- 记忆内容 自然语言</span>
+  embedding      <span class="t">vector</span>(1024),                  <span class="c">-- 阿里 text-embedding-v3 是 1024 维</span>
+  importance     <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 5,   <span class="c">-- 重要度 1-10 越大越优先召回</span>
+  version        <span class="t">int2</span>         <span class="k">NOT NULL DEFAULT</span> 1,   <span class="c">-- 版本号 每次确认更新 +1 历史存 ai_memory_log</span>
+  source_msg_id  <span class="t">varchar</span>(14),                    <span class="c">-- 触发本条记忆的消息 ID</span>
+  source_conv_id <span class="t">varchar</span>(12),                    <span class="c">-- 归属会话 ID</span>
+  hit_count      <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 被召回次数</span>
+  last_hit_time  <span class="t">timestamp</span>,                      <span class="c">-- 最近召回时间</span>
+  expire_time    <span class="t">timestamp</span>,                      <span class="c">-- 过期时间 NULL 永久</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- A 生效 O 已过时（被新记忆推翻）</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_memory <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_memory_user <span class="k">ON</span> ai_memory(user_id, importance <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span> <span class="k">AND</span> status = <span class="s">'A'</span>;
+<span class="k">CREATE INDEX</span> ix_ai_memory_user_type <span class="k">ON</span> ai_memory(user_id, mem_type) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="c">-- 向量索引 ivfflat：cosine 距离；lists 值随数据量调</span>
+<span class="k">CREATE INDEX</span> ix_ai_memory_vec <span class="k">ON</span> ai_memory <span class="k">USING</span> ivfflat (embedding vector_cosine_ops) <span class="k">WITH</span> (lists = 100);
+<span class="k">COMMENT ON TABLE</span> ai_memory <span class="k">IS</span> <span class="s">'AI 长期记忆 每用户独立'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_memory_log</span><span class="tcn">记忆变更历史</span><span class="tdesc">用户确认追踪 + 全量可回溯</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_memory_log (
+  id             <span class="t">varchar</span>(14)  <span class="k">NOT NULL</span>,         <span class="c">-- 变更日志 ID</span>
+  memory_id      <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,         <span class="c">-- 关联 ai_memory.id</span>
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,         <span class="c">-- 冗余</span>
+  op_type        <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- C 创建 U 更新 D 删除 O 过时</span>
+  op_status      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- A 已生效 P 待用户确认 R 用户拒绝</span>
+  old_content    <span class="t">varchar</span>(500),                   <span class="c">-- 旧内容 U/D 时记录</span>
+  new_content    <span class="t">varchar</span>(500),                   <span class="c">-- 新内容 C/U 时记录</span>
+  old_type       <span class="t">varchar</span>(1),                     <span class="c">-- 旧类型</span>
+  new_type       <span class="t">varchar</span>(1),                     <span class="c">-- 新类型</span>
+  old_importance <span class="t">int2</span>,                           <span class="c">-- 旧重要度</span>
+  new_importance <span class="t">int2</span>,                           <span class="c">-- 新重要度</span>
+  version_from   <span class="t">int2</span>,                           <span class="c">-- 从版本号</span>
+  version_to     <span class="t">int2</span>,                           <span class="c">-- 到版本号</span>
+  op_reason      <span class="t">varchar</span>(200),                   <span class="c">-- 变更原因（AI 说明或用户手写）</span>
+  source_msg_id  <span class="t">varchar</span>(14),                    <span class="c">-- 触发本次变更的消息</span>
+  confirm_time   <span class="t">timestamp</span>,                      <span class="c">-- 用户确认时间</span>
+  confirm_by     <span class="t">varchar</span>(6),                     <span class="c">-- 确认人 通常 = user_id</span>
+  actor          <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- 谁发起的 A Agent U 用户手动</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_memory_log <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_memory_log_mem <span class="k">ON</span> ai_memory_log(memory_id, create_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_ai_memory_log_pending <span class="k">ON</span> ai_memory_log(user_id) <span class="k">WHERE</span> op_status = <span class="s">'P'</span> <span class="k">AND</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ai_memory_log <span class="k">IS</span> <span class="s">'AI 记忆变更历史 支持用户确认与回溯'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_kb_doc</span><span class="tcn">私域知识库文档</span><span class="tdesc">营养师团队维护 全用户共享</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_kb_doc (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  doc_title      <span class="t">varchar</span>(100) <span class="k">NOT NULL</span>,         <span class="c">-- 文档标题</span>
+  doc_tag        <span class="t">varchar</span>(100),                   <span class="c">-- 标签 逗号分隔 如 低GI,糖尿病</span>
+  source_type    <span class="t">varchar</span>(2)   <span class="k">NOT NULL</span>,         <span class="c">-- MD/PD/TX Markdown/PDF/Text</span>
+  source_key     <span class="t">varchar</span>(128),                   <span class="c">-- 原始文档 MinIO key</span>
+  content_hash   <span class="t">varchar</span>(64),                    <span class="c">-- SHA256 去重</span>
+  chunk_count    <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 切片数</span>
+  kb_status      <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'D'</span>,  <span class="c">-- D 草稿 P 处理中 A 已上线 X 已下线</span>
+  publish_time   <span class="t">timestamp</span>,                      <span class="c">-- 上线时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_kb_doc <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_kb_doc_status <span class="k">ON</span> ai_kb_doc(kb_status) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE UNIQUE INDEX</span> uk_ai_kb_doc_hash <span class="k">ON</span> ai_kb_doc(content_hash) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> ai_kb_doc <span class="k">IS</span> <span class="s">'AI 私域知识库文档'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">ai_kb_chunk</span><span class="tcn">知识库切片 + 向量</span><span class="tdesc">RAG 检索命中的最小单位</span></header>
+<pre><span class="k">CREATE TABLE</span> ai_kb_chunk (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  doc_id         <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- 归属 ai_kb_doc.id</span>
+  chunk_idx      <span class="t">int4</span>         <span class="k">NOT NULL</span>,         <span class="c">-- 切片顺序号</span>
+  chunk_text     <span class="t">varchar</span>(2000) <span class="k">NOT NULL</span>,        <span class="c">-- 切片文本</span>
+  chunk_tokens   <span class="t">int2</span>         <span class="k">NOT NULL</span>,         <span class="c">-- token 数（拼 prompt 时算配额）</span>
+  embedding      <span class="t">vector</span>(1024) <span class="k">NOT NULL</span>,         <span class="c">-- 向量</span>
+  meta_json      <span class="t">jsonb</span>,                          <span class="c">-- 元信息（章节 页码 标题层级）</span>
+  hit_count      <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 命中次数（热度）</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_ai_kb_chunk <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_ai_kb_chunk_doc <span class="k">ON</span> ai_kb_chunk(doc_id, chunk_idx) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_ai_kb_chunk_vec <span class="k">ON</span> ai_kb_chunk <span class="k">USING</span> ivfflat (embedding vector_cosine_ops) <span class="k">WITH</span> (lists = 100);
+<span class="k">COMMENT ON TABLE</span> ai_kb_chunk <span class="k">IS</span> <span class="s">'AI 知识库切片与向量'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">hlth_import</span><span class="tcn">Apple Health 导入历史</span><span class="tdesc">幂等去重</span></header>
+<pre><span class="k">CREATE TABLE</span> hlth_import (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  file_key       <span class="t">varchar</span>(128) <span class="k">NOT NULL</span>,         <span class="c">-- 上传 ZIP 的 MinIO key</span>
+  file_size      <span class="t">int4</span>,                           <span class="c">-- 字节</span>
+  file_hash      <span class="t">varchar</span>(64),                    <span class="c">-- SHA256 去重用</span>
+  import_status  <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'P'</span>,  <span class="c">-- P 进行中 S 成功 F 失败</span>
+  weight_cnt     <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 导入体重条数</span>
+  steps_cnt      <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 导入步数条数</span>
+  hr_cnt         <span class="t">int4</span>         <span class="k">NOT NULL DEFAULT</span> 0,   <span class="c">-- 导入心率条数</span>
+  error_msg      <span class="t">varchar</span>(500),                   <span class="c">-- 错误信息</span>
+  start_time     <span class="t">timestamp</span>,                      <span class="c">-- 数据时间范围起</span>
+  end_time       <span class="t">timestamp</span>,                      <span class="c">-- 数据时间范围止</span>
+  finish_time    <span class="t">timestamp</span>,                      <span class="c">-- 完成时间</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_hlth_import <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_hlth_import_user <span class="k">ON</span> hlth_import(user_id, create_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_hlth_import_hash <span class="k">ON</span> hlth_import(user_id, file_hash) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> hlth_import <span class="k">IS</span> <span class="s">'Apple Health XML 导入历史'</span>;</pre>
+  </div>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>DDL · 订阅预留 sub_*</h2>
+  <p class="desc">V1 不启用，但表结构落地，避免付费墙上线时全库迁移。</p>
+  <div class="rule"></div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sub_plan</span><span class="tcn">订阅计划</span><span class="badge rsvd">RESERVED</span></header>
+<pre><span class="k">CREATE TABLE</span> sub_plan (
+  id             <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  plan_name      <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 月度/年度/终身</span>
+  plan_code      <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,         <span class="c">-- monthly/yearly/lifetime</span>
+  vip_lvl        <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- 1/2/3</span>
+  duration_days  <span class="t">int2</span>,                           <span class="c">-- 时长 终身空</span>
+  price          <span class="t">decimal</span>(10,4) <span class="k">NOT NULL</span>,        <span class="c">-- 价格</span>
+  currency       <span class="t">varchar</span>(3)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'CNY'</span>,
+  desc_text      <span class="t">varchar</span>(200),
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sub_plan <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">COMMENT ON TABLE</span> sub_plan <span class="k">IS</span> <span class="s">'订阅计划'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sub_order</span><span class="tcn">订阅订单</span><span class="badge rsvd">RESERVED</span></header>
+<pre><span class="k">CREATE TABLE</span> sub_order (
+  id             <span class="t">varchar</span>(12)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  plan_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  order_no       <span class="t">varchar</span>(30)  <span class="k">NOT NULL</span>,         <span class="c">-- 订单号 对外</span>
+  pay_channel    <span class="t">varchar</span>(2),                     <span class="c">-- WX/AL/AP</span>
+  pay_amount     <span class="t">decimal</span>(10,4) <span class="k">NOT NULL</span>,
+  pay_currency   <span class="t">varchar</span>(3)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'CNY'</span>,
+  pay_status     <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'P'</span>,  <span class="c">-- P 待付 S 成功 F 失败 R 退款</span>
+  pay_time       <span class="t">timestamp</span>,
+  tx_id          <span class="t">varchar</span>(64),                    <span class="c">-- 三方交易号</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sub_order <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE UNIQUE INDEX</span> uk_sub_order_no <span class="k">ON</span> sub_order(order_no) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">CREATE INDEX</span> ix_sub_order_user <span class="k">ON</span> sub_order(user_id, create_time <span class="k">DESC</span>) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> sub_order <span class="k">IS</span> <span class="s">'订阅订单'</span>;</pre>
+  </div>
+
+  <div class="tbl-card">
+    <header><span class="tname">sub_member</span><span class="tcn">会员状态</span><span class="badge rsvd">RESERVED</span></header>
+<pre><span class="k">CREATE TABLE</span> sub_member (
+  id             <span class="t">varchar</span>(10)  <span class="k">NOT NULL</span>,
+  user_id        <span class="t">varchar</span>(6)   <span class="k">NOT NULL</span>,
+  vip_lvl        <span class="t">varchar</span>(1)   <span class="k">NOT NULL</span>,         <span class="c">-- 1/2/3</span>
+  start_time     <span class="t">timestamp</span>    <span class="k">NOT NULL</span>,
+  expire_time    <span class="t">timestamp</span>,                      <span class="c">-- 终身空</span>
+  order_id       <span class="t">varchar</span>(12),                    <span class="c">-- 来源订单</span>
+  status         <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'A'</span>,  <span class="c">-- A 生效 E 过期 R 退款</span>
+  create_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  create_by      <span class="t">varchar</span>(6),
+  update_time    <span class="t">timestamp</span>    <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP,
+  update_by      <span class="t">varchar</span>(6),
+  del_flag       <span class="t">varchar</span>(1)   <span class="k">NOT NULL DEFAULT</span> <span class="s">'N'</span>,
+  delete_time    <span class="t">timestamp</span>,
+  delete_by      <span class="t">varchar</span>(6),
+  <span class="k">CONSTRAINT</span> pk_sub_member <span class="k">PRIMARY KEY</span> (id)
+);
+<span class="k">CREATE INDEX</span> ix_sub_member_user <span class="k">ON</span> sub_member(user_id, status) <span class="k">WHERE</span> del_flag = <span class="s">'N'</span>;
+<span class="k">COMMENT ON TABLE</span> sub_member <span class="k">IS</span> <span class="s">'会员生效状态'</span>;</pre>
+  </div>
+</section>
+
+<section id="s15">
+  <h2><span class="num">15</span>索引策略</h2>
+  <div class="rule"></div>
+
+  <div class="callout note">
+    <span class="tag">总原则</span>
+    <ul>
+      <li>所有业务表：<code>user_id + 时间 DESC</code> 联合索引是基本盘（时间维度查询占 80%）</li>
+      <li>所有索引都带 <code>WHERE del_flag = 'N'</code> 的部分索引，减小体积、加速查询</li>
+      <li>唯一约束一律用唯一索引实现（不用 UNIQUE 约束）</li>
+      <li>暂不做全文索引；食物搜索走 <code>spell_code</code> 前缀 + <code>food_name</code> LIKE，Postgres <code>pg_trgm</code> 到 W7 再评估</li>
+    </ul>
+  </div>
+
+  <h3>关键联合索引清单</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>表</th><th>索引</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">meal_entry</td><td class="mono">(user_id, meal_date DESC)</td><td>今日/日历汇总</td></tr>
+        <tr><td class="mono">meal_item</td><td class="mono">(entry_id)</td><td>拉取一餐所有条目</td></tr>
+        <tr><td class="mono">meal_item</td><td class="mono">(user_id, food_id)</td><td>某食物历史吃过几次</td></tr>
+        <tr><td class="mono">water_entry</td><td class="mono">(user_id, drink_date DESC)</td><td>每日饮水汇总</td></tr>
+        <tr><td class="mono">body_weight</td><td class="mono">(user_id, meas_date DESC)</td><td>体重曲线</td></tr>
+        <tr><td class="mono">food_std</td><td class="mono">(spell_code)</td><td>拼音搜索</td></tr>
+        <tr><td class="mono">food_user</td><td class="mono">(user_id, use_count DESC)</td><td>常用排序</td></tr>
+        <tr><td class="mono">ai_msg</td><td class="mono">(conv_id, msg_time ASC)</td><td>拉会话消息流</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s16">
+  <h2><span class="num">16</span>API 契约</h2>
+  <p class="desc">RESTful 风格。V1 端点约 40 条，此处列关键分组。详细 OpenAPI 在编码阶段用 NestJS Swagger 装饰器生成。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>方法</th><th>路径</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">POST</td><td class="mono">/api/auth/register</td><td>邮箱注册，发验证邮件</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/auth/verify?token=</td><td>激活邮箱</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/auth/login</td><td>邮箱+密码登录，返回 JWT</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/auth/refresh</td><td>刷新 access token</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/auth/forgot</td><td>发密码重置邮件</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/auth/reset</td><td>用 token 重置密码</td></tr>
+        <tr><td class="mono">GET/PUT</td><td class="mono">/api/user/me</td><td>用户信息</td></tr>
+        <tr><td class="mono">DELETE</td><td class="mono">/api/user/me</td><td>删除账号</td></tr>
+        <tr><td class="mono">GET/PUT</td><td class="mono">/api/user/goal</td><td>当前目标</td></tr>
+        <tr><td class="mono">GET/PUT</td><td class="mono">/api/user/remind</td><td>提醒配置</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/food/search?q=&amp;cat=</td><td>搜索内置+私人食物</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/food/recent</td><td>常用食物</td></tr>
+        <tr><td class="mono">POST/PUT/DELETE</td><td class="mono">/api/food/user</td><td>私人食物 CRUD</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/meal/entry</td><td>创建就餐记录（含 items）</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/meal/day?date=</td><td>某日就餐</td></tr>
+        <tr><td class="mono">PUT/DELETE</td><td class="mono">/api/meal/entry/{id}</td><td>更新/删除</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/meal/recognize</td><td>拍照识别（multipart 上传）</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/meal/parse-delivery</td><td>外卖截图解析</td></tr>
+        <tr><td class="mono">POST/GET/DELETE</td><td class="mono">/api/water/entry</td><td>饮水 CRUD</td></tr>
+        <tr><td class="mono">POST/GET/DELETE</td><td class="mono">/api/exercise/entry</td><td>运动 CRUD</td></tr>
+        <tr><td class="mono">POST/GET/DELETE</td><td class="mono">/api/body/weight</td><td>体重 CRUD</td></tr>
+        <tr><td class="mono">POST/GET/DELETE</td><td class="mono">/api/body/measure</td><td>围度 CRUD</td></tr>
+        <tr><td class="mono">POST/GET</td><td class="mono">/api/fast/session</td><td>轻断食开始/查询/结束</td></tr>
+        <tr><td class="mono">GET/POST</td><td class="mono">/api/ai/conv</td><td>会话列表/创建</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/ai/msg</td><td>发消息（SSE 流式返回）</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/hlth/import</td><td>Apple Health XML 上传</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/hlth/shortcut</td><td>Shortcut 模板下载信息</td></tr>
+        <tr><td class="mono">POST</td><td class="mono">/api/hlth/sync</td><td>Shortcut 数据上报</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/stats/today</td><td>今日总览</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/stats/range?from=&amp;to=</td><td>区间统计</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/stats/calendar?month=</td><td>月历视图</td></tr>
+        <tr><td class="mono">GET</td><td class="mono">/api/export</td><td>全量数据 JSON 导出</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">约定</span>
+    <ul>
+      <li>响应体统一：<code>{ code: 0, data: {...}, msg: '' }</code>；code=0 成功，其他为错误</li>
+      <li>时间字段全部返回 ISO 8601 字符串（Asia/Shanghai 时区）</li>
+      <li>金额/精度小数字段返回字符串，避免 JS Number 精度丢失</li>
+      <li>分页统一 <code>page/pageSize</code>，返回 <code>total/list</code></li>
+      <li>鉴权：<code>Authorization: Bearer &lt;jwt&gt;</code>；access token 30 分钟，refresh 30 天</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s17">
+  <h2><span class="num">17</span>docker-compose 清单</h2>
+  <div class="rule"></div>
+
+  <pre><span class="c"># docker-compose.yml（示意，未含所有环境变量）</span>
+<span class="k">services</span>:
+  <span class="n">nginx</span>:
+    <span class="k">image</span>: nginx:1.27-alpine
+    <span class="k">ports</span>: [<span class="s">"80:80"</span>, <span class="s">"443:443"</span>]
+    <span class="k">volumes</span>:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /data/qianka/tls:/etc/letsencrypt:ro
+    <span class="k">depends_on</span>: [web, api]
+
+  <span class="n">web</span>:
+    <span class="k">build</span>: ./web
+    <span class="k">restart</span>: unless-stopped
+
+  <span class="n">api</span>:
+    <span class="k">build</span>: ./api
+    <span class="k">restart</span>: unless-stopped
+    <span class="k">environment</span>:
+      DATABASE_URL: postgres://qk:${DB_PWD}@postgres:5432/qianka
+      REDIS_URL: redis://redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_AK}
+      MINIO_SECRET_KEY: ${MINIO_SK}
+      JWT_SECRET: ${JWT_SECRET}
+      DEEPSEEK_KEY: ${DEEPSEEK_KEY}       <span class="c"># DeepSeek Chat + Vision</span>
+      QWEN_KEY: ${QWEN_KEY}               <span class="c"># 阿里通义（备胎）</span>
+      DASHSCOPE_KEY: ${DASHSCOPE_KEY}     <span class="c"># 阿里百炼 用于 embedding text-embedding-v3</span>
+      <span class="c"># === 邮件 · QQ 邮箱 SMTP ===</span>
+      MAIL_PROVIDER: qq                    <span class="c"># qq | aliyun | sendcloud（MailProvider 适配层）</span>
+      MAIL_HOST: smtp.qq.com
+      MAIL_PORT: 465
+      MAIL_SECURE: <span class="s">"true"</span>                 <span class="c"># 465 用 SSL</span>
+      MAIL_USER: ${MAIL_USER}              <span class="c"># 完整邮箱 xxx@qq.com</span>
+      MAIL_PWD: ${MAIL_AUTH_CODE}          <span class="c"># QQ 邮箱授权码 非登录密码</span>
+      MAIL_FROM: ${MAIL_USER}
+      MAIL_FROM_NAME: <span class="s">"千卡日记"</span>
+    <span class="k">depends_on</span>: [postgres, redis, minio]
+
+  <span class="n">postgres</span>:
+    <span class="k">image</span>: pgvector/pgvector:pg15        <span class="c"># 带 pgvector 扩展的 Postgres 15</span>
+    <span class="k">restart</span>: unless-stopped
+    <span class="k">environment</span>:
+      POSTGRES_DB: qianka
+      POSTGRES_USER: qk
+      POSTGRES_PASSWORD: ${DB_PWD}
+    <span class="k">volumes</span>:
+      - /data/qianka/pg:/var/lib/postgresql/data
+      - ./ops/pg-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      <span class="c"># pg-init.sql 内容: CREATE EXTENSION IF NOT EXISTS vector;</span>
+
+  <span class="n">redis</span>:
+    <span class="k">image</span>: redis:7-alpine
+    <span class="k">restart</span>: unless-stopped
+    <span class="k">command</span>: redis-server --appendonly yes
+    <span class="k">volumes</span>:
+      - /data/qianka/redis:/data
+
+  <span class="n">minio</span>:
+    <span class="k">image</span>: minio/minio:latest
+    <span class="k">restart</span>: unless-stopped
+    <span class="k">command</span>: server /data --console-address <span class="s">":9001"</span>
+    <span class="k">environment</span>:
+      MINIO_ROOT_USER: ${MINIO_AK}
+      MINIO_ROOT_PASSWORD: ${MINIO_SK}
+    <span class="k">volumes</span>:
+      - /data/qianka/minio:/data
+
+  <span class="n">backup</span>:
+    <span class="k">image</span>: postgres:15-alpine
+    <span class="k">restart</span>: unless-stopped
+    <span class="k">entrypoint</span>: [<span class="s">"/backup.sh"</span>]  <span class="c"># 每日 3:00 pg_dump 到 /backup，保留 14 天</span>
+    <span class="k">volumes</span>:
+      - /data/qianka/backup:/backup
+      - ./ops/backup.sh:/backup.sh:ro
+    <span class="k">depends_on</span>: [postgres]</pre>
+
+  <h3>MinIO Bucket 规划</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>Bucket</th><th>用途</th><th>访问策略</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">qk-meal</td><td>饮食拍照 + 外卖截图</td><td>私有 · 签名 URL 访问</td></tr>
+        <tr><td class="mono">qk-avatar</td><td>用户头像 · 搭子头像 · 聊天背景</td><td>私有 · 签名 URL</td></tr>
+        <tr><td class="mono">qk-hlth</td><td>Apple Health 导入的 ZIP</td><td>私有 · 24h 过期自动清理</td></tr>
+        <tr><td class="mono">qk-export</td><td>用户导出的 JSON</td><td>私有 · 7d 过期</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Object key 命名：<code>{user_id}/{yyyy-mm}/{uuid}.{ext}</code>，如 <code>000042/2026-07/8f2a...c9.jpg</code></p>
+</section>
+
+<section id="s18">
+  <h2><span class="num">18</span>AI Agent 与三层记忆</h2>
+  <p class="desc">AI 搭子不是简单 LLM 调用，而是有工具、有记忆、能查数据的 Agent。用 LangGraph.js 编排。</p>
+  <div class="rule"></div>
+
+  <h3>三层记忆总览</h3>
+  <div class="topo">
+    <div class="row">
+      <div class="box hi" style="min-width:180px"><b>短期上下文</b><span>Redis List · 最近 20 轮</span></div>
+      <div class="box svc" style="min-width:180px"><b>中期对话历史</b><span>Postgres · ai_msg · 全量可回溯</span></div>
+      <div class="box data" style="min-width:180px"><b>长期语义记忆</b><span>pgvector · ai_memory · 跨会话</span></div>
+    </div>
+    <div class="arrow">▼ 每条消息按需检索各层，拼装 prompt ▼</div>
+    <div class="row">
+      <div class="box"><b>LangGraph Agent</b><span>Tools + Reasoning + Memory</span></div>
+    </div>
+    <div class="arrow">▼ 输出 · 同时决定要不要 remember() ▼</div>
+    <div class="row">
+      <div class="box"><b>用户</b><span>SSE 流式响应</span></div>
+    </div>
+  </div>
+
+  <h3>各层职责与生命周期</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>层</th><th>存储</th><th>内容</th><th>大小</th><th>生命周期</th></tr></thead>
+      <tbody>
+        <tr><td>短期</td><td class="mono">Redis List<br><code>ctx:conv:{conv_id}</code></td><td>本会话最近 N 轮对话消息（滚动窗口）</td><td>~ 20 条</td><td>会话闲置 24h 自动过期</td></tr>
+        <tr><td>中期</td><td class="mono">Postgres<br><code>ai_msg</code></td><td>该用户所有 AI 对话消息全量</td><td>无限增长</td><td>随用户账号存在；用户可清除</td></tr>
+        <tr><td>长期</td><td class="mono">Postgres + pgvector<br><code>ai_memory</code></td><td>Agent 主动 <code>remember()</code> 沉淀的事实/偏好/目标/习惯</td><td>~ 50–500 条/用户</td><td>永久（除非用户删或 importance 太低被覆盖）</td></tr>
+        <tr><td>共享</td><td class="mono">Postgres + pgvector<br><code>ai_kb_chunk</code></td><td>营养师维护的私域知识库切片（全用户共享）</td><td>~ 10 万切片</td><td>营养师团队维护</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Agent Tools（十二件套）</h3>
+  <p style="color: var(--muted); font-size: 13px;">按角色分为 3 组：<strong>读</strong>（查数据）· <strong>写</strong>（直接记录，对话即操作）· <strong>记忆 &amp; 检索</strong>。</p>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th style="width:8%">组</th><th>Tool</th><th>入参</th><th>作用</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3" style="background:var(--ground-alt);color:var(--muted);text-align:center;font-weight:600;">读</td>
+          <td class="mono">get_today_summary()</td><td>无</td><td>查用户今日卡路里 / 宏营养 / 饮水 / 运动 / 缺口</td></tr>
+        <tr><td class="mono">get_weight_history(days)</td><td>days: int</td><td>近 N 天体重曲线</td></tr>
+        <tr><td class="mono">search_food(query)</td><td>query: string</td><td>搜内置 + 私人食物库</td></tr>
+
+        <tr><td rowspan="6" style="background:var(--accent-soft);color:var(--accent);text-align:center;font-weight:600;">写</td>
+          <td class="mono">log_food(name, portion_qty, mode, meal_type)</td><td>food_name/份量/份或克/餐次</td><td><strong>对话直接记饮食</strong> · "我中午吃了一个鸡腿汉堡" → Agent 解析后自动 log</td></tr>
+        <tr><td class="mono">log_water(volume_ml, drink_type)</td><td>毫升/饮品类型</td><td><strong>对话直接记饮水</strong> · "刚喝了 500ml 水"</td></tr>
+        <tr><td class="mono">log_weight(weight_kg)</td><td>体重 kg</td><td><strong>对话直接记体重</strong> · "今早称重 62.5 公斤"</td></tr>
+        <tr><td class="mono">log_exercise(type, duration_min)</td><td>运动类型/时长</td><td><strong>对话直接记运动</strong> · "刚跑了 30 分钟"</td></tr>
+        <tr><td class="mono">start_fasting(plan)</td><td>16 / 18 / 14 / 52</td><td><strong>启动轻断食倒计时</strong></td></tr>
+        <tr><td class="mono">end_fasting()</td><td>无</td><td><strong>手动结束当前断食</strong></td></tr>
+
+        <tr><td rowspan="3" style="background:var(--support-soft);color:var(--support);text-align:center;font-weight:600;">记忆</td>
+          <td class="mono">remember(text, type, importance)</td><td>内容/类型/重要度</td><td>主动写入长期记忆 <code>ai_memory</code>；若命中冲突则走确认流程</td></tr>
+        <tr><td class="mono">recall(query)</td><td>query: string</td><td>从长期记忆向量检索 top-5 相关条目</td></tr>
+        <tr><td class="mono">search_knowledge_base(query)</td><td>query: string</td><td>从私域知识库检索 top-3 切片</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">"对话直接记录"实现要点</span>
+    <ul>
+      <li>Agent 解析用户口语 → 拆分成多个 tool calls（一句话可能同时触发 <code>log_food</code> + <code>log_water</code>）</li>
+      <li>不确定的信息 Agent 会追问：<em>"是一整个还是半个？"</em> 而不是硬猜</li>
+      <li>写操作**默认二次确认** —— Agent 生成结构化卡片（食物名 + 份量 + 卡路里预估）先给用户确认，用户点"记下"才落库</li>
+      <li>写完立即回读并展示："已记 · 今日剩余 500 kcal"</li>
+    </ul>
+  </div>
+
+  <h3>一次对话的完整数据流</h3>
+  <ol class="flow">
+    <li><b>入参 · 用户新消息</b><div class="aside"><code>POST /api/ai/msg { conv_id, content }</code>；后端拿到 <code>user_id</code>、<code>persona_code</code></div></li>
+    <li><b>预热上下文</b><div class="aside">Redis 拉最近 20 轮短期上下文；如缺失则从 <code>ai_msg</code> 补齐并写回 Redis</div></li>
+    <li><b>自动召回长期记忆</b><div class="aside">对新消息做 embedding → pgvector 从 <code>ai_memory WHERE user_id = ?</code> 检索 top-5（余弦距离），按 importance 加权</div></li>
+    <li><b>拼装 System Prompt</b><div class="aside">人设模板 + 检索到的记忆条目 + 用户资料摘要（性别/目标/BMR）</div></li>
+    <li><b>LangGraph Agent 推理</b><div class="aside">DeepSeek Chat function-calling · Agent 可能调 0-N 个 tool；每调一次 tool 拿到结果继续推理，直到给出最终答复</div></li>
+    <li><b>流式返回</b><div class="aside">SSE 边生成边推给前端；每个 token 落屏</div></li>
+    <li><b>后置沉淀</b><div class="aside">Agent 在过程中如果调了 <code>remember()</code>，写入 <code>ai_memory</code> + 向量；同时把本轮消息 append 到 <code>ai_msg</code> + Redis 短期上下文</div></li>
+    <li><b>用量记账</b><div class="aside"><code>ai_usage</code> 递增（token/费用），触及 quota 时返回 402 提示（付费墙上线后）</div></li>
+  </ol>
+
+  <h3>NestJS 集成骨架</h3>
+  <pre><span class="c">// AiAgentService（示意）</span>
+<span class="k">import</span> { <span class="n">Injectable</span> } <span class="k">from</span> <span class="s">'@nestjs/common'</span>;
+<span class="k">import</span> { <span class="n">ChatOpenAI</span> } <span class="k">from</span> <span class="s">'@langchain/openai'</span>;
+<span class="k">import</span> { <span class="n">StateGraph</span>, <span class="n">MessagesAnnotation</span> } <span class="k">from</span> <span class="s">'@langchain/langgraph'</span>;
+<span class="k">import</span> { <span class="n">ToolNode</span> } <span class="k">from</span> <span class="s">'@langchain/langgraph/prebuilt'</span>;
+
+@<span class="t">Injectable</span>()
+<span class="k">export class</span> <span class="t">AiAgentService</span> {
+  <span class="k">constructor</span>(
+    <span class="k">private</span> memory: <span class="t">MemoryService</span>,      <span class="c">// 长期记忆读写</span>
+    <span class="k">private</span> kb: <span class="t">KnowledgeBaseService</span>,   <span class="c">// 知识库检索</span>
+    <span class="k">private</span> tools: <span class="t">AgentToolsService</span>,    <span class="c">// 6 个 Tools</span>
+  ) {}
+
+  <span class="k">buildAgent</span>(userId: <span class="t">string</span>, personaCode: <span class="t">string</span>) {
+    <span class="k">const</span> llm = <span class="k">new</span> <span class="t">ChatOpenAI</span>({
+      configuration: { baseURL: <span class="s">'https://api.deepseek.com'</span> },
+      apiKey: process.env.DEEPSEEK_KEY,
+      model: <span class="s">'deepseek-chat'</span>,
+      streaming: <span class="k">true</span>,
+    }).<span class="n">bindTools</span>(<span class="k">this</span>.tools.<span class="n">forUser</span>(userId));
+
+    <span class="k">const</span> graph = <span class="k">new</span> <span class="t">StateGraph</span>(<span class="n">MessagesAnnotation</span>)
+      .<span class="n">addNode</span>(<span class="s">'agent'</span>, <span class="k">async</span> (s) =&gt; ({ messages: [<span class="k">await</span> llm.<span class="n">invoke</span>(s.messages)] }))
+      .<span class="n">addNode</span>(<span class="s">'tools'</span>, <span class="k">new</span> <span class="t">ToolNode</span>(<span class="k">this</span>.tools.list()))
+      .<span class="n">addEdge</span>(<span class="s">'__start__'</span>, <span class="s">'agent'</span>)
+      .<span class="n">addConditionalEdges</span>(<span class="s">'agent'</span>, shouldContinue)
+      .<span class="n">addEdge</span>(<span class="s">'tools'</span>, <span class="s">'agent'</span>);
+    <span class="k">return</span> graph.<span class="n">compile</span>();
+  }
+
+  <span class="k">async</span>* <span class="n">chat</span>(userId: <span class="t">string</span>, convId: <span class="t">string</span>, content: <span class="t">string</span>) {
+    <span class="k">const</span> shortCtx = <span class="k">await</span> <span class="k">this</span>.<span class="n">getShortContext</span>(convId);
+    <span class="k">const</span> memories = <span class="k">await</span> <span class="k">this</span>.memory.<span class="n">recall</span>(userId, content, 5);
+    <span class="k">const</span> system = <span class="k">this</span>.<span class="n">buildSystemPrompt</span>(userId, memories);
+    <span class="k">const</span> agent = <span class="k">this</span>.<span class="n">buildAgent</span>(userId, personaCode);
+
+    <span class="k">for await</span> (<span class="k">const</span> chunk <span class="k">of</span> agent.<span class="n">stream</span>({
+      messages: [system, ...shortCtx, { role: <span class="s">'user'</span>, content }],
+    })) <span class="k">yield</span> chunk;
+  }
+}</pre>
+
+  <h3>记忆写入策略</h3>
+  <div class="callout decision">
+    <span class="tag">写入 · 三种路径</span>
+    <ul>
+      <li><strong>路径 A · 新增无冲突</strong> —— Agent 调 <code>remember()</code> → 向量化 → 无相似条目 → 直接写入 <code>ai_memory</code>，<code>ai_memory_log</code> 记一条 <code>op_type=C · op_status=A</code></li>
+      <li><strong>路径 B · 高度相似（&gt; 0.92）</strong> —— 视为重复，不新建，只更新 <code>hit_count</code>；<code>ai_memory_log</code> 不记</li>
+      <li><strong>路径 C · 冲突覆盖（0.75–0.92）</strong> —— <strong>发起"变更确认"</strong>：写入 <code>ai_memory_log</code>（<code>op_type=U · op_status=P 待确认</code>）+ 前端弹变更卡片：<em>"你之前说过'目标 62kg'，现在改成'目标 60kg'，确认更新吗？"</em></li>
+    </ul>
+  </div>
+
+  <div class="callout decision">
+    <span class="tag">用户确认闭环</span>
+    <ul>
+      <li><strong>用户点"确认"</strong> → 后端把 <code>ai_memory</code> 当前行内容写入 <code>ai_memory_log</code>（op_type=U 的 old_* 字段）→ 更新 <code>ai_memory</code> 内容 · <code>version + 1</code> · <code>ai_memory_log.op_status = A</code></li>
+      <li><strong>用户点"拒绝"</strong> → <code>ai_memory</code> 不变；<code>ai_memory_log.op_status = R</code>；Agent 下次尝试相同更新前先 <code>recall()</code> 会看到"用户拒绝过此更新"，避免重复骚扰</li>
+      <li><strong>用户点"编辑后确认"</strong> → 用用户改后的内容覆盖 <code>new_content</code>，然后同"确认"流程</li>
+      <li><strong>确认超时</strong> · <code>op_status=P</code> 状态 7 天未响应自动 <code>R</code>（避免无限挂着）</li>
+    </ul>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">重要度评级 · Agent 自评</span>
+    <ul>
+      <li><strong>9–10</strong>：健康状况、过敏、慢病诊断（不吃海鲜 / 糖尿病）</li>
+      <li><strong>7–8</strong>：目标（3 个月减 5kg）、身份特征（女 · 30 岁 · 产后）</li>
+      <li><strong>5–6</strong>：饮食偏好（不吃香菜 · 爱吃辣）、生活习惯（每天 7 点起）</li>
+      <li><strong>3–4</strong>：一次性提及（今天心情不好）—— 30 天未召回自动软删</li>
+      <li><strong>1–2</strong>：闲聊内容 —— 通常 Agent 不会 remember()</li>
+    </ul>
+  </div>
+
+  <h3>记忆管理页（V1 P1 必做，合规刚需）</h3>
+  <p>用户能看到 AI 记住的关于自己的一切事情，能改能删，是隐私合规的硬要求。</p>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>页面区块</th><th>数据来源</th><th>用户可做</th></tr></thead>
+      <tbody>
+        <tr><td>记忆列表（按类型分组：事实/偏好/目标/习惯）</td><td class="mono">ai_memory WHERE user_id = ? AND status = 'A'</td><td>查看 / 搜索 / 按重要度排序</td></tr>
+        <tr><td>待确认变更（Badge 提醒）</td><td class="mono">ai_memory_log WHERE op_status = 'P'</td><td>确认 / 拒绝 / 编辑后确认</td></tr>
+        <tr><td>单条记忆详情</td><td class="mono">ai_memory 单行 + ai_memory_log 变更历史</td><td>手动编辑 / 手动删除 / 查看历史版本</td></tr>
+        <tr><td>已过时（灰色区）</td><td class="mono">ai_memory WHERE status = 'O'</td><td>查看 / 恢复 / 彻底删除</td></tr>
+        <tr><td>一键清空</td><td>全表</td><td>标记 <code>del_flag='Y'</code>，7 天后物理删除</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">对应 API 端点（新增）</span>
+    <ul>
+      <li><code>GET  /api/ai/memory</code> — 列表（分组、分页）</li>
+      <li><code>GET  /api/ai/memory/{id}</code> — 详情含变更历史</li>
+      <li><code>PUT  /api/ai/memory/{id}</code> — 用户手动编辑</li>
+      <li><code>DELETE /api/ai/memory/{id}</code> — 单条删</li>
+      <li><code>GET  /api/ai/memory/pending</code> — 待确认变更列表</li>
+      <li><code>POST /api/ai/memory/pending/{log_id}/confirm</code> — 确认（可带 override_content）</li>
+      <li><code>POST /api/ai/memory/pending/{log_id}/reject</code> — 拒绝</li>
+      <li><code>DELETE /api/ai/memory/all</code> — 一键清空</li>
+    </ul>
+  </div>
+
+  <h3>知识库分层</h3>
+  <div class="callout note">
+    <span class="tag">私域知识库来源</span>
+    <ul>
+      <li>《中国居民膳食指南（2022）》 · 《中国食物成分表（第 6 版）》 · 《中国居民膳食营养素参考摄入量（2023）》</li>
+      <li>营养师团队原创：低 GI / 生酮 / 低 FODMAP / 妊娠期 / 糖尿病 等专项文档</li>
+      <li>切片策略：Markdown 按二级标题切；PDF 按语义分块（500-800 tokens/块，overlap 100）</li>
+      <li>用户看不到 <code>ai_kb_chunk</code>，Agent 通过 <code>search_knowledge_base()</code> 检索后引用</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s19">
+  <h2><span class="num">19</span>下一步 / 待议</h2>
+  <div class="rule"></div>
+
+  <div class="callout note">
+    <span class="tag">下一份 Artifact</span>
+    <p><strong>《UI Spec for Google Stitch》</strong> —— 页面清单、信息架构、组件目录、状态、交互流程、视觉方向的完整需求描述，可以直接复制粘贴到 Google Stitch 生成视觉稿。</p>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">仍待你确认</span>
+    <ul>
+      <li>Slogan 三选一</li>
+      <li>域名候选（如 <code>qianka.app</code> / <code>kaily.day</code> / <code>1000kcal.cn</code> / 你已有域名）</li>
+      <li>服务器硬件规格（CPU / 内存 / 磁盘 / 是否有独立 IP）</li>
+      <li>你的备案信息（备案号、备案主体名）</li>
+      <li>QQ 邮箱账号 + 授权码</li>
+      <li>DeepSeek Chat + Vision Key、阿里云百炼 DashScope Key（embedding + qwen 备胎）</li>
+      <li>营养师团队何时开始产出私域知识库文档（V1 若来不及先用官方 3-5 篇指南占位）</li>
+      <li>本文档 DDL 有无需要增删的字段</li>
+    </ul>
+  </div>
+
+  <div class="callout decision">
+    <span class="tag">v0.3 已锁定（本轮新增）</span>
+    <ul>
+      <li>✅ 食物库分层建库方案（2000 官方 + 200 菜肴 + 200 品牌）</li>
+      <li>✅ Agent Tools 从 6 扩到 12，加 log_food / water / weight / exercise / start_fasting / end_fasting</li>
+      <li>✅ 记忆版本化：<code>ai_memory.version</code> + <code>ai_memory_log</code> 变更历史表</li>
+      <li>✅ 记忆更新用户确认闭环（三种路径：新增/相似/冲突）</li>
+      <li>✅ 记忆管理页归入 V1 P1（含 8 个新 API 端点）</li>
+    </ul>
+  </div>
+
+  <div class="callout decision">
+    <span class="tag">V2 起再落地的表（不列 DDL）</span>
+    <ul>
+      <li><code>recipe_std</code> 内置食谱库、<code>recipe_step</code> 步骤</li>
+      <li><code>social_follow</code> 关注关系、<code>social_post</code> 动态、<code>social_like</code> 点赞</li>
+      <li><code>notify_center</code> 站内通知</li>
+      <li><code>report_monthly</code> 月度复盘报告快照</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer">千卡日记 · Architecture &amp; Schema v0.2 · 2026-07-09 · 待评审</div>
+
+</div>
+</body>
+</html>

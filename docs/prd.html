@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>千卡日记 · PRD v0.1</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --ground: #FAF9F5;
+  --ground-alt: #F3F0E7;
+  --ground-sunk: #EFEBDE;
+  --ink: #1D1917;
+  --muted: #5C5852;
+  --faint: #8A857D;
+  --rule: #E3E0D6;
+  --accent: #C64B2A;
+  --accent-soft: #F0E4D5;
+  --support: #6C7F3A;
+  --support-soft: #E9EBD8;
+  --warn: #B3781A;
+  --warn-soft: #F5E9CE;
+  --danger: #A83B2F;
+  --font-cn: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+    --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+    --accent: #E86A44; --accent-soft: #2A211A;
+    --support: #A2B770; --support-soft: #23281A;
+    --warn: #D9A143; --warn-soft: #2B2416;
+    --danger: #E27563;
+  }
+}
+:root[data-theme="light"] {
+  --ground: #FAF9F5; --ground-alt: #F3F0E7; --ground-sunk: #EFEBDE;
+  --ink: #1D1917; --muted: #5C5852; --faint: #8A857D; --rule: #E3E0D6;
+  --accent: #C64B2A; --accent-soft: #F0E4D5;
+  --support: #6C7F3A; --support-soft: #E9EBD8;
+  --warn: #B3781A; --warn-soft: #F5E9CE;
+  --danger: #A83B2F;
+}
+:root[data-theme="dark"] {
+  --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+  --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+  --accent: #E86A44; --accent-soft: #2A211A;
+  --support: #A2B770; --support-soft: #23281A;
+  --warn: #D9A143; --warn-soft: #2B2416;
+  --danger: #E27563;
+}
+body { background: var(--ground); color: var(--ink); font-family: var(--font-cn); font-size: 15px; line-height: 1.72; margin: 0; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 800px; margin: 0 auto; padding: 44px 24px 120px; }
+
+.masthead { padding-bottom: 28px; border-bottom: 1px solid var(--rule); margin-bottom: 40px; }
+.masthead .brand { font-size: 11px; color: var(--faint); letter-spacing: 0.28em; margin-bottom: 14px; text-transform: uppercase; }
+.masthead .brand .dot { color: var(--accent); margin: 0 6px; }
+.masthead h1 { font-weight: 700; font-size: 40px; margin: 0 0 10px; letter-spacing: -0.015em; line-height: 1.15; text-wrap: balance; }
+.masthead .subtitle { color: var(--muted); font-size: 15.5px; margin: 0 0 20px; max-width: 620px; line-height: 1.65; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.meta span::before { content: '·'; margin-right: 28px; color: var(--rule); }
+.meta span:first-child::before { content: none; margin-right: 0; }
+.meta b { color: var(--ink); font-weight: 500; margin-left: 6px; }
+
+.toc { background: var(--ground-alt); border-radius: 10px; padding: 22px 26px; margin: 36px 0 48px; font-size: 14px; }
+.toc h4 { margin: 0 0 14px; font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; }
+.toc ol { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 32px; }
+.toc li { padding: 6px 0; break-inside: avoid; }
+.toc .n { font-family: var(--font-mono); color: var(--faint); font-size: 12px; margin-right: 12px; font-variant-numeric: tabular-nums; }
+.toc a { color: var(--ink); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+
+section { margin-top: 60px; scroll-margin-top: 24px; }
+section > h2 { font-size: 26px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; text-wrap: balance; }
+section > h2 .num { font-family: var(--font-mono); font-size: 14px; color: var(--accent); font-weight: 500; margin-right: 14px; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+section > .desc { color: var(--muted); font-size: 14.5px; margin: 6px 0 22px; max-width: 640px; }
+section > .rule { height: 1px; background: var(--rule); margin: 0 0 28px; }
+
+h3 { font-size: 17px; font-weight: 600; margin: 32px 0 10px; letter-spacing: -0.005em; }
+h4 { font-size: 13px; font-weight: 600; margin: 22px 0 8px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+p { margin: 0 0 12px; }
+ul, ol { margin: 8px 0 16px; padding-left: 22px; }
+li { margin: 5px 0; }
+
+strong { color: var(--ink); font-weight: 600; }
+
+code { font-family: var(--font-mono); font-size: 0.86em; background: var(--ground-alt); padding: 1px 6px; border-radius: 4px; color: var(--accent); border: 1px solid var(--rule); }
+
+.callout { border-radius: 10px; padding: 18px 22px; margin: 22px 0; font-size: 14px; line-height: 1.68; border-left: 3px solid; }
+.callout .tag { display: block; font-size: 11px; letter-spacing: 0.2em; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; }
+.callout p:last-child { margin-bottom: 0; }
+.callout ul { margin: 4px 0 0; padding-left: 20px; }
+.callout ul li { margin: 6px 0; }
+.callout.decision { background: var(--accent-soft); border-color: var(--accent); }
+.callout.decision .tag { color: var(--accent); }
+.callout.risk { background: var(--warn-soft); border-color: var(--warn); }
+.callout.risk .tag { color: var(--warn); }
+.callout.note { background: var(--support-soft); border-color: var(--support); }
+.callout.note .tag { color: var(--support); }
+.callout.blocked { background: var(--ground-alt); border-color: var(--danger); }
+.callout.blocked .tag { color: var(--danger); }
+
+.tblwrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+th, td { padding: 11px 14px; text-align: left; vertical-align: top; }
+thead th { background: var(--ground-alt); font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; border-bottom: 1px solid var(--rule); text-transform: uppercase; }
+tbody tr + tr td { border-top: 1px solid var(--rule); }
+td.num { text-align: right; font-family: var(--font-mono); }
+
+.badge { display: inline-block; font-size: 10.5px; padding: 3px 9px; border-radius: 999px; font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; }
+.badge.p0 { background: var(--accent); color: #fff; }
+.badge.p1 { background: var(--accent-soft); color: var(--accent); }
+.badge.p2 { background: var(--ground-alt); color: var(--faint); border: 1px solid var(--rule); }
+.badge.new { background: var(--support-soft); color: var(--support); }
+
+.field-list { display: grid; grid-template-columns: 132px 1fr; gap: 12px 24px; font-size: 14px; margin: 14px 0 20px; }
+.field-list dt { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; padding-top: 2px; text-transform: uppercase; }
+.field-list dd { margin: 0; line-height: 1.62; }
+
+.flow { list-style: none; padding: 0; counter-reset: flow; margin: 16px 0 24px; }
+.flow li { counter-increment: flow; position: relative; padding: 14px 20px 14px 56px; background: var(--ground-alt); border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
+.flow li::before { content: counter(flow, decimal-leading-zero); position: absolute; left: 20px; top: 14px; font-family: var(--font-mono); color: var(--accent); font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }
+.flow li b { display: block; margin-bottom: 3px; font-weight: 600; }
+.flow li .aside { color: var(--faint); font-size: 12.5px; margin-top: 4px; line-height: 1.55; }
+
+.entity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 12px 0 20px; }
+.entity { border: 1px solid var(--rule); border-radius: 6px; padding: 11px 14px; font-size: 13px; background: var(--ground); }
+.entity b { display: block; color: var(--ink); font-family: var(--font-mono); font-size: 12.5px; margin-bottom: 3px; }
+.entity span { color: var(--faint); font-size: 12px; line-height: 1.5; }
+.entity.new { background: var(--support-soft); border-color: var(--support); }
+.entity.new b { color: var(--support); }
+
+.formula { background: var(--ground-alt); border-radius: 6px; padding: 12px 16px; font-family: var(--font-mono); font-size: 13px; margin: 8px 0 12px; overflow-x: auto; line-height: 1.55; }
+.formula .label { display: inline-block; min-width: 52px; color: var(--muted); }
+
+.checklist { list-style: none; padding: 0; margin: 12px 0 20px; }
+.checklist li { padding: 7px 0 7px 28px; position: relative; font-size: 14px; }
+.checklist li::before { content: ''; position: absolute; left: 0; top: 12px; width: 14px; height: 14px; border: 1.5px solid var(--rule); border-radius: 3px; background: var(--ground); }
+
+.compat-note { padding: 12px 16px; margin: 10px 0 16px; background: var(--ground-sunk); border-radius: 6px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.compat-note b { color: var(--ink); font-weight: 500; }
+
+.footer { margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 12px; text-align: center; letter-spacing: 0.1em; text-transform: uppercase; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+@media (max-width: 620px) {
+  .wrap { padding: 32px 20px 80px; }
+  .masthead h1 { font-size: 30px; }
+  section > h2 { font-size: 21px; }
+  .toc ol { columns: 1; }
+  .field-list { grid-template-columns: 1fr; gap: 2px 0; }
+  .field-list dt { margin-top: 12px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brand">千卡日记 <span class="dot">·</span> Qianka Diary</div>
+  <h1>产品需求文档 · V0.1</h1>
+  <p class="subtitle">面向大众的开放注册饮食日记 PWA。本文档沉淀了产品定位、V1 功能范围、关键业务规则、平台约束与里程碑，作为架构方案与 UI Spec 的锚点。</p>
+  <div class="meta">
+    <span>版本<b>0.1</b></span>
+    <span>状态<b>待评审</b></span>
+    <span>更新<b>2026-07-09</b></span>
+    <span>作者<b>Owner + Claude</b></span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h4>目录</h4>
+  <ol>
+    <li><span class="n">01</span><a href="#s1">产品概述</a></li>
+    <li><span class="n">02</span><a href="#s2">目标用户与价值</a></li>
+    <li><span class="n">03</span><a href="#s3">关键决策记录</a></li>
+    <li><span class="n">04</span><a href="#s4">V1 功能范围</a></li>
+    <li><span class="n">05</span><a href="#s5">核心用户流程</a></li>
+    <li><span class="n">06</span><a href="#s6">数据模型概览</a></li>
+    <li><span class="n">07</span><a href="#s7">关键业务规则</a></li>
+    <li><span class="n">08</span><a href="#s8">平台约束与退路</a></li>
+    <li><span class="n">09</span><a href="#s9">非功能需求</a></li>
+    <li><span class="n">10</span><a href="#s10">V1 里程碑与验收</a></li>
+    <li><span class="n">11</span><a href="#s11">风险与待议</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2><span class="num">01</span>产品概述</h2>
+  <p class="desc">是什么，叫什么，怎么装。</p>
+  <div class="rule"></div>
+  <dl class="field-list">
+    <dt>产品名称</dt><dd>千卡日记（英文 Kaily · 备选 KcalDiary）</dd>
+    <dt>形态</dt><dd>H5 PWA（HTTPS）· 加到 iOS/Android 桌面即"轻应用"，<strong>不上架应用商店</strong></dd>
+    <dt>Slogan 候选</dt><dd>"吃点什么，记一笔" / "每一口，都值得被认真看见" / "把今天的胃口，留个数字"（三选一，未定）</dd>
+    <dt>目标载体</dt><dd>iOS 15+ Safari · Android 10+ Chrome · 移动优先，桌面端可用不重点优化</dd>
+    <dt>阶段定位</dt><dd>开放注册 MVP —— V1 打通核心记录闭环，暂不做社交、UGC 公开食物库、微信登录</dd>
+    <dt>付费策略</dt><dd>V1 全免费，数据模型预留付费墙字段（AI 拍照识别、AI 搭子对话未来上会员）</dd>
+  </dl>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span>目标用户与价值</h2>
+  <p class="desc">给谁做，给他们解决什么。</p>
+  <div class="rule"></div>
+
+  <h3>用户画像</h3>
+  <ul>
+    <li>18–45 岁，在意饮食但对薄荷健康 / MyFitnessPal 觉得"太重、太贵、太麻烦"</li>
+    <li>需求分布：减重（约 55%）· 健身增肌（约 25%）· 单纯规律记录（约 20%）</li>
+    <li>使用场景：一餐结束后 30 秒内快速记录；每天早晨或睡前看昨日总结</li>
+  </ul>
+
+  <h3>核心价值主张</h3>
+  <ol>
+    <li><strong>三秒记一餐</strong> —— 拍照识别 / 常用食物一键复用 / 内置库快速搜 / 外卖订单截图解析</li>
+    <li><strong>一屏看得懂</strong> —— 今日卡路里缺口、宏营养分布、饮水、体重同屏</li>
+    <li><strong>陪你坚持</strong> —— AI 搭子对话陪伴，可选人设，从毒舌教练到温柔知心</li>
+    <li><strong>数据是你的</strong> —— 可导出 JSON，无广告，不做用户画像转卖</li>
+  </ol>
+
+  <h3>与市面同类的差异化</h3>
+  <ul>
+    <li>PWA 加桌面而非应用商店 —— 无审核、无更新等待、无预留量</li>
+    <li>粒度可选 —— 严格时切克，日常时用份，同一 App 满足两种心情</li>
+    <li>AI 拍照 + AI 搭子 下沉到 V1 免费额度 —— 主流工具多是付费墙功能</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span>关键决策记录</h2>
+  <p class="desc">本次讨论沉淀下来的定案，后续所有工作都以此为准。</p>
+  <div class="rule"></div>
+
+  <div class="callout decision">
+    <span class="tag">技术决策</span>
+    <ul>
+      <li>前端：Vue 3 + Vite + Pinia + vue-router + vite-plugin-pwa + Dexie（IndexedDB 离线缓存）</li>
+      <li>后端：Node.js（Fastify）+ Prisma ORM + PostgreSQL 15+ + Redis（会话/限流）</li>
+      <li>部署：Docker Compose 单机部署到用户内网 Linux 服务器</li>
+      <li>域名：用户提供已备案的 HTTPS 域名（iOS PWA 硬性要求）</li>
+      <li>AI 视觉：DeepSeek V4 Vision（若通道不稳，切阿里 <code>qwen-vl-plus</code>）· 通过 <code>VisionProvider</code> 适配器接入</li>
+      <li>AI 对话：DeepSeek Chat（推理模型）+ 自建饮食营养 RAG 知识库</li>
+      <li>图片存储：MVP 用本地 Docker 卷 <code>/uploads</code>，量大再迁 OSS</li>
+      <li>邮件推送：阿里云邮件推送（用户注册验证 + 密码找回）</li>
+    </ul>
+  </div>
+
+  <div class="callout decision">
+    <span class="tag">产品决策</span>
+    <ul>
+      <li>用户体系：完整注册（邮箱 + 密码 + 邮箱验证）· 无手机号 · 无第三方登录</li>
+      <li>粒度：份 / 克双档，用户按需切换，默认份量</li>
+      <li>目标人群：通用饮食管理，不偏减脂或增肌某一场景</li>
+      <li>付费策略：V1 全免费，数据库预留 <code>subscription</code> 字段与 <code>ai_quota</code> 记次数字段</li>
+      <li>Apple Health：<strong>PWA 无法直接读 HealthKit</strong>；退路是 XML 一次性导入 + iOS Shortcuts 自动化模板</li>
+    </ul>
+  </div>
+
+  <div class="callout decision">
+    <span class="tag">合规决策</span>
+    <ul>
+      <li>服务器在大陆，域名已备案 → 可公开推广</li>
+      <li>必备页面：用户协议、隐私政策、Cookie 说明、备案信息</li>
+      <li>用户可主动删除账号，历史记录 30 天内彻底物理删除</li>
+      <li>AI 对话内容 + 拍照原图默认加密存储 30 天，用户可清除</li>
+    </ul>
+  </div>
+
+  <div class="callout blocked">
+    <span class="tag">明确不做（V1）</span>
+    <ul>
+      <li>iOS Widget / 灵动岛 / Apple Watch / ARKit 分量测距（需原生 App，PWA 无解）</li>
+      <li>Apple HealthKit 双向同步（同上）</li>
+      <li>条码扫描（iOS Safari 不支持 BarcodeDetector）</li>
+      <li>智能体脂秤蓝牙同步（iOS Safari 不支持 Web Bluetooth）</li>
+      <li>社交、评论、动态、公开 UGC 食物库</li>
+      <li>微信 / QQ / Apple 第三方登录</li>
+      <li>饮食推荐算法 / 全套食谱推荐（作为 V1.5+ 内容运营需求）</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span>V1 功能范围</h2>
+  <p class="desc">优先级：P0 = 必须交付；P1 = 应该交付；P2 = 力所能及。<span class="badge new" style="margin-left:8px;">NEW</span> 表示本轮新增。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead>
+        <tr><th style="width: 20%">模块</th><th>功能</th><th style="width: 12%">优先级</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="4">账号</td><td>邮箱注册 · 邮箱验证激活</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>邮箱 + 密码登录 · JWT + Refresh</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>忘记密码（邮箱重置链接）</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>修改密码 · 删除账号（含物理清除）</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td rowspan="6">饮食</td><td>三餐 + 加餐 记录，含时间戳</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>份 / 克 双粒度切换</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>内置中式食物库（V1 100+ 条，含卡路里 + 三大宏 + 常见微量元素）</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>用户私人食物库（自建、自用、不公开）</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>常用食物快速复用（最近 20 条）</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>AI 拍照识别食物（候选列表 + 用户确认）</td><td><span class="badge p0">P0</span></td></tr>
+
+        <tr><td>外卖 <span class="badge new">NEW</span></td><td>订单截图上传 → OCR + LLM 解析 → 一键入库</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td>饮水</td><td>快速 +200 / +250 / +500 ml · 自定义容量 · 饮品类型折算</td><td><span class="badge p0">P0</span></td></tr>
+
+        <tr><td rowspan="2">运动</td><td>常见类型库（跑步 / 骑车 / 力量 / 游泳 / HIIT 等 30+ 条）· 时长 · MET 估算</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>自定义运动条目</td><td><span class="badge p2">P2</span></td></tr>
+
+        <tr><td rowspan="3">体测</td><td>体重记录</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>5 维围度（腰 / 臀 / 胸 / 腿 / 臂）</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>体脂率（手动录入）</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td rowspan="2">目标</td><td>BMR / TDEE 自动计算 + 卡路里目标推荐</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>用户手动覆盖目标 / 宏比 / 水量</td><td><span class="badge p0">P0</span></td></tr>
+
+        <tr><td rowspan="4">统计</td><td>今日总览：卡路里缺口环 · 宏营养素柱状</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>周 / 月 卡路里趋势线</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>体重曲线（30 / 90 / 365 天）</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>日历 + 月历回看视图 <span class="badge new">NEW</span></td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td>轻断食 <span class="badge new">NEW</span></td><td>16:8 / 18:6 计时器 · 倒计时通知 · 与体重曲线联动</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td rowspan="2">AI 搭子 <span class="badge new">NEW</span></td><td>DeepSeek + 私域 RAG 对话 · 4 种预置人设</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>一句话记录（文字打字 / 语音识别，饮食/水/运动/体重）</td><td><span class="badge p2">P2</span></td></tr>
+
+        <tr><td rowspan="2">Health 桥 <span class="badge new">NEW</span></td><td>Apple Health XML 一次性导入（体重、身高、步数、心率历史）</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>iOS Shortcuts 模板（每日自动上传体重 / 步数）</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td>提醒</td><td>PWA 本地通知 · 早/午/晚三档 · 时间可改 · 静默时段</td><td><span class="badge p1">P1</span></td></tr>
+
+        <tr><td rowspan="2">数据</td><td>JSON 导出（全量数据）</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>JSON 导入</td><td><span class="badge p2">P2</span></td></tr>
+
+        <tr><td>合规</td><td>用户协议 · 隐私政策 · 备案信息 · Cookie 说明</td><td><span class="badge p0">P0</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span>核心用户流程</h2>
+  <p class="desc">五条走完就能上路的路径。</p>
+  <div class="rule"></div>
+
+  <h3>流程 A · 首次上手</h3>
+  <ol class="flow">
+    <li><b>着陆页 → 注册</b><div class="aside">填邮箱 + 密码 → 收激活邮件 → 点激活链接</div></li>
+    <li><b>身体信息</b><div class="aside">性别 / 出生年 / 身高 / 体重 / 活动等级（5 档滑块）</div></li>
+    <li><b>目标推荐</b><div class="aside">系统按 TDEE 推荐每日卡路里、宏比、饮水；用户可覆盖</div></li>
+    <li><b>提醒设置</b><div class="aside">默认早 08:00 / 午 12:00 / 晚 18:30，可跳过</div></li>
+    <li><b>进入首页</b><div class="aside">看到今日 0 kcal / 目标 X kcal，出现"记第一餐"引导</div></li>
+  </ol>
+
+  <h3>流程 B · 日常记一餐</h3>
+  <ol class="flow">
+    <li><b>点底部记录按钮</b><div class="aside">选餐次（默认按时间推断早/午/晚/加餐）</div></li>
+    <li><b>选食物</b><div class="aside">四个来源：常用 / 搜内置库 / 私人库 / 拍照识别 / 外卖截图</div></li>
+    <li><b>确认份量</b><div class="aside">默认份，可切克；实时看卡路里 + 宏营养</div></li>
+    <li><b>保存</b><div class="aside">回到首页，今日环 + 缺口立即更新</div></li>
+  </ol>
+
+  <h3>流程 C · 拍照识别</h3>
+  <ol class="flow">
+    <li><b>拍照或从相册选</b><div class="aside">前端压缩至 1024 px 短边</div></li>
+    <li><b>上传后端 → VisionProvider</b><div class="aside">默认 DeepSeek V4 Vision，返回结构化候选列表 + 置信度</div></li>
+    <li><b>用户确认候选</b><div class="aside">每个候选带估算份量，用户可增删改</div></li>
+    <li><b>保存为一餐</b><div class="aside">原图挂在该餐次，可回看</div></li>
+  </ol>
+
+  <h3>流程 D · Apple Health 数据接入</h3>
+  <ol class="flow">
+    <li><b>路径 1：一次性历史导入</b><div class="aside">iOS 系统健康 App → 头像 → 导出所有健康数据 → 用户在千卡日记选 ZIP 上传 → 后端解析 <code>export.xml</code></div></li>
+    <li><b>路径 2：Shortcuts 自动化</b><div class="aside">千卡日记提供 iCloud 分享的 Shortcut 模板，用户装到 iOS 快捷指令 App，配 Automation 每日 8:00 自动读体重 / 步数 POST 到 API</div></li>
+    <li><b>后端处理</b><div class="aside">解析后写入 <code>WeightEntry</code> / <code>StepsEntry</code>，标记来源 <code>source=apple_health</code></div></li>
+  </ol>
+
+  <h3>流程 E · AI 搭子对话</h3>
+  <ol class="flow">
+    <li><b>选人设</b><div class="aside">4 种预置：温柔知心 / 毒舌教练 / 闺蜜风 / 专业营养师；可自定义头像与聊天背景</div></li>
+    <li><b>提问</b><div class="aside">用户输入问题（如"这个鸡腿汉堡能吃吗"）</div></li>
+    <li><b>后端 RAG</b><div class="aside">先查私域营养库找相关条目 → 拼进 prompt → DeepSeek 出答复</div></li>
+    <li><b>展示 + 附免责</b><div class="aside">每条对话底部固定文案："AI 内容仅供参考，不构成医疗建议"</div></li>
+  </ol>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span>数据模型概览</h2>
+  <p class="desc">仅列实体和职责。字段、索引、外键在《架构 + Schema》文档细化。<span class="badge new">NEW</span> 为本轮新增。</p>
+  <div class="rule"></div>
+  <div class="entity-grid">
+    <div class="entity"><b>User</b><span>账号、身体信息、目标、偏好、subscription 字段（预留付费墙）</span></div>
+    <div class="entity"><b>AuthSession</b><span>JWT refresh token 生命周期</span></div>
+    <div class="entity"><b>EmailVerification</b><span>邮箱验证 / 密码重置流程状态</span></div>
+    <div class="entity"><b>Food</b><span>内置食物库主表（100+ 条中式食物）</span></div>
+    <div class="entity"><b>UserFood</b><span>用户私人食物库</span></div>
+    <div class="entity"><b>MealEntry</b><span>一次就餐 = 多个食物条目</span></div>
+    <div class="entity"><b>MealItem</b><span>MealEntry 下每个食物 + 份量</span></div>
+    <div class="entity"><b>WaterEntry</b><span>饮水记录（含饮品类型折算系数）</span></div>
+    <div class="entity"><b>ExerciseEntry</b><span>运动记录（MET 估算消耗）</span></div>
+    <div class="entity"><b>WeightEntry</b><span>体重时间序列（source 字段区分手动/苹果健康）</span></div>
+    <div class="entity"><b>StepsEntry</b><span>步数时间序列（来自 Apple Health）</span></div>
+    <div class="entity"><b>BodyMeasureEntry</b><span>围度与体脂时间序列</span></div>
+    <div class="entity"><b>GoalConfig</b><span>卡路里、宏比、水量目标 + 版本历史</span></div>
+    <div class="entity"><b>ReminderConfig</b><span>三餐提醒时段 + 静默</span></div>
+    <div class="entity"><b>PhotoUpload</b><span>识别原图元信息 + 存储路径</span></div>
+    <div class="entity new"><b>FastingSession</b><span>轻断食计时（起止 + 方案 + 状态）</span></div>
+    <div class="entity new"><b>AiConversation</b><span>AI 搭子对话（会话 + 消息 + 人设）</span></div>
+    <div class="entity new"><b>AiUsageQuota</b><span>拍照识别 / 搭子对话 用量统计（付费墙基础）</span></div>
+    <div class="entity new"><b>AppleHealthImport</b><span>XML 导入历史记录（幂等去重）</span></div>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span>关键业务规则</h2>
+  <p class="desc">推荐值背后的公式。所有数值用户可覆盖。</p>
+  <div class="rule"></div>
+
+  <h3>BMR · 基础代谢（Mifflin-St Jeor）</h3>
+  <div class="formula"><span class="label">男：</span>BMR = 10 × 体重kg + 6.25 × 身高cm − 5 × 年龄 + 5</div>
+  <div class="formula"><span class="label">女：</span>BMR = 10 × 体重kg + 6.25 × 身高cm − 5 × 年龄 − 161</div>
+
+  <h3>TDEE · 每日总消耗</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>活动等级</th><th>说明</th><th class="num">系数</th></tr></thead>
+      <tbody>
+        <tr><td>静坐</td><td>坐办公室 / 极少运动</td><td class="num">1.20</td></tr>
+        <tr><td>轻度</td><td>每周 1–3 次轻度运动</td><td class="num">1.375</td></tr>
+        <tr><td>中度</td><td>每周 3–5 次中强度运动</td><td class="num">1.55</td></tr>
+        <tr><td>高度</td><td>每周 6–7 次高强度运动</td><td class="num">1.725</td></tr>
+        <tr><td>极重</td><td>体力劳动 / 每日两次训练</td><td class="num">1.90</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>卡路里目标推荐</h3>
+  <ul>
+    <li><strong>维持</strong>：TDEE</li>
+    <li><strong>温和减脂</strong>：TDEE − 300</li>
+    <li><strong>标准减脂</strong>：TDEE − 500（不低于 BMR × 1.1）</li>
+    <li><strong>温和增肌</strong>：TDEE + 250</li>
+  </ul>
+
+  <h3>宏营养素默认比例</h3>
+  <div class="formula">碳水 50% · 蛋白 25% · 脂肪 25%（1 g 碳水 / 蛋白 = 4 kcal，1 g 脂肪 = 9 kcal）</div>
+
+  <h3>饮水推荐</h3>
+  <div class="formula">日饮水 ml = 体重 kg × 30（上限 3500 ml）</div>
+
+  <h3>提醒时段默认</h3>
+  <div class="formula">早餐 08:00 · 午餐 12:00 · 晚餐 18:30 · 静默 22:00 – 07:00</div>
+
+  <h3>饮品类型折算（饮水记录）</h3>
+  <div class="formula">
+    <div>白水 = 1.00 · 茶 = 0.95 · 咖啡（&lt;300 ml/日） = 0.90</div>
+    <div>果汁 = 0.85（含糖负担另计） · 汤 = 0.80 · 奶茶 = 不计入水</div>
+  </div>
+
+  <h3>AI 用量策略（V1 免费，为付费墙留数）</h3>
+  <ul>
+    <li>拍照识别：免费用户每日 5 次，超出提示"未来会员可无限次"</li>
+    <li>AI 搭子对话：免费用户每日 20 条，超出同上</li>
+    <li>外卖截图解析：每日 3 次</li>
+    <li>用量记 <code>AiUsageQuota</code>，付费墙上线时改成"会员无限，普通用户额度不变"</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span>平台约束与退路</h2>
+  <p class="desc">PWA 相对原生 App 的硬约束，以及我们对每一项的应对。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead>
+        <tr><th style="width: 26%">受限能力</th><th style="width: 22%">PWA 可行度</th><th>退路 / 备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Apple HealthKit 读写</td><td><strong>完全不能</strong></td><td>XML 一次性导入 + iOS Shortcuts 自动化模板（体重 / 步数每日同步）</td></tr>
+        <tr><td>iOS Widget</td><td>不能</td><td>V1 不提供，长期看考虑轻量 iOS 桥接 App</td></tr>
+        <tr><td>灵动岛 / Live Activities</td><td>不能</td><td>V1 不提供</td></tr>
+        <tr><td>Apple Watch 版</td><td>不能</td><td>V1 不提供</td></tr>
+        <tr><td>ARKit 分量测距</td><td>不能</td><td>用份量估算兜底，AI 拍照识别提示"建议俯拍完整餐具"</td></tr>
+        <tr><td>条码扫描</td><td>iOS Safari 不支持 BarcodeDetector</td><td>Android Chrome 可用（能力检测降级）；V1 不做</td></tr>
+        <tr><td>Web Bluetooth（蓝牙体脂秤）</td><td>iOS Safari 不支持</td><td>手动录入体脂率</td></tr>
+        <tr><td>本地通知</td><td>受限但可用</td><td>需 iOS 16.4+ 且加桌面后；早期系统用户拿不到</td></tr>
+        <tr><td>语音识别</td><td>可用但差</td><td>Web Speech API 精度弱，V1 作为 P2 尝试</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="compat-note">
+    <b>决策解释</b>：这些"不能做"是 iOS/浏览器平台约束，不是我们能力不足。若未来 iOS 用户对这些能力呼声高，可评估追加一个极小的 iOS 原生桥接 App（V2+）。V1 用<strong>纯 PWA 路径</strong>换取快速上线、免上架、跨端可用。
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span>非功能需求</h2>
+  <p class="desc">性能、隐私、可用、可迁移。</p>
+  <div class="rule"></div>
+
+  <dl class="field-list">
+    <dt>性能</dt><dd>首屏 LCP &lt; 2.5s（4G）；记录一餐提交 &lt; 500ms（P95）；AI 拍照识别 &lt; 5s；离线可查看已缓存的记录</dd>
+    <dt>可用性</dt><dd>iOS 15+ Safari / Android 10+ Chrome / 桌面 Safari + Chrome 现代版本</dd>
+    <dt>PWA 完整度</dt><dd>Lighthouse PWA 得分 ≥ 90；iOS 加桌面全屏无地址栏；splash / favicon / apple-touch-icon 齐</dd>
+    <dt>隐私</dt><dd>密码 bcrypt(12)；照片私有；不做广告；不共享数据给第三方；用户可清除全部数据</dd>
+    <dt>合规</dt><dd>合规页齐全；域名底部展示备案号；账号删除请求 T+30 天内物理删除；AI 内容附免责声明</dd>
+    <dt>可迁移</dt><dd>用户可导出完整 JSON（含饮食、体重、目标、私人食物库、AI 对话）</dd>
+    <dt>备份</dt><dd>每日 <code>pg_dump</code> 到宿主机 <code>/backup</code>，保留最近 14 天</dd>
+    <dt>监控</dt><dd>后端 pino 结构化日志；异常报警可选（V1 内不做，留 hook）</dd>
+    <dt>限流</dt><dd>Redis 令牌桶：注册接口 3/min/IP、登录 10/min/IP、AI 接口 按用户 quota</dd>
+  </dl>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>V1 里程碑与验收</h2>
+  <p class="desc">功能加了这么多，真实工期 12–14 周，单人开发。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th style="width: 10%">周</th><th>里程碑</th><th>可演示成果</th></tr></thead>
+      <tbody>
+        <tr><td>W1</td><td>脚手架</td><td>前后端能跑；Docker Compose 一键起；Postgres 表落地；PWA 加桌面可安装</td></tr>
+        <tr><td>W2</td><td>账号系统</td><td>邮箱注册 → 收邮件 → 登录 → JWT 刷新 → 忘记密码</td></tr>
+        <tr><td>W3</td><td>饮食核心</td><td>三餐 UI · 搜内置库 · 加食物 · 份/克切换 · 今日汇总</td></tr>
+        <tr><td>W4</td><td>饮食扩展</td><td>私人库 · 常用复用 · 编辑删除 · 首页缺口环 + 宏柱</td></tr>
+        <tr><td>W5</td><td>体测 + 饮水 + 运动</td><td>体重曲线 · 5 维围度 · 饮水快捷 · 运动条目</td></tr>
+        <tr><td>W6</td><td>AI 视觉</td><td>拍照识别闭环 · 外卖截图解析 · VisionProvider 适配层</td></tr>
+        <tr><td>W7</td><td>AI 搭子</td><td>DeepSeek 对话 · 私域 RAG · 4 种人设 · quota 记数</td></tr>
+        <tr><td>W8</td><td>轻断食 + 提醒</td><td>16:8 / 18:6 计时器 · PWA 通知 · 目标设定页</td></tr>
+        <tr><td>W9</td><td>Apple Health 桥</td><td>XML 导入 · Shortcut 模板发布 · 步数/体重接入</td></tr>
+        <tr><td>W10</td><td>日历月历 + 统计</td><td>月历视图 · 周/月/年图表 · 数据导出 JSON</td></tr>
+        <tr><td>W11</td><td>合规 + 部署</td><td>协议 / 隐私 / 备案页 · 账号删除 · 域名接入 HTTPS · 正式部署</td></tr>
+        <tr><td>W12</td><td>Beta + 修 bug</td><td>邀请 20 人内测 · 打磨到可开放注册</td></tr>
+        <tr><td>W13–14</td><td>缓冲</td><td>付费墙代码预留 · 内置食物库精修 · 文档 · SEO 落地页</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>V1 开放注册验收清单</h3>
+  <ul class="checklist">
+    <li>匿名用户可完成 注册 → 验证 → 首次配置 → 首页 全链路</li>
+    <li>可在一天内完成 三餐 + 饮水 + 体重 记录且首页数字正确</li>
+    <li>AI 识别在内部 20 张常见中式菜照片上正确率 ≥ 70%</li>
+    <li>外卖订单截图解析成功率 ≥ 60%（美团 + 饿了么 各 10 张测试集）</li>
+    <li>AI 搭子四种人设回答风格明显区分</li>
+    <li>Apple Health XML 导入体重历史，条目数与源文件一致</li>
+    <li>Shortcut 模板可从 iCloud 分享链接一键装到 iPhone 并运行成功</li>
+    <li>iOS Safari 加桌面后全屏无地址栏，图标清晰</li>
+    <li>Lighthouse PWA 得分 ≥ 90</li>
+    <li>合规页齐全，备案信息展示，账号可删除</li>
+    <li>Docker Compose 单条命令能在新机器起完整栈</li>
+    <li>每日备份脚本已就绪并跑通一次</li>
+  </ul>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>风险与待议</h2>
+  <p class="desc">已知会踩的坑，以及需要你/我在开工前定的事。</p>
+  <div class="rule"></div>
+
+  <div class="callout risk">
+    <span class="tag">已知风险</span>
+    <ul>
+      <li><strong>DeepSeek V4 Vision API</strong> 官方文档尚未列图片接口。W6 如接不上，切 <code>qwen-vl-plus</code>（阿里通义）；<code>VisionProvider</code> 适配器已计划</li>
+      <li><strong>内置食物库精度</strong>：100 条中式食物营养值需人工核对，误差过大会误导用户</li>
+      <li><strong>邮件推送</strong>：预计每日 &lt; 500 条，阿里云邮件推送月费 &lt; ¥100，注意 SPF/DKIM 配置避免进垃圾箱</li>
+      <li><strong>PWA 通知在 iOS</strong>：仅 iOS 16.4+ 且加桌面后才支持，早期 iOS 用户拿不到提醒</li>
+      <li><strong>图片存储</strong>：本地卷方案在用户量 &gt; 1000 后需评估迁 OSS</li>
+      <li><strong>外卖截图解析</strong>：美团 / 饿了么 UI 会改版，OCR 提示词需持续维护</li>
+      <li><strong>Shortcut 模板</strong>：iOS 版本升级可能破坏兼容，需在支持文档里维护多版本</li>
+      <li><strong>AI 内容合规</strong>：生成式内容需过白名单敏感词，特殊人群（孕妇/糖尿病）问题需引导就医</li>
+    </ul>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">待你确认</span>
+    <ul>
+      <li>Slogan 三选一（"吃点什么，记一笔" / "每一口，都值得被认真看见" / "把今天的胃口，留个数字"）</li>
+      <li>域名候选（<code>qianka.app</code> / <code>kaily.day</code> / <code>1000kcal.cn</code> / 你自己已有域名）</li>
+      <li>服务器硬件规格（CPU / 内存 / 磁盘）—— 定 Postgres 与 Docker 参数</li>
+      <li>你的备案信息（备案号、备案主体）—— 用于合规页</li>
+      <li>邮箱推送账号 —— 阿里云邮件推送账号是否已有</li>
+      <li>DeepSeek 与阿里云百炼（备胎）API Key —— 何时能拿到</li>
+    </ul>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">下一步</span>
+    <p>PRD 你 review 通过后，我按顺序产出：</p>
+    <ul>
+      <li>《架构 + Postgres Schema》Artifact —— Docker 部署图 + 完整表结构 + API 契约</li>
+      <li>《UI Spec》Artifact —— 交给 Google Stitch 生成视觉稿的完整需求描述</li>
+      <li>确认视觉后，进入编码阶段（W1 起）</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer">千卡日记 · PRD v0.1 · 2026-07-09 · 待评审</div>
+
+</div>
+</body>
+</html>

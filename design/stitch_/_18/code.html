@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fff8f5",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#7e5100",
+                    "surface-bright": "#fff8f5",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-background": "#1f1b19",
+                    "inverse-on-surface": "#f8efeb",
+                    "error": "#ba1a1a",
+                    "outline": "#8c716a",
+                    "on-primary-fixed-variant": "#881f01",
+                    "surface-container-high": "#f0e6e2",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#596b28",
+                    "surface-tint": "#a93717",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#ffdbd2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-container": "#d6ec9a",
+                    "surface-container-highest": "#eae1dd",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-primary-fixed": "#3c0800",
+                    "surface-container": "#f6ece8",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "background": "#fff8f5",
+                    "outline-variant": "#e0bfb7",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "tertiary-container": "#9f6702",
+                    "on-surface-variant": "#58413c",
+                    "on-surface": "#1f1b19",
+                    "primary": "#a53314",
+                    "surface-container-low": "#fbf2ee",
+                    "surface-dim": "#e1d8d4",
+                    "primary-container": "#c64b2a",
+                    "inverse-surface": "#342f2d",
+                    "secondary-fixed": "#d6ec9a",
+                    "inverse-primary": "#ffb4a1",
+                    "surface-variant": "#eae1dd",
+                    "secondary": "#536523",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-primary-container": "#fff9f8",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "on-secondary-fixed": "#161f00",
+                    "tertiary-fixed": "#ffddb5",
+                    "secondary-fixed-dim": "#bacf81",
+                    // Custom diary specific colors from prompt
+                    "diary-on-track": "#E9EBD8",
+                    "diary-slightly-over": "#F0E4D5",
+                    "diary-over-limit": "#F5E9CE",
+                    "diary-no-record": "#F3F0E7",
+                    "diary-ink": "#1D1917",
+                    "diary-muted": "#5C5852"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "margin-mobile": "20px",
+                    "sm": "12px",
+                    "gutter": "12px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "8px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"],
+                    "body-17": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            -webkit-font-smoothing: antialiased;
+            font-family: 'PingFang SC', sans-serif;
+        }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .calendar-cell {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 4px;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .calendar-cell:active { transform: scale(0.95); }
+        .selected-cell {
+            border: 2px solid #C64B2A !important;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col items-center">
+<!-- Top Navigation Bar -->
+<header class="w-full h-16 flex justify-between items-center px-margin-mobile bg-background sticky top-0 z-10">
+<button aria-label="返回" class="w-10 h-10 flex items-center justify-start active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-diary-ink">arrow_back_ios</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-diary-muted text-sm" style="font-size: 18px;">chevron_left</span>
+<h1 class="font-section-22 text-section-22 text-diary-ink tabular-nums">2026 · 07</h1>
+<span class="material-symbols-outlined text-diary-muted text-sm" style="font-size: 18px;">chevron_right</span>
+</div>
+<div class="w-10"></div> <!-- Spacer for symmetry -->
+</header>
+<main class="w-full max-w-[600px] px-margin-mobile py-4 flex-grow">
+<!-- Weekday Headers -->
+<div class="grid grid-cols-7 mb-4">
+<div class="text-center font-caption-13 text-diary-muted">一</div>
+<div class="text-center font-caption-13 text-diary-muted">二</div>
+<div class="text-center font-caption-13 text-diary-muted">三</div>
+<div class="text-center font-caption-13 text-diary-muted">四</div>
+<div class="text-center font-caption-13 text-diary-muted">五</div>
+<div class="text-center font-caption-13 text-diary-muted">六</div>
+<div class="text-center font-caption-13 text-diary-muted">日</div>
+</div>
+<!-- Calendar Grid (6 rows x 7 columns) -->
+<div class="calendar-grid mb-lg">
+<!-- Row 1 -->
+<div class="calendar-cell bg-diary-on-track">
+<span class="text-[10px] font-medium tabular-nums opacity-60">1</span>
+</div>
+<div class="calendar-cell bg-diary-slightly-over">
+<span class="text-[10px] font-medium tabular-nums opacity-60">2</span>
+</div>
+<div class="calendar-cell bg-diary-on-track">
+<span class="text-[10px] font-medium tabular-nums opacity-60">3</span>
+</div>
+<div class="calendar-cell bg-diary-on-track">
+<span class="text-[10px] font-medium tabular-nums opacity-60">4</span>
+</div>
+<div class="calendar-cell bg-diary-slightly-over">
+<span class="text-[10px] font-medium tabular-nums opacity-60">5</span>
+</div>
+<div class="calendar-cell bg-diary-over-limit">
+<span class="text-[10px] font-medium tabular-nums opacity-60">6</span>
+</div>
+<div class="calendar-cell bg-diary-on-track">
+<span class="text-[10px] font-medium tabular-nums opacity-60">7</span>
+</div>
+<!-- Row 2 -->
+<div class="calendar-cell bg-diary-on-track selected-cell">
+<span class="text-[10px] font-medium tabular-nums opacity-60">8</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">9</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">10</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">11</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">12</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">13</span>
+</div>
+<div class="calendar-cell bg-diary-no-record">
+<span class="text-[10px] font-medium tabular-nums opacity-60">14</span>
+</div>
+<!-- Row 3 -->
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">15</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">16</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">17</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">18</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">19</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">20</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">21</span></div>
+<!-- Row 4 -->
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">22</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">23</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">24</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">25</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">26</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">27</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">28</span></div>
+<!-- Row 5 -->
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">29</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">30</span></div>
+<div class="calendar-cell bg-diary-no-record"><span class="text-[10px] font-medium tabular-nums opacity-60">31</span></div>
+<div class="calendar-cell opacity-0"><span class="text-[10px] font-medium tabular-nums opacity-60">1</span></div>
+<div class="calendar-cell opacity-0"><span class="text-[10px] font-medium tabular-nums opacity-60">2</span></div>
+<div class="calendar-cell opacity-0"><span class="text-[10px] font-medium tabular-nums opacity-60">3</span></div>
+<div class="calendar-cell opacity-0"><span class="text-[10px] font-medium tabular-nums opacity-60">4</span></div>
+<!-- Row 6 -->
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+<div class="calendar-cell opacity-0"></div>
+</div>
+<!-- Selected Date Detail Card -->
+<div class="bg-diary-no-record rounded-xl p-md shadow-sm">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-body-17 font-semibold text-diary-ink">07月08日 · 周二</h2>
+<div class="px-2 py-0.5 bg-diary-on-track text-secondary text-[11px] rounded-full font-medium">目标达成</div>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-4 gap-xs mb-lg">
+<div class="flex flex-col">
+<span class="font-label-11 text-diary-muted">摄入</span>
+<span class="font-body-17 font-bold tabular-nums">1180</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-11 text-diary-muted">消耗</span>
+<span class="font-body-17 font-bold tabular-nums text-secondary">320</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-11 text-diary-muted">缺口</span>
+<span class="font-body-17 font-bold tabular-nums text-primary">-480</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-11 text-diary-muted">体重</span>
+<span class="font-body-17 font-bold tabular-nums">62.5</span>
+</div>
+</div>
+<!-- Meal Preview Row -->
+<div class="flex items-center gap-md mb-lg">
+<div class="flex items-center gap-xs">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A soft-lit, high-angle macro photograph of a healthy breakfast bowl featuring golden oats, vibrant red raspberries, and a drizzle of amber honey, set against a warm ivory linen tablecloth. The aesthetic is tactile and minimalist, emphasizing clean nutrition and morning calm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2pY4jYYZVwZXdudlTotBJml207fl2p8yRiyWgfJl-AZdCJELpC3qNXHeTDaKEL21LXv12IO_I0oqUnY9f93RpVS8AmM-R0Zv4JUtWQoC_2Tprz358Tpiz2iEEDAr0qRg5jEIxGL13G7ckdXHpxhCKoA-LHVAscWZy6vGXrE9IXaNqGm8cqvZ4Shgc-sWWHZnG3C1BhMdG0m19WdQDxcz_jhPIK7_xXJpERHogqSKDaxIuTek1BAHJyEbUSjHBuOcgLw2YwXmS4Uj3"/>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-diary-muted">早</span>
+<span class="text-[12px] font-medium">燕麦粥</span>
+</div>
+</div>
+<div class="w-px h-8 bg-outline-variant opacity-30"></div>
+<div class="flex items-center gap-xs">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A minimalist overhead shot of a nutritious lunch salad with grilled chicken, bright green avocado slices, and cherry tomatoes in a white ceramic bowl. Soft, diffused natural light creates a serene editorial feel, with warm ivory tones and a clean, organized composition suitable for a high-end wellness app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzrRDr80O9mvA7mv7MzQXSlyEa26S3XgAt9mnk9OgE-MUr63snjU3aqCa-6aoAiiPmHmcPbJjz7bmoq-7nc2ujUqvrfPhW-PMgGaqcoIV-5FdLuUcTtC-NHW0dw5wEvQkKP_hxACIDuHULTeJBpAP0smkSd-WHmXbry8Q0-oeQ_6caiXly3WMED-DWdelodPMK13T5-005vOg-7DLTO0UWYOuj1w0us-WSowbm6vBiY8i-ftW97ed-eWyydi3ek5oBtBkrcXCBoaVG"/>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-diary-muted">午</span>
+<span class="text-[12px] font-medium">鸡肉沙拉</span>
+</div>
+</div>
+<div class="w-px h-8 bg-outline-variant opacity-30"></div>
+<div class="flex items-center gap-xs">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center border border-dashed border-outline-variant">
+<span class="material-symbols-outlined text-diary-muted text-sm">restaurant</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] text-diary-muted">晚</span>
+<span class="text-[12px] font-medium text-diary-muted italic">未记录</span>
+</div>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full py-3 flex items-center justify-center gap-2 group active:scale-95 transition-all">
+<span class="font-body-17 font-semibold text-primary">查看那天</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Monthly Analysis Teaser -->
+<div class="mt-lg border-t border-diary-no-record pt-lg">
+<h3 class="font-body-17 font-semibold mb-sm">月度分析预览</h3>
+<div class="relative w-full h-32 rounded-xl overflow-hidden bg-white shadow-sm border border-diary-no-record p-4">
+<div class="flex items-end justify-between h-full gap-2">
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 60%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 40%;"></div>
+<div class="flex-1 bg-diary-slightly-over rounded-t-sm" style="height: 85%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 55%;"></div>
+<div class="flex-1 bg-diary-over-limit rounded-t-sm" style="height: 95%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 30%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 50%;"></div>
+<div class="flex-1 bg-diary-slightly-over rounded-t-sm" style="height: 75%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 45%;"></div>
+<div class="flex-1 bg-diary-on-track rounded-t-sm" style="height: 65%;"></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[1px]">
+<span class="font-label-11 text-diary-ink bg-white/90 px-3 py-1 rounded-full border border-diary-no-record shadow-sm">
+                        完成度 82% · 点击生成月报
+                    </span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Shared Component Logic) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] flex justify-around items-center pt-xs pb-safe px-xs rounded-t-xl h-16">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-11 text-label-11">首页</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-11 text-label-11">记录</span>
+</div>
+<div class="relative -top-4">
+<div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-white text-3xl">add</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-11 text-label-11">AI 搭子</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-11 text-label-11">我的</span>
+</div>
+</nav>
+<!-- Spacer for Bottom Nav -->
+<div class="h-20 w-full"></div>
+<script>
+        // Simple micro-interaction for calendar cells
+        document.querySelectorAll('.calendar-cell').forEach(cell => {
+            if(!cell.classList.contains('opacity-0')) {
+                cell.addEventListener('click', () => {
+                    document.querySelectorAll('.calendar-cell').forEach(c => c.classList.remove('selected-cell'));
+                    cell.classList.add('selected-cell');
+                    
+                    // Trigger haptic feedback simulation
+                    if (window.navigator.vibrate) {
+                        window.navigator.vibrate(5);
+                    }
+                });
+            }
+        });
+    </script>
+</body></html>

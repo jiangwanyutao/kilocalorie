@@ -1,0 +1,58 @@
+# deps
+node_modules/
+.pnpm-store/
+pnpm-lock.yaml.backup
+
+# build
+dist/
+build/
+.output/
+.nuxt/
+.vite/
+*.tsbuildinfo
+
+# env（含生产 .env.prod · 只保留 example）
+.env
+.env.*
+!.env.example
+!.env.prod.example
+!.env.example.*
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+logs/
+
+# editor / os
+.idea/
+.vscode/
+!.vscode/settings.json.example
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# runtime
+coverage/
+.nyc_output/
+*.pid
+*.seed
+*.pid.lock
+
+# uploads / cache
+uploads/
+tmp/
+.cache/
+
+# deploy artifacts
+*.tar.gz
+
+# secrets
+*.pem
+*.key
+!*.key.example
+
+# 保留 design/stitch_ UI 稿（即使 png）
+!design/**

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 记录</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'wght' 300, 'opsz' 24;
+            font-size: 24px;
+        }
+        
+        /* Custom Paper Texture Effect */
+        .paper-texture {
+            background-color: #fff8f5;
+            background-image: radial-gradient(#EFECE4 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+
+        /* Subtle Rule Lines */
+        .rule-line {
+            border-bottom: 1px solid #E3E0D6;
+        }
+
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Interaction Scale */
+        .tap-scale:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease-out;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#fff9f8",
+                        "on-surface": "#1f1b19",
+                        "inverse-surface": "#342f2d",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#fff9f5",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#881f01",
+                        "primary": "#a53314",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#596b28",
+                        "tertiary": "#7e5100",
+                        "inverse-on-surface": "#f8efeb",
+                        "outline-variant": "#e0bfb7",
+                        "surface-variant": "#eae1dd",
+                        "secondary-container": "#d6ec9a",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#9f6702",
+                        "surface-bright": "#fff8f5",
+                        "surface-container-low": "#fbf2ee",
+                        "outline": "#8c716a",
+                        "inverse-primary": "#ffb4a1",
+                        "primary-fixed": "#ffdbd2",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-dim": "#e1d8d4",
+                        "secondary": "#536523",
+                        "surface": "#fff8f5",
+                        "surface-tint": "#a93717",
+                        "surface-container-highest": "#eae1dd",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "background": "#fff8f5",
+                        "on-background": "#1f1b19",
+                        "on-primary-fixed": "#3c0800",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "tertiary-fixed": "#ffddb5",
+                        "secondary-fixed": "#d6ec9a",
+                        "surface-container-high": "#f0e6e2",
+                        "surface-container": "#f6ece8",
+                        "secondary-fixed-dim": "#bacf81",
+                        "on-tertiary-fixed": "#2a1800",
+                        "primary-container": "#c64b2a",
+                        "on-surface-variant": "#58413c",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "xl": "32px",
+                        "gutter": "12px",
+                        "md": "16px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "title-28": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "hero-34": ["PingFang SC"],
+                        "body-17": ["PingFang SC"],
+                        "section-22": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-17 selection:bg-primary-fixed selection:text-on-primary-fixed antialiased overflow-x-hidden min-h-screen">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-40 bg-background/80 backdrop-blur-md flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A minimalist and soft studio portrait of a calm individual with warm lighting, reflecting a healthy and mindful lifestyle. The aesthetic is clean, editorial, and features a palette of ivory, soft beige, and muted orange tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWE3PiI6RH-NJ9QQLpdLhbUE-Rsfmxxdp3VcITff9PIRzYE7Ufh8pJFjC_XTSi4u7wuGqiyHqPsvIEG13cq_fHj3yBjtkBFjKbbMsAUAx7tpwA8kCD8v9HMtAWW6h7fJ1U6AGNi3zMsoCW2QXbM5v2Niay1KVkTMrCEWcPHjKgjyXkpubYdROir4pa2lUTiKC2zfNmcm2D8U7i6LPcI9CTeU2V0lNewQIHM0N2BdsHfyzdDWF9cCT163cI53m-8ODQfwgLs8LjXGHk"/>
+</div>
+<h1 class="font-title-28 text-primary">千卡日记</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary tap-scale">calendar_today</button>
+<button class="material-symbols-outlined text-primary tap-scale">settings</button>
+</div>
+</header>
+<main class="pt-16 pb-32 px-margin-mobile paper-texture min-h-screen">
+<!-- Date Selector Area -->
+<section class="py-lg text-center">
+<div class="flex justify-center items-center gap-md mb-xs">
+<button class="material-symbols-outlined text-on-surface-variant/40 tap-scale">chevron_left</button>
+<h2 class="font-section-22 text-on-surface">10月24日 星期四</h2>
+<button class="material-symbols-outlined text-on-surface-variant/40 tap-scale">chevron_right</button>
+</div>
+<p class="font-label-11 text-on-surface-variant opacity-60">今日累计摄入: <span class="text-primary font-bold">1,420 kcal</span></p>
+</section>
+<!-- Timeline Entries -->
+<div class="space-y-lg relative">
+<!-- Central Vertical Line -->
+<div class="absolute left-[11px] top-4 bottom-4 w-[1px] bg-[#E3E0D6]"></div>
+<!-- Breakfast -->
+<article class="relative pl-xl">
+<!-- Timeline Dot -->
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-lowest border border-[#E3E0D6] flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[14px] text-primary">coffee</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-end rule-line pb-xs">
+<div>
+<p class="font-caption-13 text-on-surface-variant opacity-60">08:30 · 早餐</p>
+<h3 class="font-body-17 text-on-surface mt-1">全麦面包 & 黑咖啡</h3>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-on-surface font-semibold">245</span>
+<span class="font-label-11 text-on-surface-variant"> kcal</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">高纤维</span>
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">轻食</span>
+</div>
+</div>
+</article>
+<!-- Lunch -->
+<article class="relative pl-xl">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-lowest border border-[#E3E0D6] flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[14px] text-primary">restaurant</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-end rule-line pb-xs">
+<div>
+<p class="font-caption-13 text-on-surface-variant opacity-60">12:45 · 午餐</p>
+<h3 class="font-body-17 text-on-surface mt-1">香煎鸡胸肉配藜麦沙拉</h3>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-on-surface font-semibold">580</span>
+<span class="font-label-11 text-on-surface-variant"> kcal</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">高蛋白</span>
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">低卡</span>
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">健身餐</span>
+</div>
+<div class="mt-xs">
+<div class="w-full h-32 rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover opacity-90" data-alt="A top-down aesthetic food photography shot of a healthy grilled chicken breast with vibrant quinoa salad, avocados, and microgreens on a white ceramic plate. Soft, natural morning light, ivory tablecloth, minimalist and warm atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzOBwIfBFZv_FOkNa2D0Az4_X0qHyhgYBDRrn-ugSQQrghmyYE7OlpSD7ybLJ9X_GFonQpDWHJppuVcRDM9TYrLQiGJb8af2AKGy8exG6sY3eRAbk_0YUSkN27d6ie0fY2FaOXSMqV3g8EOSh79fDAuEqTo4pVi_q-r161OF-sL8Vl0ok0UeOp0L4vy8vUbL7qqpdLuOiTA1Syvc3aieoGLfRf3CNQFsBPqK1SQg27uri-Hd7qEmTxlXzF4rPZYk0reECUPU3VA49b"/>
+</div>
+</div>
+</div>
+</article>
+<!-- Afternoon Snack -->
+<article class="relative pl-xl">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-lowest border border-[#E3E0D6] flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[14px] text-primary">bakery_dining</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-end rule-line pb-xs">
+<div>
+<p class="font-caption-13 text-on-surface-variant opacity-60">15:20 · 加餐</p>
+<h3 class="font-body-17 text-on-surface mt-1">希腊酸奶与蓝莓</h3>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-on-surface font-semibold">165</span>
+<span class="font-label-11 text-on-surface-variant"> kcal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Dinner -->
+<article class="relative pl-xl">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-lowest border border-[#E3E0D6] flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[14px] text-primary">dinner_dining</span>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-end rule-line pb-xs">
+<div>
+<p class="font-caption-13 text-on-surface-variant opacity-60">19:10 · 晚餐</p>
+<h3 class="font-body-17 text-on-surface mt-1">清蒸鲈鱼与时蔬</h3>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-on-surface font-semibold">430</span>
+<span class="font-label-11 text-on-surface-variant"> kcal</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">欧米茄-3</span>
+<span class="px-sm py-1 bg-[#F0E4D5] text-tertiary-container text-[11px] font-medium rounded-full">清淡</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Diary Reflection Section -->
+<section class="mt-xl pt-lg border-t-2 border-[#E3E0D6]/30">
+<h4 class="font-caption-13 text-on-surface-variant font-medium mb-sm tracking-wider">今日日记</h4>
+<div class="p-md bg-surface-container-lowest rounded-xl shadow-sm italic text-on-surface-variant/80 font-body-17 leading-[1.8]">
+                今天状态不错，午餐后去公园散步了30分钟。坚持清淡饮食的第三天，感觉身体负担明显减轻，午后也不再容易犯困了。继续加油。
+            </div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] rounded-t-xl flex justify-around items-center pt-xs pb-6 px-xs">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 tap-scale transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-11 mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold tap-scale transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-11 mt-1">记录</span>
+</a>
+<div class="relative -top-6">
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined text-on-primary text-3xl" data-icon="add_circle">add_circle</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 tap-scale transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-11 mt-1">AI 搭子</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 tap-scale transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-11 mt-1">我的</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for page scroll header effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+                header.classList.remove('bg-background/80');
+                header.classList.add('bg-background');
+            } else {
+                header.classList.remove('shadow-sm');
+                header.classList.remove('bg-background');
+                header.classList.add('bg-background/80');
+            }
+        });
+
+        // Add tap animation for interactive elements
+        document.querySelectorAll('.tap-scale').forEach(button => {
+            button.addEventListener('touchstart', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('touchend', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

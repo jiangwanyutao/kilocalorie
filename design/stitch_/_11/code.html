@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>千卡日记 - 食物详情</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffb958",
+                    "outline": "#8c716a",
+                    "surface-container-high": "#f0e6e2",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#58413c",
+                    "on-primary-fixed": "#3c0800",
+                    "on-primary-container": "#fff9f8",
+                    "background": "#fff8f5",
+                    "surface-tint": "#a93717",
+                    "primary-fixed": "#ffdbd2",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-secondary-fixed": "#161f00",
+                    "on-secondary": "#ffffff",
+                    "primary": "#a53314",
+                    "on-tertiary-fixed": "#2a1800",
+                    "inverse-on-surface": "#f8efeb",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#ffddb5",
+                    "tertiary": "#7e5100",
+                    "surface-dim": "#e1d8d4",
+                    "primary-container": "#c64b2a",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "tertiary-container": "#9f6702",
+                    "secondary": "#536523",
+                    "on-error": "#ffffff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#eae1dd",
+                    "on-surface": "#1f1b19",
+                    "secondary-container": "#d6ec9a",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#596b28",
+                    "inverse-primary": "#ffb4a1",
+                    "secondary-fixed": "#d6ec9a",
+                    "outline-variant": "#e0bfb7",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#fbf2ee",
+                    "inverse-surface": "#342f2d",
+                    "on-primary-fixed-variant": "#881f01",
+                    "surface-variant": "#eae1dd",
+                    "on-error-container": "#93000a",
+                    "on-background": "#1f1b19",
+                    "surface-container": "#f6ece8",
+                    "surface-bright": "#fff8f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "margin-mobile": "20px",
+                    "sm": "12px",
+                    "gutter": "12px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "hero-34": ["PingFang SC"],
+                    "label-11": ["PingFang SC"],
+                    "body-17": ["PingFang SC"],
+                    "section-22": ["PingFang SC"],
+                    "title-28": ["PingFang SC"],
+                    "caption-13": ["PingFang SC"]
+            },
+            "fontSize": {
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1F1B19;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .segmented-control-bg {
+            background-color: #EFECE4;
+        }
+        .segmented-active {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        /* Custom styles for the Soy Orange effect in primary button */
+        .primary-btn {
+            background-color: #C64B2A;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+        }
+        .primary-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top AppBar (Back/Close Button Style) -->
+<header class="sticky top-0 z-50 bg-[#FAF9F5]/80 backdrop-blur-md px-margin-mobile h-16 flex justify-between items-center">
+<button aria-label="Close" class="w-10 h-10 flex items-center justify-start text-on-surface-variant active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="font-body-17 text-body-17 font-semibold">番茄炒蛋</h1>
+</div>
+<button aria-label="More" class="w-10 h-10 flex items-center justify-end text-on-surface-variant active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">more_horiz</span>
+</button>
+</header>
+<main class="flex-1 px-margin-mobile pb-32">
+<!-- Category Chip -->
+<div class="flex justify-center mt-base">
+<span class="bg-[#F0E4D5] text-on-surface-variant px-sm py-1 rounded-full font-label-11 text-label-11">
+                菜肴 · 家常菜
+            </span>
+</div>
+<!-- Hero Calorie Display -->
+<section class="flex flex-col items-center mt-xl py-lg">
+<span class="font-label-11 text-label-11 text-on-surface-variant opacity-60 mb-xs">本次记录</span>
+<div class="flex items-baseline gap-1">
+<span class="font-semibold text-[64px] leading-none text-primary-container tabular-nums" id="calorie-display">128</span>
+</div>
+<span class="font-body-17 text-body-17 text-on-surface-variant opacity-60 mt-xs">kcal</span>
+</section>
+<!-- Segmented Control -->
+<div class="segmented-control-bg p-[2px] rounded-lg flex mb-lg max-w-[240px] mx-auto">
+<button class="flex-1 py-1.5 font-caption-13 text-caption-13 font-medium rounded-[6px] segmented-active transition-all" onclick="toggleTab(this, 'portion')">份</button>
+<button class="flex-1 py-1.5 font-caption-13 text-caption-13 font-medium rounded-[6px] text-on-surface-variant opacity-60 transition-all" onclick="toggleTab(this, 'weight')">克</button>
+</div>
+<!-- Portion Picker Card -->
+<div class="bg-[#F3F0E7] rounded-[14px] p-md mb-xl">
+<div class="flex items-center justify-between">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary-container bg-transparent border-[1.5px] border-primary-container/20 active:scale-90 transition-transform" onclick="updateValue(-1)">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="font-semibold text-[40px] tabular-nums" id="portion-value">1</span>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-primary-container bg-primary-container active:scale-90 transition-transform" onclick="updateValue(1)">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="text-center mt-sm">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant opacity-60">1份 ≈ 一小碗 · 约 120g</span>
+</div>
+</div>
+<!-- Macros Breakdown -->
+<section class="space-y-md mb-xl">
+<!-- Carbs -->
+<div class="space-y-xs">
+<div class="flex justify-between font-caption-13 text-caption-13">
+<span class="text-on-surface-variant">碳水</span>
+<span class="tabular-nums font-medium text-on-surface">12g</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[45%] rounded-full"></div>
+</div>
+</div>
+<!-- Protein -->
+<div class="space-y-xs">
+<div class="flex justify-between font-caption-13 text-caption-13">
+<span class="text-on-surface-variant">蛋白</span>
+<span class="tabular-nums font-medium text-on-surface">8g</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[30%] rounded-full"></div>
+</div>
+</div>
+<!-- Fat -->
+<div class="space-y-xs">
+<div class="flex justify-between font-caption-13 text-caption-13">
+<span class="text-on-surface-variant">脂肪</span>
+<span class="tabular-nums font-medium text-on-surface">6g</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[20%] rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Collapsible Details -->
+<details class="group border-t border-outline-variant/30">
+<summary class="flex justify-between items-center py-md list-none cursor-pointer">
+<span class="font-body-17 text-body-17">营养详情</span>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="pb-md space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">膳食纤维</span>
+<span class="font-caption-13 text-caption-13 tabular-nums">2.1g</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">钠</span>
+<span class="font-caption-13 text-caption-13 tabular-nums">340mg</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">糖</span>
+<span class="font-caption-13 text-caption-13 tabular-nums">3.5g</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">钾</span>
+<span class="font-caption-13 text-caption-13 tabular-nums">185mg</span>
+</div>
+</div>
+</details>
+</main>
+<!-- Sticky Bottom Action -->
+<div class="fixed bottom-0 left-0 right-0 p-margin-mobile bg-gradient-to-t from-[#FAF9F5] via-[#FAF9F5] to-transparent pt-lg">
+<button class="primary-btn w-full h-[48px] rounded-[10px] text-on-primary font-body-17 font-semibold flex items-center justify-center gap-xs">
+<span>记入 午餐</span>
+</button>
+</div>
+<script>
+        let currentValue = 1;
+        const calorieBase = 128;
+        const display = document.getElementById('portion-value');
+        const calDisplay = document.getElementById('calorie-display');
+
+        function updateValue(delta) {
+            currentValue = Math.max(0.5, currentValue + delta * 0.5);
+            display.textContent = currentValue % 1 === 0 ? currentValue : currentValue.toFixed(1);
+            
+            // Animate number change
+            const targetCal = Math.round(currentValue * calorieBase);
+            calDisplay.textContent = targetCal;
+        }
+
+        function toggleTab(el, type) {
+            const buttons = el.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('segmented-active', 'text-on-surface');
+                btn.classList.add('text-on-surface-variant', 'opacity-60');
+            });
+            el.classList.add('segmented-active');
+            el.classList.remove('text-on-surface-variant', 'opacity-60');
+        }
+
+        // Simple haptic feedback simulation
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(10);
+                }
+            });
+        });
+    </script>
+</body></html>

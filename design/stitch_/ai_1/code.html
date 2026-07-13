@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#fff9f8",
+                        "on-surface": "#1f1b19",
+                        "inverse-surface": "#342f2d",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#fff9f5",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#881f01",
+                        "primary": "#a53314",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#596b28",
+                        "tertiary": "#7e5100",
+                        "inverse-on-surface": "#f8efeb",
+                        "outline-variant": "#e0bfb7",
+                        "surface-variant": "#eae1dd",
+                        "secondary-container": "#d6ec9a",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#9f6702",
+                        "surface-bright": "#fff8f5",
+                        "surface-container-low": "#fbf2ee",
+                        "outline": "#8c716a",
+                        "inverse-primary": "#ffb4a1",
+                        "primary-fixed": "#ffdbd2",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-dim": "#e1d8d4",
+                        "secondary": "#536523",
+                        "surface": "#fff8f5",
+                        "surface-tint": "#a93717",
+                        "surface-container-highest": "#eae1dd",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "background": "#fff8f5",
+                        "on-background": "#1f1b19",
+                        "on-primary-fixed": "#3c0800",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "tertiary-fixed": "#ffddb5",
+                        "secondary-fixed": "#d6ec9a",
+                        "surface-container-high": "#f0e6e2",
+                        "surface-container": "#f6ece8",
+                        "secondary-fixed-dim": "#bacf81",
+                        "on-tertiary-fixed": "#2a1800",
+                        "primary-container": "#c64b2a",
+                        "on-surface-variant": "#58413c",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "xl": "32px",
+                        "gutter": "12px",
+                        "md": "16px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "title-28": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "hero-34": ["PingFang SC"],
+                        "body-17": ["PingFang SC"],
+                        "section-22": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Warm Ivory Paper Base */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        .message-bubble-ai {
+            background-color: #F3F0E7;
+            border-radius: 18px 18px 18px 4px;
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        .message-bubble-user {
+            background-color: #FFFFFF;
+            border-radius: 18px 18px 4px 18px;
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        .glass-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #EFECE4;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-on-surface">
+<!-- Top App Bar -->
+<header class="fixed top-0 z-50 bg-background w-full flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A warm and artistic close-up portrait of a friendly digital AI assistant character named Xiao Qian. The character has a soft, minimalist aesthetic with warm, subtle lighting that matches an ivory and soy orange color palette. The background is a clean, creamy texture suggesting a high-quality physical journal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWF5fXLqLP8cqImS4Jd7vY8NboVIdoOIylHwdvzj597eJVxM8f6T3hlr5IK3Z9HvfQc2yrVq72HRCQY-goAGyy4h-xNhVHmZuBMKL2-OCJAxsw7sVOL52oTaAC8cbo2fDU6HxZ5AcL34evJdtQ_OBSyMfZwlW-dxWmFmqzlCes5p4ZIAjLy5qmUI3DD1-CotVXnK_Qz3_BWQuCL6C9y15gydEj1cNzaJF5u9r_uwu_DUK7nuQ4-2M7iHwWVa_I_mHyH_dpsOqFbCSG"/>
+</div>
+<span class="font-section-22 text-section-22 text-primary">小千</span>
+</div>
+<button class="text-on-surface-variant hover:opacity-80 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- Main Chat Canvas -->
+<main class="pt-20 pb-40 px-margin-mobile h-screen flex flex-col">
+<div class="flex-1 overflow-y-auto custom-scrollbar space-y-lg">
+<!-- AI Welcome Message -->
+<div class="flex items-end gap-xs max-w-[85%]">
+<div class="flex-1">
+<div class="message-bubble-ai p-md mb-base">
+<p class="font-body-17 leading-relaxed">你好呀！我是你的健康搭子小千。今天的感觉怎么样？有没有想记录下来的美味瞬间？</p>
+</div>
+<span class="font-caption-13 text-on-surface-variant opacity-60 ml-xs">10:02</span>
+</div>
+</div>
+<!-- User Message Example -->
+<div class="flex items-end justify-end gap-xs ml-auto max-w-[85%]">
+<div class="flex-1 flex flex-col items-end">
+<div class="message-bubble-user p-md mb-base border border-outline-variant/20">
+<p class="font-body-17 leading-relaxed text-on-surface">我刚才吃了一碗兰州拉面，能帮我算算热量吗？</p>
+</div>
+<span class="font-caption-13 text-on-surface-variant opacity-60 mr-xs">10:05</span>
+</div>
+</div>
+<!-- AI Response with Analysis Card -->
+<div class="flex items-end gap-xs max-w-[85%]">
+<div class="flex-1">
+<div class="message-bubble-ai p-md mb-base">
+<p class="font-body-17 mb-sm">好的，我来帮你估算：</p>
+<div class="bg-surface-container-lowest rounded-xl p-sm border border-outline-variant/30 space-y-xs">
+<div class="flex justify-between items-center">
+<span class="font-body-17 font-medium">兰州拉面 (标准碗)</span>
+<span class="text-primary font-bold">~520 kcal</span>
+</div>
+<div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+<p class="font-caption-13 text-on-surface-variant italic">含有丰富的碳水和适量蛋白质，建议晚餐增加一些绿叶蔬菜平衡营养哦。</p>
+</div>
+</div>
+<span class="font-caption-13 text-on-surface-variant opacity-60 ml-xs">10:05</span>
+</div>
+</div>
+<!-- Suggestion Placeholder -->
+<div class="flex justify-center py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<p class="font-caption-13 text-on-surface-variant">小千正在听...</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Interactive Input & Suggestions Area -->
+<div class="fixed bottom-[72px] left-0 w-full px-margin-mobile pb-md">
+<!-- Suggestion Chips -->
+<div class="flex gap-sm overflow-x-auto pb-md no-scrollbar">
+<button class="whitespace-nowrap px-md py-xs rounded-full bg-secondary-container/30 text-secondary border border-secondary/20 font-label-11 hover:bg-secondary-container/50 transition-colors">
+                帮我估算午餐热量
+            </button>
+<button class="whitespace-nowrap px-md py-xs rounded-full bg-secondary-container/30 text-secondary border border-secondary/20 font-label-11 hover:bg-secondary-container/50 transition-colors">
+                最近的营养分析
+            </button>
+<button class="whitespace-nowrap px-md py-xs rounded-full bg-surface-container-low text-on-surface-variant border border-outline-variant/30 font-label-11">
+                饮水打卡
+            </button>
+</div>
+<!-- Input Bar -->
+<div class="bg-surface-container-lowest rounded-2xl p-xs flex items-center gap-xs shadow-[0_8px_24px_rgba(29,25,23,0.06)] border border-outline-variant/20">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 font-body-17 text-on-surface placeholder:text-on-surface-variant/40" placeholder="问问小千..." type="text"/>
+<button class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-xs pb-safe px-xs bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-11 text-label-11 mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-11 text-label-11 mt-1">记录</span>
+</a>
+<div class="relative -top-4">
+<button class="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</div>
+<!-- Active Tab: AI 搭子 -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-label-11 text-label-11 mt-1">AI 搭子</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-11 text-label-11 mt-1">我的</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for chips
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 100);
+            });
+        });
+
+        // Autoscroll chat to bottom
+        const chatContainer = document.querySelector('main .overflow-y-auto');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    </script>
+</body></html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        /* Custom scrollbar for ivory paper feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E3E0D6;
+            border-radius: 10px;
+        }
+        /* Sub-page transition effect */
+        .page-enter {
+            animation: slideUp 0.4s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .bottom-fade {
+            background: linear-gradient(to top, #FAF9F5 0%, rgba(250, 249, 245, 0) 100%);
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#a53314",
+                        "on-tertiary-container": "#fff9f5",
+                        "inverse-primary": "#ffb4a1",
+                        "tertiary-container": "#9f6702",
+                        "surface-variant": "#eae1dd",
+                        "on-secondary-container": "#596b28",
+                        "secondary-container": "#d6ec9a",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-dim": "#e1d8d4",
+                        "secondary-fixed": "#d6ec9a",
+                        "surface-tint": "#a93717",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#8c716a",
+                        "on-primary-fixed": "#3c0800",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "inverse-surface": "#342f2d",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-primary-container": "#fff9f8",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#fbf2ee",
+                        "primary-container": "#c64b2a",
+                        "on-tertiary-fixed": "#2a1800",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#eae1dd",
+                        "surface-container": "#f6ece8",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#f0e6e2",
+                        "outline-variant": "#e0bfb7",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "primary-fixed": "#ffdbd2",
+                        "on-background": "#1f1b19",
+                        "background": "#FAF9F5", /* Overridden for Brand Identity */
+                        "on-primary-fixed-variant": "#881f01",
+                        "surface": "#fff8f5",
+                        "surface-bright": "#fff8f5",
+                        "secondary": "#536523",
+                        "on-surface-variant": "#58413c",
+                        "secondary-fixed-dim": "#bacf81",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary": "#7e5100",
+                        "on-surface": "#1D1917", /* Overridden for Brand Identity */
+                        "inverse-on-surface": "#f8efeb"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "gutter": "12px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "section-22": ["PingFang SC"],
+                        "body-17": ["PingFang SC"],
+                        "title-28": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "label-11": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-17 min-h-screen flex flex-col page-enter">
+<!-- 1. Top AppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full sticky top-0 z-50 bg-background">
+<button class="flex items-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface">记一笔 · 午餐</h1>
+<button class="font-section-22 text-section-22 text-primary font-bold active:scale-95 transition-transform">
+            完成
+        </button>
+</header>
+<!-- 2. Pinned Search Input -->
+<div class="px-margin-mobile pt-xs pb-sm sticky top-16 z-40 bg-background">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-on-surface-variant opacity-60">search</span>
+<input class="w-full h-11 pl-12 pr-4 bg-[#F3F0E7] border-none rounded-[10px] text-body-17 focus:ring-1 focus:ring-primary/20 placeholder:text-on-surface-variant/50" placeholder="搜食物 · 试试 '番茄炒蛋'" type="text"/>
+</div>
+</div>
+<!-- 3. Segmented Control -->
+<nav class="px-margin-mobile flex items-center justify-between border-b border-[#E3E0D6] bg-background">
+<div class="flex space-x-6">
+<button class="relative py-3 font-body-17 text-primary font-semibold">
+                常用
+                <div class="absolute bottom-0 left-0 w-full h-[2px] bg-[#C64B2A]"></div>
+</button>
+<button class="py-3 font-body-17 text-on-surface-variant opacity-60">搜索</button>
+<button class="py-3 font-body-17 text-on-surface-variant opacity-60">私人库</button>
+<button class="py-3 font-body-17 text-on-surface-variant opacity-60">拍照</button>
+<button class="py-3 font-body-17 text-on-surface-variant opacity-60">外卖</button>
+</div>
+</nav>
+<!-- 4-6. Food List & Sections -->
+<main class="flex-1 overflow-y-auto px-margin-mobile pb-24 relative">
+<!-- Recent Section -->
+<div class="pt-6 pb-2">
+<h2 class="text-label-11 font-label-11 text-on-surface-variant uppercase tracking-widest mb-4">最近吃过</h2>
+<!-- Row 1 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#BACF81]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">水煮蛋</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 一个 · 78 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#FFA18E]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">糙米饭</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 一小碗 · 128 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#D6EC9A]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">西蓝花</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 100g · 34 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+</div>
+<!-- Often Eaten Section -->
+<div class="pt-8 pb-2">
+<h2 class="text-label-11 font-label-11 text-on-surface-variant uppercase tracking-widest mb-4">常吃的</h2>
+<!-- Row 4 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#FFDDB5]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">鸡胸肉</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 150g · 198 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+<!-- Row 5 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#A93717]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">黑咖啡</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 300ml · 2 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+<!-- Row 6 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#BACF81]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">牛油果</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 半个 · 160 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+<!-- Row 7 -->
+<div class="flex items-center justify-between h-[60px] border-b border-[#E3E0D6]">
+<div class="flex items-center space-x-4">
+<div class="w-3 h-3 rounded-full bg-[#9F6702]"></div>
+<div>
+<p class="font-body-17 font-semibold leading-tight">全麦面包</p>
+<p class="text-caption-13 text-on-surface-variant opacity-60 tabular-nums">约 一片 · 65 kcal</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-[#F0E4D5] flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary font-bold">add</span>
+</button>
+</div>
+</div>
+<!-- 7. Fade indicator at bottom -->
+<div class="fixed bottom-0 left-0 w-full h-32 bottom-fade"></div>
+</main>
+<!-- Contextual Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if(this.querySelector('.material-symbols-outlined') && this.querySelector('.material-symbols-outlined').innerText === 'add') {
+                    // Simple "Add" feedback
+                    const originalIcon = this.querySelector('.material-symbols-outlined').innerText;
+                    this.querySelector('.material-symbols-outlined').innerText = 'check';
+                    this.classList.replace('bg-[#F0E4D5]', 'bg-secondary-container');
+                    
+                    setTimeout(() => {
+                        this.querySelector('.material-symbols-outlined').innerText = 'add';
+                        this.classList.replace('bg-secondary-container', 'bg-[#F0E4D5]');
+                    }, 800);
+                }
+            });
+        });
+
+        // Pull to refresh mimic or subtle reveal animation
+        window.addEventListener('scroll', () => {
+            const opacity = Math.min(window.scrollY / 100, 1);
+            // Could add header shadow here if needed, but per prompt we keep it flat ivory
+        });
+    </script>
+</body></html>

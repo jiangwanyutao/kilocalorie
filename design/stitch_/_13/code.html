@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 记一杯水</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#ffb4a1",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#2a1800",
+                    "inverse-on-surface": "#f8efeb",
+                    "surface-container-highest": "#eae1dd",
+                    "secondary": "#536523",
+                    "surface-variant": "#eae1dd",
+                    "surface-tint": "#a93717",
+                    "on-surface-variant": "#58413c",
+                    "surface-container-high": "#f0e6e2",
+                    "tertiary": "#7e5100",
+                    "on-secondary-container": "#596b28",
+                    "on-primary-container": "#fff9f8",
+                    "background": "#fff8f5",
+                    "primary": "#a53314",
+                    "on-background": "#1f1b19",
+                    "primary-fixed": "#ffdbd2",
+                    "outline-variant": "#e0bfb7",
+                    "outline": "#8c716a",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#ffb4a1",
+                    "secondary-fixed-dim": "#bacf81",
+                    "surface-container-low": "#fbf2ee",
+                    "surface-container": "#f6ece8",
+                    "secondary-fixed": "#d6ec9a",
+                    "secondary-container": "#d6ec9a",
+                    "on-primary-fixed": "#3c0800",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#881f01",
+                    "surface-dim": "#e1d8d4",
+                    "surface-bright": "#fff8f5",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "inverse-surface": "#342f2d",
+                    "tertiary-container": "#9f6702",
+                    "surface": "#fff8f5",
+                    "primary-container": "#c64b2a",
+                    "on-surface": "#1f1b19",
+                    "tertiary-fixed": "#ffddb5",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-secondary-fixed": "#161f00",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "gutter": "12px",
+                    "base": "4px",
+                    "sm": "12px",
+                    "margin-mobile": "20px",
+                    "xs": "8px"
+            },
+            "fontFamily": {
+                    "section-22": ["PingFang SC"],
+                    "label-11": ["PingFang SC"],
+                    "title-28": ["PingFang SC"],
+                    "hero-34": ["PingFang SC"],
+                    "caption-13": ["PingFang SC"],
+                    "body-17": ["PingFang SC"]
+            },
+            "fontSize": {
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Warm Ivory Base */
+            color: #1D1917; /* Ink Text */
+            font-feature-settings: "tnum"; /* Tabular numbers for consistency */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .custom-card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        .beverage-chip {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-beverage {
+            background-color: #C64B2A;
+            color: #FFFFFF;
+        }
+        .inactive-beverage {
+            background-color: #F6ECE8;
+            color: #58413c;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased font-body-17">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#FAF9F5] px-margin-mobile h-16 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-start active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back_ios">arrow_back_ios</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface">记一杯水</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="pt-16 pb-lg px-margin-mobile space-y-lg">
+<!-- Hero Section - Water Progress Ring -->
+<section class="flex flex-col items-center justify-center pt-md pb-md">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle cx="50" cy="50" fill="none" r="45" stroke="#E3E0D6" stroke-width="6"></circle>
+<!-- Progress Circle -->
+<circle class="progress-ring-circle" cx="50" cy="50" fill="none" r="45" stroke="#4A90A4" stroke-dasharray="282.7" stroke-dashoffset="84.8" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-semibold text-[44px] leading-tight tracking-tight tabular-nums">1400</span>
+<span class="font-caption-13 text-caption-13 text-on-surface-variant opacity-60">/ 2000 ml</span>
+</div>
+</div>
+</section>
+<!-- Quick Log Grid -->
+<section class="space-y-sm">
+<label class="font-label-11 text-label-11 text-on-surface-variant uppercase tracking-widest px-1">快速记</label>
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Log Button 1 -->
+<button class="h-20 bg-[#F0E4D5] rounded-xl flex flex-col items-center justify-center gap-1 active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined text-primary-container" data-icon="local_drink">local_drink</span>
+<span class="font-body-17 text-primary-container font-semibold tabular-nums">+200 ml</span>
+</button>
+<!-- Log Button 2 -->
+<button class="h-20 bg-[#F0E4D5] rounded-xl flex flex-col items-center justify-center gap-1 active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined text-primary-container" data-icon="water_full">water_full</span>
+<span class="font-body-17 text-primary-container font-semibold tabular-nums">+250 ml</span>
+</button>
+<!-- Log Button 3 -->
+<button class="h-20 bg-[#F0E4D5] rounded-xl flex flex-col items-center justify-center gap-1 active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined text-primary-container" data-icon="water_bottle">water_bottle</span>
+<span class="font-body-17 text-primary-container font-semibold tabular-nums">+500 ml</span>
+</button>
+<!-- Log Button 4 -->
+<button class="h-20 bg-[#F0E4D5] rounded-xl flex flex-col items-center justify-center gap-1 active:scale-[0.98] transition-all duration-200">
+<span class="material-symbols-outlined text-primary-container" data-icon="edit">edit</span>
+<span class="font-body-17 text-primary-container font-semibold">自定义</span>
+</button>
+</div>
+</section>
+<!-- Beverage Type Chips -->
+<section class="space-y-sm">
+<label class="font-label-11 text-label-11 text-on-surface-variant px-1">今天喝了什么</label>
+<div class="flex overflow-x-auto gap-xs pb-xs no-scrollbar">
+<button class="beverage-chip active-beverage px-lg py-sm rounded-full whitespace-nowrap font-body-17 shadow-sm">白水</button>
+<button class="beverage-chip inactive-beverage px-lg py-sm rounded-full whitespace-nowrap font-body-17">茶</button>
+<button class="beverage-chip inactive-beverage px-lg py-sm rounded-full whitespace-nowrap font-body-17">咖啡</button>
+<button class="beverage-chip inactive-beverage px-lg py-sm rounded-full whitespace-nowrap font-body-17">果汁</button>
+<button class="beverage-chip inactive-beverage px-lg py-sm rounded-full whitespace-nowrap font-body-17">汤</button>
+</div>
+</section>
+<!-- Today's Logs Timeline -->
+<section class="space-y-sm pb-xl">
+<label class="font-label-11 text-label-11 text-on-surface-variant px-1">今日记录</label>
+<div class="bg-surface-container-lowest rounded-xl p-md custom-card-shadow space-y-md">
+<!-- Timeline Item 1 -->
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-primary shrink-0"></div>
+<div class="flex-1 flex justify-between items-baseline border-b border-outline-variant pb-base">
+<span class="font-body-17 text-on-surface">白水</span>
+<div class="flex items-baseline gap-1">
+<span class="font-body-17 tabular-nums">200</span>
+<span class="font-caption-13 text-on-surface-variant">ml</span>
+</div>
+</div>
+<span class="font-caption-13 text-on-surface-variant tabular-nums opacity-60">08:30</span>
+</div>
+<!-- Timeline Item 2 -->
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-primary shrink-0"></div>
+<div class="flex-1 flex justify-between items-baseline border-b border-outline-variant pb-base">
+<span class="font-body-17 text-on-surface">咖啡</span>
+<div class="flex items-baseline gap-1">
+<span class="font-body-17 tabular-nums">250</span>
+<span class="font-caption-13 text-on-surface-variant">ml</span>
+</div>
+</div>
+<span class="font-caption-13 text-on-surface-variant tabular-nums opacity-60">10:15</span>
+</div>
+<!-- Timeline Item 3 -->
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-primary shrink-0"></div>
+<div class="flex-1 flex justify-between items-baseline border-b border-outline-variant pb-base">
+<span class="font-body-17 text-on-surface">白水</span>
+<div class="flex items-baseline gap-1">
+<span class="font-body-17 tabular-nums">500</span>
+<span class="font-caption-13 text-on-surface-variant">ml</span>
+</div>
+</div>
+<span class="font-caption-13 text-on-surface-variant tabular-nums opacity-60">12:45</span>
+</div>
+<!-- Timeline Item 4 -->
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-primary shrink-0 opacity-40"></div>
+<div class="flex-1 flex justify-between items-baseline pb-base">
+<span class="font-body-17 text-on-surface">白水</span>
+<div class="flex items-baseline gap-1">
+<span class="font-body-17 tabular-nums">450</span>
+<span class="font-caption-13 text-on-surface-variant">ml</span>
+</div>
+</div>
+<span class="font-caption-13 text-on-surface-variant tabular-nums opacity-60">15:20</span>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Simple micro-interaction for beverage chips
+        const chips = document.querySelectorAll('.beverage-chip');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('active-beverage', 'shadow-sm');
+                    c.classList.add('inactive-beverage');
+                });
+                chip.classList.add('active-beverage', 'shadow-sm');
+                chip.classList.remove('inactive-beverage');
+            });
+        });
+
+        // Quick log button interaction
+        const logButtons = document.querySelectorAll('grid button');
+        logButtons.forEach(btn => {
+            btn.addEventListener('touchstart', () => btn.classList.add('opacity-80'));
+            btn.addEventListener('touchend', () => btn.classList.remove('opacity-80'));
+        });
+    </script>
+</body></html>

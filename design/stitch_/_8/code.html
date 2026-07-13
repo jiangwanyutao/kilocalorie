@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 注册</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#f8efeb",
+                    "surface-container-lowest": "#1f1b19",
+                    "surface-container": "#2c2522",
+                    "surface-tint": "#ffb4a1",
+                    "on-secondary-fixed": "#161f00",
+                    "surface-container-low": "#251f1c",
+                    "surface-container-high": "#342f2d",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-secondary-container": "#d6ec9a",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed": "#2a1800",
+                    "primary": "#ffb4a1",
+                    "secondary-fixed-dim": "#bacf81",
+                    "tertiary-container": "#9f6702",
+                    "on-surface-variant": "#d0c4c0",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "inverse-on-surface": "#1f1b19",
+                    "secondary": "#bacf81",
+                    "primary-fixed": "#ffdbd2",
+                    "on-primary-fixed": "#3c0800",
+                    "primary-container": "#a53314",
+                    "on-background": "#f0e6e2",
+                    "on-tertiary": "#4a2800",
+                    "on-primary": "#601400",
+                    "error": "#ffb4ab",
+                    "background": "#17140f",
+                    "surface-bright": "#3d3835",
+                    "surface": "#17140f",
+                    "outline": "#a08c87",
+                    "on-primary-fixed-variant": "#881f01",
+                    "secondary-container": "#3c4d0c",
+                    "surface-variant": "#53433f",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "error-container": "#93000a",
+                    "tertiary": "#ffb958",
+                    "outline-variant": "#53433f",
+                    "on-tertiary-container": "#ffddb5",
+                    "on-primary-container": "#ffdad2",
+                    "inverse-primary": "#a53314",
+                    "surface-container-highest": "#3e3430",
+                    "on-secondary": "#283500",
+                    "surface-dim": "#17140f",
+                    "on-surface": "#f0e6e2",
+                    "tertiary-fixed": "#ffddb5",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "brand-accent": "#E86A44"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "xs": "8px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "gutter": "12px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "body-17": ["PingFang SC", "sans-serif"],
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #17140F;
+            color: #EFECE4;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .paper-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-repeat: repeat;
+            opacity: 0.03;
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        input:focus {
+            outline: none;
+            border-bottom-color: #E86A44 !important;
+        }
+        .btn-active:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 selection:bg-brand-accent selection:text-white overflow-x-hidden">
+<!-- Subtle Texture Overlay -->
+<div class="paper-texture"></div>
+<!-- Top AppBar -->
+<nav class="sticky top-0 z-40 bg-background/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-start text-on-surface hover:opacity-70 transition-opacity" onclick="history.back()">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back_ios</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-[#EFECE4]">注册</h1>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</nav>
+<main class="px-margin-mobile pt-lg pb-xl max-w-[600px] mx-auto">
+<!-- Header Section -->
+<header class="mb-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+<h2 class="font-hero-34 text-hero-34 text-[#EFECE4] mb-xs">开始你的日记</h2>
+<p class="font-body-17 text-on-surface-variant opacity-70">记录每一餐的温度，感受身体的轻盈。</p>
+</header>
+<!-- Registration Form -->
+<form class="space-y-lg" onsubmit="event.preventDefault();">
+<!-- Username/Phone -->
+<div class="relative group">
+<label class="block font-label-11 text-label-11 text-on-surface-variant mb-xs ml-1 uppercase tracking-wider">手机号或邮箱</label>
+<input class="w-full bg-transparent border-b border-outline-variant py-sm text-body-17 text-[#EFECE4] placeholder:text-on-surface-variant/40 transition-colors" placeholder="请输入你的账号" type="text"/>
+</div>
+<!-- Password -->
+<div class="relative group">
+<label class="block font-label-11 text-label-11 text-on-surface-variant mb-xs ml-1 uppercase tracking-wider">设置密码</label>
+<div class="relative">
+<input class="w-full bg-transparent border-b border-outline-variant py-sm pr-10 text-body-17 text-[#EFECE4] placeholder:text-on-surface-variant/40 transition-colors" id="password-input" placeholder="6-20位字符" type="password"/>
+<button class="absolute right-0 bottom-3 text-on-surface-variant hover:text-brand-accent transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" id="eye-icon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Verification Code (Optional/Standard UI) -->
+<div class="relative group">
+<label class="block font-label-11 text-label-11 text-on-surface-variant mb-xs ml-1 uppercase tracking-wider">验证码</label>
+<div class="flex items-center gap-md">
+<input class="flex-1 bg-transparent border-b border-outline-variant py-sm text-body-17 text-[#EFECE4] placeholder:text-on-surface-variant/40 transition-colors" placeholder="请输入验证码" type="text"/>
+<button class="font-caption-13 text-caption-13 text-brand-accent border border-brand-accent/30 rounded-lg px-md py-xs whitespace-nowrap active:bg-brand-accent/10 transition-colors">
+                        获取验证码
+                    </button>
+</div>
+</div>
+<!-- Agreement Section -->
+<div class="pt-sm">
+<label class="flex items-start gap-sm cursor-pointer group">
+<div class="relative mt-1">
+<input class="peer sr-only" id="terms-check" type="checkbox"/>
+<div class="w-5 h-5 border-2 border-outline rounded-md peer-checked:bg-brand-accent peer-checked:border-brand-accent transition-all flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px] hidden peer-checked:block" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+</div>
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">
+                        我已阅读并同意 <a class="text-brand-accent underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent" href="#">用户协议</a> 和 <a class="text-brand-accent underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent" href="#">隐私政策</a>
+</span>
+</label>
+</div>
+<!-- CTA Button -->
+<div class="pt-xl">
+<button class="w-full h-[52px] bg-brand-accent text-white font-section-22 text-section-22 rounded-[10px] btn-active transition-all shadow-lg shadow-brand-accent/20">
+                    注册
+                </button>
+</div>
+</form>
+<!-- Social Login Divider -->
+<div class="mt-xl flex items-center gap-md opacity-40">
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+<span class="font-label-11 text-label-11">或者通过以下方式</span>
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+</div>
+<!-- Social Icons -->
+<div class="mt-lg flex justify-center gap-xl">
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-brand-accent hover:border-brand-accent transition-all btn-active">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-brand-accent hover:border-brand-accent transition-all btn-active">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+<!-- Footer -->
+<footer class="mt-xl text-center">
+<p class="font-body-17 text-[#EFECE4]">
+                已有账号？ <a class="text-brand-accent font-bold ml-1 hover:underline underline-offset-4 transition-all" href="#">立即登录</a>
+</p>
+</footer>
+</main>
+<!-- Decorative Bottom Gradient -->
+<div class="fixed bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent pointer-events-none opacity-50"></div>
+<script>
+        function togglePassword() {
+            const input = document.getElementById('password-input');
+            const icon = document.getElementById('eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerText = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.innerText = 'visibility';
+            }
+        }
+
+        // Simple animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.group');
+            elements.forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 * i + 200);
+            });
+        });
+    </script>
+</body></html>

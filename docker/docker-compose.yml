@@ -1,0 +1,130 @@
+# 千卡日记 · V1 生产部署（内网独立自持版）
+# 说明：
+#   · 独立 pg (pgvector/pg16) + redis (7-alpine) · 数据卷 named volume 持久化
+#   · api / web / nginx 三容器
+#   · nginx 只占宿主 ${NGINX_PORT} 高端口（默认 17180）· 不占 80/443
+#   · MinIO 复用宿主 host.docker.internal:19000
+#   · TLS 与域名在 frps 那层做 · 内网 nginx 只提供 http
+
+services:
+  pg:
+    image: pgvector/pgvector:pg16
+    container_name: qianka-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-qianka}
+      POSTGRES_USER: ${DB_USER:-qk}
+      POSTGRES_PASSWORD: ${DB_PWD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../scripts/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - qianka
+
+  redis:
+    image: redis:7-alpine
+    container_name: qianka-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+    networks:
+      - qianka
+
+  api:
+    build:
+      context: ..
+      dockerfile: api/Dockerfile
+    image: qianka/api:${IMAGE_TAG:-0.1.0}
+    container_name: qianka-api
+    restart: unless-stopped
+    depends_on:
+      pg:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./.env.prod
+    environment:
+      NODE_ENV: production
+      PORT: 7100
+      # 内部 network 走服务名 · 不受宿主端口占用影响
+      DATABASE_URL: postgres://${DB_USER:-qk}:${DB_PWD}@pg:5432/${DB_NAME:-qianka}
+      REDIS_URL: redis://redis:6379/0
+      # MinIO 走宿主
+      MINIO_ENDPOINT: host.docker.internal
+      MINIO_PORT: 19000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    expose:
+      - "7100"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:7100/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - qianka
+
+  web:
+    build:
+      context: ..
+      dockerfile: web/Dockerfile
+    image: qianka/web:${IMAGE_TAG:-0.1.0}
+    container_name: qianka-web
+    restart: unless-stopped
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - qianka
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: qianka-nginx
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    ports:
+      # 宿主端口 → 容器 80 · 只走内网 http · TLS 在 frps 那层
+      - "${NGINX_PORT:-17180}:80"
+    volumes:
+      - ./nginx/qianka.conf:/etc/nginx/conf.d/default.conf:ro
+      - /data/qianka/logs/nginx:/var/log/nginx
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - qianka
+
+volumes:
+  pgdata:
+    name: qianka-pgdata
+  redisdata:
+    name: qianka-redisdata
+
+networks:
+  qianka:
+    name: qianka-network
+    driver: bridge

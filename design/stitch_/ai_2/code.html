@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#ffb4a1",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#eae1dd",
+                    "outline": "#8c716a",
+                    "on-tertiary-fixed": "#2a1800",
+                    "secondary-container": "#d6ec9a",
+                    "surface-container-low": "#fbf2ee",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#9f6702",
+                    "primary-fixed": "#ffdbd2",
+                    "on-surface": "#1f1b19",
+                    "inverse-surface": "#342f2d",
+                    "surface-tint": "#a93717",
+                    "surface-container-high": "#f0e6e2",
+                    "inverse-on-surface": "#f8efeb",
+                    "surface-variant": "#eae1dd",
+                    "surface-container": "#f6ece8",
+                    "tertiary": "#7e5100",
+                    "on-background": "#1f1b19",
+                    "tertiary-fixed": "#ffddb5",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "surface-bright": "#fff8f5",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-tertiary-container": "#fff9f5",
+                    "primary": "#a53314",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#fff9f8",
+                    "surface-dim": "#e1d8d4",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#c64b2a",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-primary-fixed": "#3c0800",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#58413c",
+                    "outline-variant": "#e0bfb7",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-secondary-container": "#596b28",
+                    "surface": "#fff8f5",
+                    "on-secondary-fixed": "#161f00",
+                    "on-primary-fixed-variant": "#881f01",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "background": "#fff8f5",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#536523",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "margin-mobile": "20px",
+                    "lg": "24px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "hero-34": ["PingFang SC"],
+                    "body-17": ["PingFang SC"],
+                    "caption-13": ["PingFang SC"],
+                    "title-28": ["PingFang SC"],
+                    "label-11": ["PingFang SC"],
+                    "section-22": ["PingFang SC"]
+            },
+            "fontSize": {
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Brand Ivory Base */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .message-bubble-ai {
+            border: 1px solid #EFECE4;
+            box-shadow: 0 4px 12px rgba(29, 25, 23, 0.04);
+        }
+        .message-bubble-user {
+            background-color: #F0E4D5;
+        }
+        .shadow-soft {
+            box-shadow: 0 4px 12px rgba(29, 25, 23, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-on-surface overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-surface dark:bg-surface-dim docked full-width top-0 z-40 flex justify-between items-center w-full px-margin-mobile h-16 fixed">
+<div class="flex items-center gap-3">
+<div class="relative w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A soft and warm digital portrait of an AI companion named Xiao Qian. She has a gentle, caring expression with soft lighting in a high-key ivory-colored studio. The style is minimalist and editorial, with a palette of cream, soft orange, and warm wood tones, evoking a sense of calm and intentionality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo3zyJMu-PlXmNk5ITYC82mdL6sy1zd2A7yhyCn09lAlr2LCEJkgkVdYNw9KbXClA8umsr0g6m_-_aiRJvS9VB88yu8wog7Iq50hymnnpAmpwdM4AOw2SvXR0pW4RaM53BSfbDVOclaJ6wfAYF-WGwRU93FQwjAy-U1oKfU41rlFV37b9qVmsL0NuGD3kwQVik7KKCfREUK_UWrDBwIAHZfAm7zdx4KsuD1s6NWITO1PLf_flSoWGHxA9NJYPYWNKLI_4T1jKQtRYy"/>
+</div>
+<div>
+<h1 class="font-title-28 text-title-28 text-on-surface !text-lg leading-tight">小千</h1>
+<p class="font-caption-13 text-caption-13 text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 bg-secondary rounded-full inline-block"></span> 温柔知心
+                </p>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-primary dark:text-primary-fixed hover:opacity-80 active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<!-- Chat Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile pt-20 pb-32 space-y-lg flex flex-col">
+<!-- Date Marker -->
+<div class="flex justify-center my-4">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant px-3 py-1 bg-surface-container rounded-full">今天 12:30</span>
+</div>
+<!-- AI Message -->
+<div class="flex items-start gap-3 max-w-[85%] self-start">
+<div class="flex flex-col gap-1">
+<div class="message-bubble-ai bg-white rounded-2xl rounded-tl-none p-md">
+<p class="font-body-17 text-body-17">你好呀！我是你的健康搭子小千。今天想记录点什么？</p>
+</div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-start gap-3 max-w-[85%] self-end">
+<div class="flex flex-col gap-1">
+<div class="message-bubble-user rounded-2xl rounded-tr-none p-md">
+<p class="font-body-17 text-body-17">我刚才吃了一碗兰州拉面，能帮我算算热量吗？</p>
+</div>
+</div>
+</div>
+<!-- AI Response -->
+<div class="flex items-start gap-3 max-w-[85%] self-start">
+<div class="flex flex-col gap-4 w-full">
+<div class="message-bubble-ai bg-white rounded-2xl rounded-tl-none p-md">
+<p class="font-body-17 text-body-17">好的，我来帮你估算：</p>
+</div>
+<!-- Food Log Card (Asymmetric Bento Style) -->
+<div class="bg-white rounded-xl shadow-soft border border-outline-variant overflow-hidden flex flex-col w-full max-w-sm">
+<div class="p-md bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<span class="font-section-22 text-section-22 !text-base">兰州拉面 (标准碗)</span>
+<span class="font-title-28 text-title-28 !text-xl text-primary">~520 <small class="text-xs">kcal</small></span>
+</div>
+<div class="p-md space-y-md">
+<!-- Simple Macro Bar Chart -->
+<div class="space-y-xs">
+<div class="flex justify-between text-xs text-on-surface-variant">
+<span>碳水 (75g)</span>
+<span>蛋白质 (18g)</span>
+<span>脂肪 (15g)</span>
+</div>
+<div class="flex h-2 rounded-full overflow-hidden bg-surface-container">
+<div class="bg-primary h-full" style="width: 60%"></div>
+<div class="bg-secondary h-full" style="width: 25%"></div>
+<div class="bg-tertiary h-full" style="width: 15%"></div>
+</div>
+</div>
+<!-- Details Grid -->
+<div class="grid grid-cols-2 gap-2">
+<div class="p-xs bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">面条量</p>
+<p class="font-bold text-sm">约 200g</p>
+</div>
+<div class="p-xs bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">配菜</p>
+<p class="font-bold text-sm">牛肉、香菜、萝卜</p>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-md flex gap-gutter border-t border-outline-variant bg-surface-bright">
+<button class="flex-1 py-2 rounded-lg border-1.5 border-primary text-primary font-bold text-sm active:scale-95 transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined !text-sm" data-icon="edit">edit</span> 编辑
+                        </button>
+<button class="flex-1 py-2 rounded-lg bg-primary text-white font-bold text-sm active:scale-95 transition-all flex items-center justify-center gap-1 shadow-sm">
+<span class="material-symbols-outlined !text-sm" data-icon="check">check</span> 记下
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Composer & Bottom Nav Wrapper -->
+<div class="fixed bottom-0 left-0 w-full z-50">
+<!-- Input Area -->
+<div class="px-margin-mobile pb-6 pt-2 bg-gradient-to-t from-surface via-surface to-transparent">
+<div class="bg-white rounded-full shadow-soft border border-outline-variant flex items-center p-1.5 h-14">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+</button>
+<input class="flex-1 border-none focus:ring-0 bg-transparent px-2 font-body-17 placeholder-on-surface-variant/50" placeholder="问问小千..." type="text"/>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="add_photo_alternate">add_photo_alternate</span>
+</button>
+<button class="w-10 h-10 bg-primary text-white flex items-center justify-center rounded-full active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="arrow_upward">arrow_upward</span>
+</button>
+</div>
+</div>
+<!-- Shared Component: BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-container docked full-width bottom-0 rounded-t-xl border-t border-outline-variant shadow-[0_-4px_12px_rgba(29,25,23,0.04)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-end px-2 pb-safe h-20">
+<!-- Home -->
+<a class="flex flex-col items-center gap-1 py-2 flex-1 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-11 text-label-11">首页</span>
+</a>
+<!-- Records -->
+<a class="flex flex-col items-center gap-1 py-2 flex-1 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-11 text-label-11">记录</span>
+</a>
+<!-- Central FAB Placeholder -->
+<div class="flex-1 flex justify-center pb-4 pointer-events-none">
+<div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg pointer-events-auto active:scale-90 transition-transform">
+<span class="material-symbols-outlined !text-3xl" data-icon="add">add</span>
+</div>
+</div>
+<!-- AI Partner (ACTIVE) -->
+<a class="flex flex-col items-center gap-1 py-2 flex-1 text-primary dark:text-primary-fixed font-bold hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-label-11 text-label-11">AI 搭子</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center gap-1 py-2 flex-1 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-11 text-label-11">我的</span>
+</a>
+</nav>
+</div>
+<!-- Atmospheric micro-interaction -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const composerInput = document.querySelector('input');
+            const sendBtn = composerInput.nextElementSibling.nextElementSibling;
+            
+            composerInput.addEventListener('focus', () => {
+                // Focus interaction placeholder
+            });
+
+            // Smooth scroll to bottom on load
+            const main = document.querySelector('main');
+            main.scrollTop = main.scrollHeight;
+        });
+    </script>
+</body></html>

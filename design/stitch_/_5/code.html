@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#ffb4a1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#eae1dd",
+                        "outline": "#8c716a",
+                        "on-tertiary-fixed": "#2a1800",
+                        "secondary-container": "#d6ec9a",
+                        "surface-container-low": "#fbf2ee",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#9f6702",
+                        "primary-fixed": "#ffdbd2",
+                        "on-surface": "#1f1b19",
+                        "inverse-surface": "#342f2d",
+                        "surface-tint": "#a93717",
+                        "surface-container-high": "#f0e6e2",
+                        "inverse-on-surface": "#f8efeb",
+                        "surface-variant": "#eae1dd",
+                        "surface-container": "#f6ece8",
+                        "tertiary": "#7e5100",
+                        "on-background": "#1f1b19",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "surface-bright": "#fff8f5",
+                        "secondary-fixed-dim": "#bacf81",
+                        "on-tertiary-container": "#fff9f5",
+                        "primary": "#a53314",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fff9f8",
+                        "surface-dim": "#e1d8d4",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#c64b2a",
+                        "secondary-fixed": "#d6ec9a",
+                        "on-primary-fixed": "#3c0800",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#58413c",
+                        "outline-variant": "#e0bfb7",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-secondary-container": "#596b28",
+                        "surface": "#fff8f5",
+                        "on-secondary-fixed": "#161f00",
+                        "on-primary-fixed-variant": "#881f01",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "background": "#fff8f5",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#536523",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "hero-34": ["PingFang SC"],
+                        "body-17": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "title-28": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "section-22": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Warm Ivory Paper Base */
+            color: #1F1B19;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'PingFang SC', sans-serif;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .custom-slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #c64b2a;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .custom-slider-track {
+            background: linear-gradient(to right, #c64b2a var(--progress, 50%), #E3E0D6 var(--progress, 50%));
+        }
+        .stepped-slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E3E0D6;
+        }
+        .stepped-slider-dot.active {
+            background: #c64b2a;
+        }
+        /* Soft Shadow for level 1 cards */
+        .soft-card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation & Progress -->
+<header class="px-margin-mobile pt-12 pb-4 flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<button aria-label="返回" class="w-10 h-10 flex items-center justify-start active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface text-2xl">arrow_back_ios</span>
+</button>
+<div class="flex-1 flex gap-2 h-1 px-4">
+<div class="flex-1 rounded-full bg-[#c64b2a]"></div>
+<div class="flex-1 rounded-full bg-[#E3E0D6]"></div>
+<div class="flex-1 rounded-full bg-[#E3E0D6]"></div>
+</div>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</div>
+<div class="flex flex-col gap-1">
+<h1 class="font-title-28 text-title-28 text-on-surface">先了解你一下</h1>
+<p class="font-caption-13 text-caption-13 text-on-surface-variant opacity-70">只用来算你的基础代谢，不会分享</p>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 px-margin-mobile flex flex-col gap-xl pb-32">
+<!-- Gender Row -->
+<section class="flex flex-col gap-sm">
+<label class="font-body-17 text-body-17 font-medium text-on-surface-variant">性别</label>
+<div class="flex gap-3">
+<button class="flex-1 py-3 px-4 rounded-xl font-body-17 text-body-17 text-center transition-all active:scale-95 bg-primary-container text-white">男</button>
+<button class="flex-1 py-3 px-4 rounded-xl font-body-17 text-body-17 text-center transition-all active:scale-95 bg-white border border-[#E3E0D6] text-on-surface-variant hover:bg-surface-container-low">女</button>
+<button class="flex-1 py-3 px-4 rounded-xl font-body-17 text-body-17 text-center transition-all active:scale-95 bg-white border border-[#E3E0D6] text-on-surface-variant hover:bg-surface-container-low">不设定</button>
+</div>
+</section>
+<!-- Birth Year Row -->
+<section class="flex flex-col gap-sm">
+<label class="font-body-17 text-body-17 font-medium text-on-surface-variant">出生年份</label>
+<div class="bg-white soft-card-shadow rounded-xl p-md flex flex-col items-center justify-center h-24">
+<span class="font-hero-34 text-hero-34 text-on-surface tabular-nums">1993</span>
+<div class="flex gap-4 mt-2">
+<span class="text-on-surface-variant opacity-20 font-body-17 tabular-nums">1991</span>
+<span class="text-on-surface-variant opacity-40 font-body-17 tabular-nums">1992</span>
+<span class="text-on-surface-variant opacity-40 font-body-17 tabular-nums">1994</span>
+<span class="text-on-surface-variant opacity-20 font-body-17 tabular-nums">1995</span>
+</div>
+</div>
+</section>
+<!-- Height Row -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-baseline">
+<label class="font-body-17 text-body-17 font-medium text-on-surface-variant">身高 cm</label>
+<span class="text-[44px] font-semibold text-[#c64b2a] tabular-nums leading-none">172</span>
+</div>
+<div class="relative w-full h-12 flex items-center">
+<input class="absolute w-full h-1.5 bg-[#E3E0D6] rounded-full appearance-none custom-slider-thumb focus:outline-none" max="220" min="140" style="--progress: 40%" type="range" value="172"/>
+<div class="absolute inset-0 flex justify-between items-center px-1 pointer-events-none">
+<div class="w-0.5 h-3 bg-on-surface-variant/20"></div>
+<div class="w-0.5 h-3 bg-on-surface-variant/20"></div>
+<div class="w-0.5 h-3 bg-on-surface-variant/20"></div>
+<div class="w-0.5 h-3 bg-on-surface-variant/20"></div>
+<div class="w-0.5 h-3 bg-on-surface-variant/20"></div>
+</div>
+</div>
+</section>
+<!-- Weight Row -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-baseline">
+<label class="font-body-17 text-body-17 font-medium text-on-surface-variant">当前体重 kg</label>
+<span class="text-[44px] font-semibold text-[#c64b2a] tabular-nums leading-none">62.5</span>
+</div>
+<div class="relative w-full h-12 flex items-center overflow-hidden">
+<!-- Ruler Style Indicator -->
+<div class="absolute inset-0 flex justify-center pointer-events-none">
+<div class="w-1 h-10 bg-[#c64b2a] rounded-full z-10"></div>
+</div>
+<div class="flex gap-4 items-end transition-transform translate-x-12">
+<div class="flex flex-col items-center gap-1 opacity-20">
+<div class="w-0.5 h-4 bg-on-surface"></div>
+<span class="text-xs tabular-nums">61</span>
+</div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-0.5 h-6 bg-on-surface"></div>
+<span class="text-xs tabular-nums">62</span>
+</div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="w-0.5 h-2 bg-on-surface opacity-10"></div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-0.5 h-4 bg-on-surface"></div>
+<span class="text-xs tabular-nums">63</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Activity Level -->
+<section class="flex flex-col gap-sm">
+<label class="font-body-17 text-body-17 font-medium text-on-surface-variant">活动等级</label>
+<div class="relative py-4">
+<div class="w-full h-1 bg-[#E3E0D6] rounded-full absolute top-1/2 -translate-y-1/2"></div>
+<div class="w-1/4 h-1 bg-[#c64b2a] rounded-full absolute top-1/2 -translate-y-1/2"></div>
+<div class="relative z-10 flex justify-between items-center w-full px-1">
+<div class="stepped-slider-dot active"></div>
+<div class="stepped-slider-dot active"></div>
+<div class="stepped-slider-dot"></div>
+<div class="stepped-slider-dot"></div>
+<div class="stepped-slider-dot"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="font-body-17 text-body-17 text-on-surface"><span class="font-bold text-[#c64b2a]">轻度</span> · 每周 1-3 次轻度运动</p>
+</div>
+</section>
+</main>
+<!-- Bottom Action Button -->
+<footer class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-[#FAF9F5] via-[#FAF9F5] to-transparent pt-12">
+<button class="w-full h-[56px] bg-primary-container text-white font-body-17 text-body-17 font-semibold rounded-2xl soft-card-shadow active:scale-95 active:opacity-90 transition-all flex items-center justify-center">
+            下一步
+        </button>
+</footer>
+<script>
+        // Simple micro-interaction for the gender selection
+        document.querySelectorAll('section:nth-of-type(1) button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('section:nth-of-type(1) button').forEach(b => {
+                    b.classList.remove('bg-primary-container', 'text-white');
+                    b.classList.add('bg-white', 'border', 'border-[#E3E0D6]', 'text-on-surface-variant');
+                });
+                this.classList.add('bg-primary-container', 'text-white');
+                this.classList.remove('bg-white', 'border', 'border-[#E3E0D6]', 'text-on-surface-variant');
+            });
+        });
+
+        // Simple range progress update
+        const slider = document.querySelector('input[type="range"]');
+        if(slider) {
+            slider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                const min = e.target.min;
+                const max = e.target.max;
+                const percent = (val - min) / (max - min) * 100;
+                e.target.style.setProperty('--progress', percent + '%');
+                document.querySelector('section:nth-of-type(3) span.text-[44px]').textContent = val;
+            });
+        }
+    </script>
+</body></html>

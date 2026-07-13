@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>千卡日记 · UI Spec for Stitch v0.1</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --ground: #FAF9F5; --ground-alt: #F3F0E7; --ground-sunk: #EFEBDE;
+  --ink: #1D1917; --muted: #5C5852; --faint: #8A857D; --rule: #E3E0D6;
+  --accent: #C64B2A; --accent-soft: #F0E4D5;
+  --support: #6C7F3A; --support-soft: #E9EBD8;
+  --warn: #B3781A; --warn-soft: #F5E9CE;
+  --code-bg: #F5F1E6; --prompt-bg: #FFF9F0; --prompt-border: #E8CDA5;
+  --font-cn: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans CN",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono: ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+    --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+    --accent: #E86A44; --accent-soft: #2A211A;
+    --support: #A2B770; --support-soft: #23281A;
+    --warn: #D9A143; --warn-soft: #2B2416;
+    --code-bg: #100D08; --prompt-bg: #1A150E; --prompt-border: #3F2E1E;
+  }
+}
+:root[data-theme="light"] {
+  --ground: #FAF9F5; --ground-alt: #F3F0E7; --ground-sunk: #EFEBDE;
+  --ink: #1D1917; --muted: #5C5852; --faint: #8A857D; --rule: #E3E0D6;
+  --accent: #C64B2A; --accent-soft: #F0E4D5;
+  --support: #6C7F3A; --support-soft: #E9EBD8;
+  --warn: #B3781A; --warn-soft: #F5E9CE;
+  --code-bg: #F5F1E6; --prompt-bg: #FFF9F0; --prompt-border: #E8CDA5;
+}
+:root[data-theme="dark"] {
+  --ground: #17140F; --ground-alt: #201C16; --ground-sunk: #14110D;
+  --ink: #EFECE4; --muted: #A19A8E; --faint: #6D6860; --rule: #2B2620;
+  --accent: #E86A44; --accent-soft: #2A211A;
+  --support: #A2B770; --support-soft: #23281A;
+  --warn: #D9A143; --warn-soft: #2B2416;
+  --code-bg: #100D08; --prompt-bg: #1A150E; --prompt-border: #3F2E1E;
+}
+body { background: var(--ground); color: var(--ink); font-family: var(--font-cn); font-size: 15px; line-height: 1.72; margin: 0; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 44px 24px 120px; }
+.masthead { padding-bottom: 28px; border-bottom: 1px solid var(--rule); margin-bottom: 40px; }
+.masthead .brand { font-size: 11px; color: var(--faint); letter-spacing: 0.28em; margin-bottom: 14px; text-transform: uppercase; }
+.masthead .brand .dot { color: var(--accent); margin: 0 6px; }
+.masthead h1 { font-weight: 700; font-size: 38px; margin: 0 0 10px; letter-spacing: -0.015em; line-height: 1.18; }
+.masthead .subtitle { color: var(--muted); font-size: 15.5px; margin: 0 0 20px; max-width: 640px; line-height: 1.6; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.meta span::before { content: '·'; margin-right: 28px; color: var(--rule); }
+.meta span:first-child::before { content: none; margin-right: 0; }
+.meta b { color: var(--ink); font-weight: 500; margin-left: 6px; }
+.toc { background: var(--ground-alt); border-radius: 10px; padding: 22px 26px; margin: 36px 0 48px; font-size: 14px; }
+.toc h4 { margin: 0 0 14px; font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; }
+.toc ol { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 32px; }
+.toc li { padding: 5px 0; break-inside: avoid; }
+.toc .n { font-family: var(--font-mono); color: var(--faint); font-size: 12px; margin-right: 12px; }
+.toc a { color: var(--ink); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+section { margin-top: 60px; scroll-margin-top: 24px; }
+section > h2 { font-size: 26px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+section > h2 .num { font-family: var(--font-mono); font-size: 14px; color: var(--accent); font-weight: 500; margin-right: 14px; }
+section > .desc { color: var(--muted); font-size: 14.5px; margin: 6px 0 22px; max-width: 640px; }
+section > .rule { height: 1px; background: var(--rule); margin: 0 0 28px; }
+h3 { font-size: 17px; font-weight: 600; margin: 32px 0 10px; }
+h4 { font-size: 13px; font-weight: 600; margin: 22px 0 8px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 8px 0 16px; padding-left: 22px; }
+li { margin: 5px 0; }
+strong { color: var(--ink); font-weight: 600; }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--ground-alt); padding: 1px 6px; border-radius: 4px; color: var(--accent); border: 1px solid var(--rule); }
+.callout { border-radius: 10px; padding: 18px 22px; margin: 22px 0; font-size: 14px; line-height: 1.66; border-left: 3px solid; }
+.callout .tag { display: block; font-size: 11px; letter-spacing: 0.2em; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; }
+.callout p:last-child { margin-bottom: 0; }
+.callout ul { margin: 4px 0 0; padding-left: 20px; }
+.callout ul li { margin: 5px 0; }
+.callout.decision { background: var(--accent-soft); border-color: var(--accent); }
+.callout.decision .tag { color: var(--accent); }
+.callout.note { background: var(--support-soft); border-color: var(--support); }
+.callout.note .tag { color: var(--support); }
+.callout.tip { background: var(--warn-soft); border-color: var(--warn); }
+.callout.tip .tag { color: var(--warn); }
+.tblwrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--rule); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; background: var(--ground); }
+th, td { padding: 10px 14px; text-align: left; vertical-align: top; }
+thead th { background: var(--ground-alt); font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; border-bottom: 1px solid var(--rule); text-transform: uppercase; }
+tbody tr + tr td { border-top: 1px solid var(--rule); }
+td.mono { font-family: var(--font-mono); font-size: 12.5px; }
+.badge { display: inline-block; font-size: 10.5px; padding: 2px 9px; border-radius: 999px; font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; }
+.badge.p0 { background: var(--accent); color: #fff; }
+.badge.p1 { background: var(--accent-soft); color: var(--accent); }
+.badge.p2 { background: var(--ground-alt); color: var(--faint); border: 1px solid var(--rule); }
+.badge.auth { background: var(--support-soft); color: var(--support); }
+.badge.tab { background: var(--warn-soft); color: var(--warn); }
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+.swatch { border-radius: 10px; padding: 14px 16px 12px; font-size: 12.5px; border: 1px solid var(--rule); }
+.swatch .name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.swatch .hex { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
+.swatch .note { margin-top: 6px; font-size: 11px; opacity: 0.75; }
+.sw-ground { background: #FAF9F5; color: #1D1917; border-color: #E3E0D6; }
+.sw-ink { background: #1D1917; color: #EFECE4; }
+.sw-accent { background: #C64B2A; color: #fff; }
+.sw-accent-soft { background: #F0E4D5; color: #A0451A; }
+.sw-support { background: #6C7F3A; color: #fff; }
+.sw-warn { background: #B3781A; color: #fff; }
+.sw-alt { background: #F3F0E7; color: #1D1917; border-color: #E3E0D6; }
+.sw-rule { background: #E3E0D6; color: #1D1917; }
+.screen { border: 1px solid var(--rule); border-radius: 12px; background: var(--ground); overflow: hidden; margin: 26px 0 32px; }
+.screen > header { background: var(--ground-alt); padding: 14px 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--rule); }
+.screen > header .snum { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+.screen > header .stitle { font-size: 16px; font-weight: 600; }
+.screen > header .sslug { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+.screen > header .badge { margin-left: auto; }
+.screen > .sbody { padding: 20px 22px 22px; }
+.screen h5 { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin: 16px 0 8px; }
+.screen h5:first-child { margin-top: 0; }
+.screen .info-line { font-size: 13px; color: var(--muted); margin: 4px 0; }
+.screen ul { margin: 6px 0 10px; padding-left: 22px; font-size: 13.5px; }
+.screen ul li { margin: 3px 0; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.chip { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; background: var(--ground-alt); color: var(--muted); font-family: var(--font-mono); }
+.prompt-box { background: var(--prompt-bg); border: 1px solid var(--prompt-border); border-radius: 10px; padding: 16px 18px; margin: 14px 0 4px; position: relative; }
+.prompt-box .plabel { font-size: 10px; letter-spacing: 0.2em; color: var(--accent); font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.prompt-box .plabel::before { content: '▲'; font-size: 8px; }
+.prompt-box pre { margin: 0; background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; color: var(--ink); }
+.prompt-box .hint { font-size: 11px; color: var(--faint); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--prompt-border); }
+.comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 16px 0 24px; }
+.comp { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; background: var(--ground); }
+.comp b { display: block; font-family: var(--font-mono); color: var(--accent); font-size: 13px; margin-bottom: 4px; }
+.comp .desc { color: var(--muted); font-size: 12px; line-height: 1.55; }
+.nav-map { border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; margin: 16px 0 24px; background: var(--ground); font-family: var(--font-mono); font-size: 12.5px; line-height: 1.9; color: var(--ink); overflow-x: auto; white-space: pre; }
+pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; margin: 10px 0 20px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; }
+.footer { margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 12px; text-align: center; letter-spacing: 0.1em; text-transform: uppercase; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+@media (max-width: 640px) {
+  .wrap { padding: 32px 18px 80px; }
+  .masthead h1 { font-size: 28px; }
+  section > h2 { font-size: 20px; }
+  .toc ol { columns: 1; }
+  .prompt-box pre { font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brand">千卡日记 <span class="dot">·</span> UI Spec for Google Stitch</div>
+  <h1>UI 设计需求书 · V0.1</h1>
+  <p class="subtitle">V1 全部 32 屏的信息架构、组件目录、视觉规范，以及给 Google Stitch 的可复制 Prompt。<strong>每个 Prompt 单独出图，然后自己拼版</strong>。</p>
+  <div class="meta">
+    <span>版本<b>0.1</b></span>
+    <span>状态<b>待评审</b></span>
+    <span>更新<b>2026-07-09</b></span>
+    <span>依赖<b>PRD v0.1 · 架构 v0.3</b></span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h4>目录</h4>
+  <ol>
+    <li><span class="n">01</span><a href="#s1">使用说明</a></li>
+    <li><span class="n">02</span><a href="#s2">全局视觉规范</a></li>
+    <li><span class="n">03</span><a href="#s3">全局 System Prompt</a></li>
+    <li><span class="n">04</span><a href="#s4">全局组件目录</a></li>
+    <li><span class="n">05</span><a href="#s5">信息架构与导航</a></li>
+    <li><span class="n">06</span><a href="#s6">页面清单一览</a></li>
+    <li><span class="n">07</span><a href="#s7">首次上手流</a></li>
+    <li><span class="n">08</span><a href="#s8">首页 · Home</a></li>
+    <li><span class="n">09</span><a href="#s9">记录流（饮食）</a></li>
+    <li><span class="n">10</span><a href="#s10">AI 拍照识别</a></li>
+    <li><span class="n">11</span><a href="#s11">饮水 / 运动 / 体测</a></li>
+    <li><span class="n">12</span><a href="#s12">AI 搭子对话</a></li>
+    <li><span class="n">13</span><a href="#s13">记忆管理</a></li>
+    <li><span class="n">14</span><a href="#s14">轻断食</a></li>
+    <li><span class="n">15</span><a href="#s15">统计 &amp; 月历</a></li>
+    <li><span class="n">16</span><a href="#s16">我的 &amp; 设置</a></li>
+    <li><span class="n">17</span><a href="#s17">Apple Health 桥</a></li>
+    <li><span class="n">18</span><a href="#s18">交互规范</a></li>
+    <li><span class="n">19</span><a href="#s19">Stitch 使用技巧</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2><span class="num">01</span>使用说明</h2>
+  <p class="desc">这份 Spec 怎么变成设计稿。</p>
+  <div class="rule"></div>
+
+  <ol>
+    <li>打开 <a href="https://stitch.withgoogle.com/" target="_blank">stitch.withgoogle.com</a>（Google Labs · 免费 · 需 Google 账号）</li>
+    <li>先把 <strong>§3 全局 System Prompt</strong> 复制到 Stitch 的 "Design System / Style Guide" 输入框</li>
+    <li>然后逐屏（§7–§17）复制每个 <strong>Screen Prompt</strong>，生成对应屏</li>
+    <li>拿到所有屏后自己拼版为完整原型（Figma / 手动排 PDF 皆可）</li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="tag">Stitch 出图规律</span>
+    <ul>
+      <li>Stitch 更懂英文 Prompt，本文档所有 Prompt 均为英文</li>
+      <li>一次一屏效果最佳；不要试图一段 Prompt 出多屏</li>
+      <li>结果不满意时改动 Prompt 里的关键词而不是整段重写</li>
+      <li>把颜色 HEX 写在 Prompt 里比说"暖色"更精准</li>
+      <li>iPhone 15 Pro 尺寸（393 × 852）是最佳默认</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span>全局视觉规范</h2>
+  <p class="desc">Design tokens：色板 · 字体 · 圆角 · 间距 · 阴影 · 图标。</p>
+  <div class="rule"></div>
+
+  <h3>色板（Palette）</h3>
+  <div class="palette">
+    <div class="swatch sw-ground"><div class="name">Ground · 暖纸</div><div class="hex">#FAF9F5</div><div class="note">全局底色（浅色模式）</div></div>
+    <div class="swatch sw-alt"><div class="name">Ground Alt</div><div class="hex">#F3F0E7</div><div class="note">卡片背景 / 分割区</div></div>
+    <div class="swatch sw-ink"><div class="name">Ink · 暖墨</div><div class="hex">#1D1917</div><div class="note">正文字色</div></div>
+    <div class="swatch sw-accent"><div class="name">Accent · 酱橙</div><div class="hex">#C64B2A</div><div class="note">主色（进度环 / CTA / 高亮数字）</div></div>
+    <div class="swatch sw-accent-soft"><div class="name">Accent Soft</div><div class="hex">#F0E4D5</div><div class="note">主色浅底（Chip / Badge / Tag）</div></div>
+    <div class="swatch sw-support"><div class="name">Support · 茶绿</div><div class="hex">#6C7F3A</div><div class="note">正向信号（达标 / 蛋白）</div></div>
+    <div class="swatch sw-warn"><div class="name">Warn · 蜜金</div><div class="hex">#B3781A</div><div class="note">警示（超额 / 快过期）</div></div>
+    <div class="swatch sw-rule"><div class="name">Rule</div><div class="hex">#E3E0D6</div><div class="note">分割线 / 边框</div></div>
+  </div>
+
+  <h3>字体</h3>
+  <ul>
+    <li><strong>中文</strong>：PingFang SC / Hiragino Sans GB / Microsoft YaHei（系统栈）</li>
+    <li><strong>数字（数据）</strong>：<code>font-variant-numeric: tabular-nums</code>，等宽对齐</li>
+    <li><strong>字号阶</strong>：34（超大数字）· 28（页面标题）· 22（次级标题）· 17（段落）· 15（正文）· 13（副文）· 11（标签）</li>
+    <li><strong>字重</strong>：Regular 400 · Medium 500 · Semibold 600 · Bold 700</li>
+  </ul>
+
+  <h3>圆角 &amp; 阴影 &amp; 间距</h3>
+  <ul>
+    <li>圆角：卡片 <code>12–16px</code> · Chip <code>999px</code> · 按钮 <code>10px</code></li>
+    <li>阴影：极轻 <code>0 1px 3px rgba(29,25,23,0.06)</code></li>
+    <li>间距：4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 网格</li>
+    <li>安全区：iOS 顶部 44 pt · 底部 34 pt Home Indicator</li>
+  </ul>
+
+  <h3>图标风格</h3>
+  <p>细线条 (1.5px stroke) · 圆角笔尖 · 24 × 24 · 单色 · 参考 Phosphor Icons / Lucide 的 "regular" 变体。</p>
+
+  <h3>暗色模式</h3>
+  <ul>
+    <li>Ground <code>#17140F</code>（深棕黑，不用纯黑）</li>
+    <li>Ink <code>#EFECE4</code></li>
+    <li>Accent <code>#E86A44</code>（提亮以适应暗底）</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span>全局 System Prompt</h2>
+  <p class="desc">先把这段丢给 Stitch 建立整体调性。</p>
+  <div class="rule"></div>
+
+  <div class="prompt-box">
+    <div class="plabel">COPY TO STITCH · SYSTEM STYLE GUIDE</div>
+<pre>You are designing a mobile PWA app called "千卡日记 (Qianka Diary)", a Chinese-language diet and health diary. All UI is in Simplified Chinese.
+
+DESIGN LANGUAGE:
+- Warm, calm, diary-like — NOT dark tech, NOT sterile minimal, NOT sugary cute.
+- Feels like a hand-kept notebook printed on ivory paper.
+- Confidence in numbers: large tabular numerals feel considered.
+
+COLOR PALETTE:
+- Background (light): #FAF9F5 warm ivory paper
+- Background alt (cards): #F3F0E7
+- Text (ink): #1D1917 warm dark brown-black
+- Muted text: #5C5852
+- Rule lines: #E3E0D6
+- Accent (primary CTA, progress ring, key numbers): #C64B2A soy-orange / persimmon
+- Accent soft (badges, chips, tags): #F0E4D5
+- Support (positive, protein, on-track): #6C7F3A tea green
+- Warn (over-limit): #B3781A honey gold
+
+DARK MODE (must design both):
+- Background: #17140F warm dark
+- Text: #EFECE4
+- Accent: #E86A44 (brighter for dark)
+
+TYPOGRAPHY:
+- Chinese font: PingFang SC (system stack)
+- Numbers use tabular-nums, semibold, extra weight for hero numbers
+- Type scale: 34 hero / 28 title / 22 section / 17 body / 13 caption / 11 label
+
+SHAPES &amp; SPACING:
+- Card radius 12–16px, chip 999px pill, button 10px
+- Very subtle shadows: 0 1px 3px rgba(29,25,23,0.06). No dramatic float.
+- Base grid: 8pt
+
+ICONS:
+- Line style, 1.5px stroke, 24x24, single color from ink or muted.
+- Phosphor / Lucide regular variant. No emoji, no multicolor icons.
+
+TARGET DEVICE:
+- iPhone 15 Pro (393 × 852), iOS 17 Safari as PWA.
+- Design bottom safe area for home indicator (34pt).
+
+APP STRUCTURE:
+- 5-tab bottom bar: Home 首页 / Record 记录 / [+] center capture / AI 搭子 / Me 我的
+- Center [+] is a raised circular button in accent color.
+
+MICROCOPY VOICE:
+- Chinese, warm-friendly-quiet, not preachy.
+- Never say "打卡" as heavy gamification; prefer "记一笔" "存进日记".
+- Numbers speak. Copy stays out of the way.</pre>
+    <div class="hint">💡 用户第一次进 Stitch 时先输入这段，后续每个单屏 Prompt 都会继承这个 style guide</div>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span>全局组件目录</h2>
+  <p class="desc">页面里反复用到的原子组件，Stitch Prompt 会引用这些名字。</p>
+  <div class="rule"></div>
+
+  <div class="comp-grid">
+    <div class="comp"><b>PrimaryButton</b><div class="desc">酱橙填充 · 白字 · 圆角 10 · 高 48 · 主要 CTA</div></div>
+    <div class="comp"><b>GhostButton</b><div class="desc">透明底 + 1px 酱橙描边 · 酱橙字 · 次要动作</div></div>
+    <div class="comp"><b>TextButton</b><div class="desc">无背景 · 酱橙字 · 内联操作</div></div>
+    <div class="comp"><b>Card</b><div class="desc">Ground Alt 底 · 圆角 14 · 内边距 16-20</div></div>
+    <div class="comp"><b>NumberHero</b><div class="desc">大数字（体重/卡路里）Semibold 34-52 · tabular-nums</div></div>
+    <div class="comp"><b>Chip</b><div class="desc">胶囊圆角 · Accent Soft 底 · Accent 字</div></div>
+    <div class="comp"><b>Badge</b><div class="desc">小圆点/数字标记 · 未读/待确认</div></div>
+    <div class="comp"><b>ProgressRing</b><div class="desc">卡路里缺口环 · Accent 进度 · 内圈大数字</div></div>
+    <div class="comp"><b>MacroBar</b><div class="desc">三段横条 · 碳/蛋/脂 三色 · 显示 g 数</div></div>
+    <div class="comp"><b>ListRow</b><div class="desc">左图标 · 中主副文 · 右尾数字/箭头 · 高 60</div></div>
+    <div class="comp"><b>MealCard</b><div class="desc">餐次标题 + 食物条目 + 卡路里合计 + "记一笔"</div></div>
+    <div class="comp"><b>FoodItem</b><div class="desc">食物名 · 份量/克 · 卡路里 · 微操</div></div>
+    <div class="comp"><b>TabBar</b><div class="desc">底部 5 项 · 中间浮起 [+] · badge 支持</div></div>
+    <div class="comp"><b>SegmentedControl</b><div class="desc">日/周/月 切换 · iOS 原生风</div></div>
+    <div class="comp"><b>BottomSheet</b><div class="desc">底部弹层 · 圆角顶 · Handle · 分段高度</div></div>
+    <div class="comp"><b>InputField</b><div class="desc">浮动 label · 下划线或框</div></div>
+    <div class="comp"><b>SliderStep</b><div class="desc">离散滑块 · 活动等级/份量</div></div>
+    <div class="comp"><b>DatePicker</b><div class="desc">iOS 转盘风 · 底部弹出</div></div>
+    <div class="comp"><b>EmptyState</b><div class="desc">插画 + 文案 + CTA · 空态温和</div></div>
+    <div class="comp"><b>Toast</b><div class="desc">顶部下滑 · 3s 自动消失</div></div>
+    <div class="comp"><b>MemoryCard</b><div class="desc">AI 记忆条目卡 · 内容 + 类型标签 + 编辑/删除</div></div>
+    <div class="comp"><b>ConfirmCard</b><div class="desc">AI 记忆变更确认卡 · 旧值划掉 → 新值</div></div>
+    <div class="comp"><b>AiBubble</b><div class="desc">AI 消息气泡 · 左侧带 avatar · 白底描边</div></div>
+    <div class="comp"><b>UserBubble</b><div class="desc">用户消息气泡 · 右对齐 · Accent Soft 底</div></div>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span>信息架构与导航</h2>
+  <p class="desc">全局结构与主导航。</p>
+  <div class="rule"></div>
+
+  <h3>五 Tab 底部导航</h3>
+  <div class="nav-map">┌────────────────────────────────────────┐
+│                                        │
+│           [ App 主屏幕内容 ]           │
+│                                        │
+├──────┬──────┬──────┬──────┬──────┤
+│ 首页 │ 记录 │  ⊕  │ 搭子 │ 我的 │
+│ Home │ Log  │ Add │  AI  │  Me  │
+└──────┴──────┴──[高]─┴──────┴──────┘
+                 ↑
+      中间浮起的 [+] 圆按钮
+      点击弹出快速记录 BottomSheet:
+      · 拍照识别
+      · 搜食物
+      · 记饮水
+      · 记体重
+      · 记运动
+      · 找 AI 搭子聊两句</div>
+
+  <h3>页面层级树</h3>
+  <div class="nav-map">/ (根)
+├─ /auth
+│  ├─ /welcome         欢迎/首页 未登录
+│  ├─ /register        注册
+│  ├─ /verify-notice   邮箱验证提示
+│  ├─ /login           登录
+│  └─ /forgot          忘记密码
+├─ /onboarding
+│  ├─ /body            身体信息
+│  ├─ /goal            目标推荐
+│  └─ /remind          提醒设置
+├─ /home               首页
+├─ /record
+│  ├─ /meals           三餐记录
+│  ├─ /add-food        加食物
+│  ├─ /photo           拍照识别
+│  ├─ /water           饮水
+│  ├─ /exercise        运动
+│  ├─ /weight          体重
+│  └─ /measure         围度/体脂
+├─ /stats
+│  ├─ /overview        统计总览
+│  └─ /calendar        月历
+├─ /ai
+│  ├─ /convs           会话列表
+│  ├─ /chat/:id        对话
+│  ├─ /persona         人设选择
+│  └─ /memory          记忆管理
+├─ /fast               轻断食
+└─ /me
+   ├─ /profile         个人信息
+   ├─ /goal            目标设置
+   ├─ /remind          提醒
+   ├─ /health-import   Apple Health 桥
+   ├─ /my-foods        私人食物库
+   ├─ /export          数据导出
+   ├─ /agreement       用户协议
+   ├─ /privacy         隐私政策
+   └─ /icp             备案信息</div>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span>页面清单一览</h2>
+  <p class="desc">V1 共 32 屏。P0 详写 Prompt；P1 简写；P2 复用组件。</p>
+  <div class="rule"></div>
+
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>#</th><th>页面</th><th>slug</th><th>模块</th><th>优先级</th></tr></thead>
+      <tbody>
+        <tr><td>01</td><td>欢迎页</td><td class="mono">/auth/welcome</td><td><span class="badge auth">Auth</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>02</td><td>注册</td><td class="mono">/auth/register</td><td><span class="badge auth">Auth</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>03</td><td>邮箱验证提示</td><td class="mono">/auth/verify-notice</td><td><span class="badge auth">Auth</span></td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>04</td><td>登录</td><td class="mono">/auth/login</td><td><span class="badge auth">Auth</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>05</td><td>忘记密码</td><td class="mono">/auth/forgot</td><td><span class="badge auth">Auth</span></td><td><span class="badge p2">P2</span></td></tr>
+        <tr><td>06</td><td>身体信息</td><td class="mono">/onboarding/body</td><td>Onboarding</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>07</td><td>目标推荐</td><td class="mono">/onboarding/goal</td><td>Onboarding</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>08</td><td>提醒设置</td><td class="mono">/onboarding/remind</td><td>Onboarding</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>09</td><td>首页 · 今日总览</td><td class="mono">/home</td><td><span class="badge tab">Tab</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>10</td><td>三餐记录</td><td class="mono">/record/meals</td><td><span class="badge tab">Tab</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>11</td><td>加食物 - 搜索/常用</td><td class="mono">/record/add-food</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>12</td><td>食物详情/份量选择</td><td class="mono">/record/food-detail</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>13</td><td>拍照 · 相机</td><td class="mono">/record/photo</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>14</td><td>拍照 · 识别结果确认</td><td class="mono">/record/photo-result</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>15</td><td>外卖截图解析</td><td class="mono">/record/delivery</td><td>Record</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>16</td><td>饮水快速记录</td><td class="mono">/record/water</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>17</td><td>运动记录</td><td class="mono">/record/exercise</td><td>Record</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>18</td><td>体重记录</td><td class="mono">/record/weight</td><td>Record</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>19</td><td>围度/体脂</td><td class="mono">/record/measure</td><td>Record</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>20</td><td>AI 会话列表</td><td class="mono">/ai/convs</td><td><span class="badge tab">Tab</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>21</td><td>AI 对话</td><td class="mono">/ai/chat</td><td>AI</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>22</td><td>人设选择</td><td class="mono">/ai/persona</td><td>AI</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>23</td><td>记忆管理</td><td class="mono">/ai/memory</td><td>AI</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>24</td><td>轻断食主页</td><td class="mono">/fast</td><td>Fasting</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>25</td><td>统计总览</td><td class="mono">/stats/overview</td><td>Stats</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>26</td><td>月历视图</td><td class="mono">/stats/calendar</td><td>Stats</td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>27</td><td>我的主页</td><td class="mono">/me</td><td><span class="badge tab">Tab</span></td><td><span class="badge p0">P0</span></td></tr>
+        <tr><td>28</td><td>目标设置</td><td class="mono">/me/goal</td><td>Me</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>29</td><td>提醒设置</td><td class="mono">/me/remind</td><td>Me</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>30</td><td>Apple Health 导入</td><td class="mono">/me/health-import</td><td>Me</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>31</td><td>私人食物库</td><td class="mono">/me/my-foods</td><td>Me</td><td><span class="badge p1">P1</span></td></tr>
+        <tr><td>32</td><td>合规页</td><td class="mono">/me/agreement</td><td>Me</td><td><span class="badge p2">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span>首次上手流</h2>
+  <p class="desc">4 屏 · 从欢迎到进入首页。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">01</span><span class="stitle">欢迎页</span><span class="sslug">/auth/welcome</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <h5>目的</h5>
+      <div class="info-line">未登录用户第一屏 · 品牌感 · 引导注册/登录</div>
+      <h5>组件</h5>
+      <div class="chip-row"><span class="chip">Logo</span><span class="chip">NumberHero</span><span class="chip">PrimaryButton</span><span class="chip">TextButton</span></div>
+
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 01</div>
+<pre>iPhone welcome screen for "千卡日记" (Qianka Diary), a Chinese diet diary app.
+
+LAYOUT (top to bottom):
+1. Status bar (iOS 17 style)
+2. Large empty space (about 30% of screen), warm ivory background
+3. Minimal line-art logo: a small bowl with chopsticks, single line stroke in #C64B2A, size 64x64
+4. App name "千卡日记" in Semibold 34pt, ink color #1D1917
+5. Slogan below in muted #5C5852, 15pt: "吃点什么，记一笔"
+6. Large empty space
+7. Primary button "开始记一笔" — full-width filled #C64B2A rounded 10px, white text 17pt, 48px tall
+8. Below button, text-only link "已有账号 · 登录" in accent color, centered
+9. Bottom safe area
+
+STYLE: warm ivory #FAF9F5 background, no gradient, no illustration, calm. Feels like a hand-printed diary cover.
+
+Design both light and dark mode variants.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">02</span><span class="stitle">注册</span><span class="sslug">/auth/register</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <h5>字段</h5>
+      <ul>
+        <li>邮箱（浮动 label）</li>
+        <li>密码（含"显示密码"眼睛图标 · 8-32 位提示）</li>
+        <li>勾选框：用户协议 + 隐私政策</li>
+      </ul>
+
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 02</div>
+<pre>iPhone registration screen for "千卡日记", Chinese diet diary PWA app.
+
+LAYOUT (top to bottom):
+1. Top nav: back arrow left, title "注册" centered
+2. Section header 22pt Semibold: "开始你的日记" with 15pt muted subtitle "每一口都值得被看见"
+3. InputField "邮箱" (floating label style), placeholder "you@example.com"
+4. InputField "密码" with trailing eye icon toggle, helper text "8-32位，含字母和数字"
+5. Small helper row: "我已阅读并同意 用户协议 和 隐私政策" — checkbox left, links in accent #C64B2A
+6. Primary button "注册" full-width, 48px tall, filled #C64B2A rounded 10px
+7. Row centered: "已有账号？登录" — 登录 in accent color
+8. Bottom safe area
+
+STYLE: warm ivory background, subtle underline inputs (1px #E3E0D6), focus turns to #C64B2A. Chinese font PingFang SC style.
+
+Provide both light and dark mode.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">06</span><span class="stitle">身体信息（首次配置 · 步骤 1/3）</span><span class="sslug">/onboarding/body</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 06</div>
+<pre>iPhone onboarding step 1 of 3 for "千卡日记" Chinese diet app.
+
+LAYOUT (top to bottom):
+1. Top: back button, progress bar with 3 segments (first filled in #C64B2A, other two #E3E0D6)
+2. Section title 26pt Semibold: "先了解你一下"
+3. Subtitle 14pt muted: "只用来算你的基础代谢，不会分享"
+4. Row 1 — "性别": three chip buttons in a row: 男 / 女 / 不设定 (selected filled #C64B2A white text)
+5. Row 2 — "出生年份": year picker showing "1993" as a bold display number, tap opens wheel picker
+6. Row 3 — "身高 cm": horizontal slider, huge center number "172" Semibold 44pt, "cm" muted 14pt right
+7. Row 4 — "当前体重 kg": same slider style, "62.5" hero number
+8. Row 5 — "活动等级": stepped slider with 5 notches labeled 静坐/轻度/中度/高度/极重, below is a small caption card explaining current level (e.g. "轻度 · 每周 1-3 次轻度运动")
+9. Bottom primary button "下一步" filled #C64B2A rounded 10px, 48px tall
+
+STYLE: warm ivory, hero numbers use tabular-nums Semibold. Sliders thin track #E3E0D6, thumb filled #C64B2A.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">07</span><span class="stitle">目标推荐（首次配置 · 步骤 2/3）</span><span class="sslug">/onboarding/goal</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 07</div>
+<pre>iPhone onboarding step 2 of 3 — goal recommendation for "千卡日记".
+
+LAYOUT:
+1. Top: back arrow, progress bar (2 of 3 filled)
+2. Title 26pt Semibold: "给你一个起点"
+3. Two side-by-side stat cards:
+   Card A: label "基础代谢 BMR" 11pt muted, big number "1425" Semibold 32pt, unit "kcal"
+   Card B: label "每日总消耗 TDEE", big number "1960" Semibold 32pt, unit "kcal"
+4. Section label "你的目标": 4 chip pills in a row:
+   - 维持
+   - 温和减脂 (currently selected filled #C64B2A)
+   - 标准减脂
+   - 温和增肌
+5. Big highlighted card in accent-soft #F0E4D5, rounded 14:
+   - label "推荐每日热量"
+   - hero number "1660 kcal" Semibold 44pt (#C64B2A)
+   - subline "TDEE − 300 · 温和减脂"
+   - text link "自定义 →"
+6. Helper 12pt muted: "宏营养默认 C 50% · P 25% · F 25%，稍后可改"
+7. Bottom primary button "使用推荐"
+8. Below button, text-only "跳过 · 我随便看看"
+
+STYLE: cards on #F3F0E7. Accent-soft callout card stands out.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span>首页 · Home</h2>
+  <p class="desc">整个 App 最重要的一屏 · 一屏看懂今天。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">09</span><span class="stitle">首页 · 今日总览</span><span class="sslug">/home</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <h5>信息优先级（自上而下）</h5>
+      <ol>
+        <li>卡路里缺口环 · 中央大数字 "剩余 480"</li>
+        <li>宏营养素三色横条（碳/蛋/脂）</li>
+        <li>4 个 mini metric 卡（横滑）</li>
+        <li>三餐 MealCard（早/午/晚/加餐）</li>
+        <li>底部 TabBar</li>
+      </ol>
+      <h5>数据来源</h5>
+      <div class="chip-row"><span class="chip">meal_entry</span><span class="chip">meal_item</span><span class="chip">water_entry</span><span class="chip">body_weight</span><span class="chip">body_steps</span><span class="chip">fast_session</span></div>
+
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 09</div>
+<pre>iPhone home screen for "千卡日记" Chinese diet diary PWA. THE most important screen — one-glance daily summary.
+
+LAYOUT (top to bottom, scrollable):
+1. Status bar area
+2. Top row: greeting "早上好，鹿鸣" left, small profile avatar right (28x28 rounded)
+3. Date pill below greeting: "10月8日 · 星期二" in muted 13pt
+
+4. HERO — Calorie ring:
+   - Large circular progress ring, 200x200 centered
+   - Ring stroke 14px, background #E3E0D6, progress #C64B2A ~70% filled
+   - Ring center stacked:
+       tiny label "剩余" 11pt muted
+       hero number "480" Semibold 52pt tabular-nums (#C64B2A)
+       unit "kcal" 13pt muted
+       thin divider
+       row 12pt muted: "摄入 1180" • "消耗 320" • "目标 1660"
+
+5. Below ring — MacroBar section:
+   - Section label 11pt uppercase muted: "宏营养素"
+   - Three horizontal bars stacked, 8px tall rounded:
+     · 碳水 145g / 208g — orange #C64B2A ~70%
+     · 蛋白 58g / 104g — tea green #6C7F3A ~56%
+     · 脂肪 42g / 46g — honey #B3781A ~91%
+
+6. Horizontally scrolling metric chips row (4 cards, 130x100):
+   - 饮水 "1400 / 2000 ml" droplet icon
+   - 体重 "62.5 kg" tiny sparkline
+   - 步数 "6420" foot icon
+   - 断食 "12:34 剩余" clock icon
+
+7. Small header "今日"
+8. Four MealCards stacked (rounded 14, #F3F0E7 bg, 16 padding):
+   - Card header: meal name (早餐/午餐/晚餐/加餐) + total kcal right
+   - Body: list of FoodItems OR empty state "还没记，记一笔？" with tiny "+" chip
+   - Small "记一笔" ghost button
+
+9. Bottom padding
+10. TabBar at bottom: 5 tabs Home (highlighted), Record, center [+] raised circular button in accent color, AI, Me
+
+STYLE: warm ivory. Hero number in ring is the star. Design both light and dark mode.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span>记录流（饮食）</h2>
+  <p class="desc">从餐次卡 → 加食物 → 份量选择 → 保存。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">11</span><span class="stitle">加食物 · 搜索/常用</span><span class="sslug">/record/add-food</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 11</div>
+<pre>iPhone "add food" screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "记一笔 · 午餐", right "完成" text button
+2. Search input pinned: rounded 10, background #F3F0E7, magnifier icon left, placeholder "搜食物 · 试试 '番茄炒蛋'"
+3. Segmented control: 常用 / 搜索 / 私人库 / 拍照 / 外卖 — 常用 selected underline #C64B2A
+4. Section label "最近吃过"
+5. List of food rows, 60px tall:
+   - Left: small round icon (12x12 category dot)
+   - Middle: food name 15pt Semibold, below "约 一小碗 · 128 kcal" 12pt muted
+   - Right: circular [+] 32x32 filled #F0E4D5 with #C64B2A plus icon
+6. Section "常吃的" 5-6 more rows same style
+7. Bottom edge fades (more scrollable)
+
+STYLE: warm ivory, rows separated by 1px #E3E0D6. Everything scannable and quiet.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">12</span><span class="stitle">食物详情 · 份量选择</span><span class="sslug">/record/food-detail</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 12</div>
+<pre>iPhone food detail / portion picker screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: X close left, title "番茄炒蛋" 15pt, right "…" more menu
+2. Food category chip: "菜肴 · 家常菜" in accent-soft
+3. Hero number section (centered):
+   - Tiny label "本次记录" 11pt muted
+   - Huge number "128" Semibold 64pt tabular-nums (#C64B2A, calc live from portion)
+   - Unit "kcal" 15pt muted
+4. Segmented control: 份 / 克 — 份 selected
+5. Portion picker card (#F3F0E7 rounded 14):
+   - Row: [−] 40x40 ghost, center number "1" Semibold 40pt, [+] 40x40 filled accent-soft
+   - Below: "1份 ≈ 一小碗 · 约 120g" 12pt muted
+6. Macro breakdown:
+   - 3 rows: 碳水 12g · 蛋白 8g · 脂肪 6g
+   - Each row has slim colored bar (carbs orange, protein green, fat honey)
+7. Collapsible "营养详情" with fiber/sodium
+8. Sticky bottom: primary button "记入 午餐" filled #C64B2A rounded 10px 48 tall
+
+STYLE: hero number anchors the screen.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>AI 拍照识别</h2>
+  <p class="desc">相机页 + 识别结果确认页。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">13</span><span class="stitle">相机</span><span class="sslug">/record/photo</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 13</div>
+<pre>iPhone camera capture screen for AI food recognition in "千卡日记".
+
+LAYOUT:
+1. Full-screen dark background (camera viewfinder)
+2. Top overlay bar (translucent dark, blur):
+   - Close X left, title "拍一张饭" centered, help "?" right
+3. Small hint chip at top center: "俯拍完整餐具，识别更准" pill #F0E4D5 80% opacity
+4. Center: framing guide dashed square, corners white
+5. Bottom overlay (dark translucent):
+   - Left: photo library icon 32x32 white
+   - Center: BIG round shutter 76x76, outer ring white 3px, inner filled white
+   - Right: flip camera 32x32 white
+6. Below shutter, 12pt white muted: "点一下拍照 · 长按录像（暂不支持）"
+
+STYLE: dark camera UI. Warm accent only on active state.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">14</span><span class="stitle">识别结果确认</span><span class="sslug">/record/photo-result</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 14</div>
+<pre>iPhone AI food recognition result confirmation screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "识别结果", "重拍" text button right
+2. Photo section: user's captured food photo, rounded 14, height ~180px
+3. Section header: "识别到 3 项" with green checkmark
+4. List of recognized items (#F3F0E7 cards rounded 12):
+   Card 1:
+     - Left small category color dot
+     - Middle: name "宫保鸡丁" 16pt Semibold, subline "约 220g · 385 kcal" 12pt muted
+     - Right: confidence chip "89% 可能" #E9EBD8 bg with #6C7F3A text
+     - Trailing edit pencil
+   Card 2: "米饭" 150g · 195 kcal · confidence 95%
+   Card 3: "凉拌黄瓜" 80g · 42 kcal · confidence 72% (yellow warn chip)
+5. Ghost button: "+ 手动加一项" full-width 1px border accent 40 tall
+6. Summary above bottom button:
+   - Label "合计" muted
+   - Big number "622 kcal" Semibold 22pt (#C64B2A)
+7. Sticky bottom: primary "全部记入 午餐" filled #C64B2A
+
+STYLE: confidence chips use color to signal reliability (green ≥85%, yellow 60-85%, gray &lt;60%). Never blames user for low confidence.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>饮水 / 运动 / 体测</h2>
+  <p class="desc">3 屏共用 quick-log 模式。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">16</span><span class="stitle">饮水快速记录</span><span class="sslug">/record/water</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 16</div>
+<pre>iPhone water quick-log screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "记一杯水"
+2. Hero — water ring:
+   - Ring 160x160, progress in soft blue-teal #4A90A4 (subtle, doesn't fight warm palette), bg ring #E3E0D6
+   - Center number "1400" Semibold 44pt, below "/ 2000 ml" 13pt muted
+3. Section label "快速记"
+4. 2x2 grid chip buttons (80px tall):
+   - "+200 ml" (small cup icon)
+   - "+250 ml" (medium cup)
+   - "+500 ml" (bottle)
+   - "自定义" (edit icon)
+   Each: rounded 14, #F0E4D5 bg, #C64B2A text/icon
+5. Section "今天喝了什么"
+6. Horizontal chip row: 白水 (selected) / 茶 / 咖啡 / 果汁 / 汤
+7. Section "今日记录" mini timeline with dots and times
+8. No bottom tab bar (modal)
+
+STYLE: water gets secondary color that doesn't fight warm palette.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">18</span><span class="stitle">体重记录</span><span class="sslug">/record/weight</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 18</div>
+<pre>iPhone weight logging screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "记体重"
+2. Chart card top: 30-day weight sparkline, #F3F0E7 bg rounded 14, 120px tall
+   - Line #C64B2A, current value filled dot
+   - Dashed horizontal goal weight line
+   - Labels at ends showing start and current weight
+3. Hero input section:
+   - Label "今天的体重" muted 11pt
+   - Row: [− 0.1] round ghost, hero "62.5" Semibold 72pt tabular-nums, [+ 0.1] filled accent-soft
+   - Unit "kg" 15pt muted below
+4. Comparison chip: "较昨日 −0.3 kg" support-soft #E9EBD8 with #6C7F3A (green if toward goal)
+5. Time picker row: "记录时间 · 今天 07:20" text button
+6. Optional note field: light dashed border, placeholder "加一句备注（可选）"
+7. Sticky bottom: primary "记入日记" filled #C64B2A
+
+STYLE: sparkline calm, hero number confident.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>AI 搭子对话</h2>
+  <p class="desc">带 tool call 结果卡 + 记忆确认卡的完整聊天页。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">21</span><span class="stitle">AI 对话</span><span class="sslug">/ai/chat</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <h5>关键差异点</h5>
+      <ul>
+        <li><strong>普通气泡</strong>：AI 或用户文字</li>
+        <li><strong>Tool 结果卡</strong>：Agent 调 tool 后返回的数据卡</li>
+        <li><strong>食物记录确认卡</strong>：确认/拒绝/编辑 三按钮</li>
+        <li><strong>记忆变更确认卡</strong>：旧值划掉 → 新值 + 确认/拒绝</li>
+      </ul>
+
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 21</div>
+<pre>iPhone AI companion chat screen for "千卡日记" — "AI 搭子".
+
+LAYOUT:
+1. Top nav (54px):
+   - Back arrow
+   - Center: circular AI avatar 32x32 (persona "温柔知心"), name "小卡" 12pt with sub-chip "温柔知心"
+   - Right: menu … icon
+2. Chat message list (scrollable):
+   Message A — AI bubble left:
+     - Small avatar 24x24 left
+     - Bubble #FFFFFF 1px border #E3E0D6, rounded 14, padding 12x14
+     - Text: "早上好呀！今天想记点什么？"
+     - Timestamp 10pt muted "07:12"
+   Message B — User bubble right:
+     - Bubble #F0E4D5, rounded 14, padding 12x14
+     - Text: "我中午吃了一份番茄炒蛋和一碗米饭"
+   Message C — SPECIAL Food Log Confirmation Card left:
+     - Wider 90% width, rounded 14, #FFFFFF 1px border
+     - Header: 🥢 icon + "帮你记入午餐？"
+     - Two item rows:
+       · "番茄炒蛋 · 1份 · ~120 kcal"
+       · "米饭 · 1碗 · 200g · ~232 kcal"
+     - Total "合计 352 kcal" in #C64B2A
+     - Three buttons: [编辑] ghost, [先不了] text, [记下 →] primary filled
+   Message D — AI bubble: "记好了。今天还剩 500 kcal，晚餐可以吃个轻的~"
+   Message E — SPECIAL Memory Update Card left:
+     - Card rounded 14, bg #F0E4D5, border-left 3px #C64B2A
+     - Small chip "记忆更新" 10pt
+     - Row 1: label "旧" muted, "目标体重 62 kg" strikethrough
+     - Row 2: label "新" bold, "目标体重 60 kg"
+     - Reason 12pt muted: "你刚才说想再瘦点"
+     - Actions: [拒绝] ghost, [编辑再确认] text, [确认] primary
+3. Bottom composer bar:
+   - Input placeholder "跟我聊聊今天…"
+   - Left icons: [🖼 photo] [🎤 voice]
+   - Right: send button (paper plane) filled #C64B2A only when input has text
+4. No bottom TabBar
+
+STYLE: chat warm and quiet. Special cards visually distinct but not attention-grabbing.
+
+Design both light and dark mode. Dark mode AI bubble uses #2A2620 background.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">22</span><span class="stitle">人设选择</span><span class="sslug">/ai/persona</span><span class="badge p1">P1</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 22</div>
+<pre>iPhone AI companion persona selector for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "选个搭子"
+2. Section title 22pt Semibold: "TA 会陪你怎么记"
+3. 2x2 grid of persona cards:
+   - Portrait 80x80 rounded circle (soft warm colors, minimal line-art)
+   - Name Semibold: "温柔知心" / "毒舌教练" / "闺蜜风" / "专业营养师"
+   - Sample line 12pt muted (preview quote in each voice)
+   - Selected has 2px border #C64B2A
+4. Below grid, ghost button "换头像和聊天背景 →"
+5. Sticky bottom primary "确定" (or "使用 温柔知心")
+
+STYLE: personas illustrated in gentle warm palette. No stereotypes.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>记忆管理</h2>
+  <p class="desc">合规刚需 · 用户能看到 AI 记住的所有事情，能改能删。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">23</span><span class="stitle">记忆管理</span><span class="sslug">/ai/memory</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 23</div>
+<pre>iPhone AI memory management screen for "千卡日记" — user reviews everything AI remembers.
+
+LAYOUT:
+1. Top nav: back arrow, title "AI 记忆", right "?" (help / policy link)
+2. Notice banner (if pending) at top:
+   - #F0E4D5 accent-soft bg rounded 12
+   - Text: "有 2 条记忆想改，看看？" left, arrow right
+3. Search input pinned: "搜一条记忆…"
+4. Segmented control: 全部 / 事实 / 偏好 / 目标 / 习惯
+5. Group header "目标" 11pt uppercase muted
+6. Memory cards:
+   Card 1:
+     - Top row: content "3 个月减 5 kg" Semibold 15pt, importance dots right (●●●●●)
+     - Bottom row: type chip "目标" in accent-soft, "记于 2 天前" muted 11pt right
+   Card 2: "想瘦回大学时的体重" (importance 3)
+7. Group "偏好":
+   Card: "不吃香菜"
+   Card: "早餐吃甜的"
+8. Group "已过时" (grayed area):
+   Card: strikethrough "目标 62 kg" with restore button
+9. Sticky bottom bar with 2 buttons:
+   - Ghost "导出所有"
+   - Ghost destructive "清空全部" — text in warn #B3781A
+
+STYLE: memory cards feel like index cards. Design signals user OWNS the data.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>轻断食</h2>
+  <p class="desc">大圆环倒计时。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">24</span><span class="stitle">轻断食主页</span><span class="sslug">/fast</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 24</div>
+<pre>iPhone intermittent fasting timer screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "轻断食", "历史" text right
+2. Plan chip row: 14:10 / 16:8 (selected filled #C64B2A) / 18:6 / 5:2 / 自定义
+3. HERO — giant circular timer:
+   - Ring 260x260, stroke 16px
+   - Bg ring #E3E0D6, progress #C64B2A ~45%
+   - Center stacked:
+       "断食中 · 已过 7h 12m" muted 11pt
+       hero time "08:48" Semibold 68pt tabular-nums (remaining)
+       "剩余" caption
+   - Below: "开始 18:30 · 目标结束 10:30 +1" muted 12pt
+4. Two big action buttons side-by-side (56px):
+   - "提前结束" ghost warn color
+   - "记录一杯水" primary accent
+5. "最近 7 天" mini grid:
+   - 7 mini circles, filled or empty per completion
+6. Bottom safe area
+
+STYLE: hero timer meditative. No aggressive countdown vibes.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s15">
+  <h2><span class="num">15</span>统计 &amp; 月历</h2>
+  <p class="desc">统计首页 · 月历视图。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">25</span><span class="stitle">统计总览</span><span class="sslug">/stats/overview</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 25</div>
+<pre>iPhone statistics overview screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: title "统计", right filter icon
+2. Segmented control: 日 / 周 (currently) / 月 / 年
+3. Chart card 1 "热量收支" 190px tall:
+   - Grouped bar chart, one bar per day (Mon-Sun)
+   - Each day: consumed #C64B2A stacked above burned #6C7F3A
+   - Small dashed target line at goal
+   - Right label weekly average
+4. Chart card 2 "宏营养素结构" 160px:
+   - Stacked area chart (carbs/protein/fat)
+5. Chart card 3 "体重曲线" 160px:
+   - Smooth line #C64B2A, sparse points
+   - Dashed goal line
+6. Insight row cards (2 wide):
+   - "本周达标 4 天" success
+   - "平均缺口 −320 kcal"
+   - "宏营养偏碳水"
+7. Bottom TabBar
+
+STYLE: charts calm — thin lines, subtle grid, focus on trend.</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="snum">26</span><span class="stitle">月历视图</span><span class="sslug">/stats/calendar</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 26</div>
+<pre>iPhone monthly calendar recap screen for "千卡日记".
+
+LAYOUT:
+1. Top nav: back arrow, title "2026 · 07", left/right chevrons to change month
+2. Week day headers: 一 二 三 四 五 六 日
+3. Calendar grid 6 rows × 7 columns, cells 48x48:
+   - Date number top-left corner
+   - Cell background encodes daily state:
+     · #E9EBD8 tea green — 达标
+     · #F0E4D5 accent soft — 微超
+     · #F5E9CE warn soft — 超额
+     · #F3F0E7 empty — 无记录
+   - Selected date has 2px border #C64B2A
+4. Selected date detail card below:
+   - Date "07月08日 · 周二"
+   - Row of 4 mini stats: 摄入 1180 / 消耗 320 / 缺口 −480 / 体重 62.5
+   - Preview of that day's meals
+   - "查看那天" text button
+5. Bottom safe area
+
+STYLE: colors carry information at a glance, tabular numerals throughout.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s16">
+  <h2><span class="num">16</span>我的 &amp; 设置</h2>
+  <p class="desc">简写 · 用 ListRow 组件。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">27</span><span class="stitle">我的主页</span><span class="sslug">/me</span><span class="badge p0">P0</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 27</div>
+<pre>iPhone "Me" tab screen for "千卡日记".
+
+LAYOUT:
+1. Top user profile card:
+   - Round avatar 64x64
+   - Name "鹿鸣" 22pt Semibold, email muted 12pt below
+   - Chip "免费用户" pill accent-soft
+   - Right: settings gear icon
+2. Stat summary card (3 columns):
+   - "记录天数 62" / "累计条目 380" / "连续 12 天"
+   - Each stat: label 11pt muted, number Semibold 20pt tabular-nums
+3. List "个人":
+   - 目标设置 → (target icon)
+   - 提醒设置 → (bell)
+   - 私人食物库 →
+4. List "数据":
+   - Apple Health 导入 →
+   - 数据导出 →
+5. List "关于":
+   - 用户协议 →
+   - 隐私政策 →
+   - 备案信息 →
+   - 版本 v0.1.0 (no arrow)
+6. Danger area: 退出登录 · 删除账号 (text buttons in warn/danger color)
+7. Bottom TabBar with Me highlighted
+
+STYLE: each row 56 tall, 1px separator #E3E0D6. Icons monochrome muted.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s17">
+  <h2><span class="num">17</span>Apple Health 桥</h2>
+  <p class="desc">XML 导入 + Shortcut 模板下载。</p>
+  <div class="rule"></div>
+
+  <div class="screen">
+    <header><span class="snum">30</span><span class="stitle">Apple Health 导入</span><span class="sslug">/me/health-import</span><span class="badge p1">P1</span></header>
+    <div class="sbody">
+      <div class="prompt-box">
+        <div class="plabel">STITCH PROMPT · SCREEN 30</div>
+<pre>iPhone Apple Health integration screen for "千卡日记" PWA.
+
+LAYOUT:
+1. Top nav: back arrow, title "Apple 健康 数据接入"
+2. Explainer card #F0E4D5 bg:
+   - Icon: line-art heart with dashed sync
+   - Title 15pt Semibold "PWA 拿不到实时 HealthKit"
+   - Body 13pt muted: "我们提供两条路：一次性导出全部历史，加自动化每日同步"
+3. Section "路径 1 · 一次性导入历史":
+   - Numbered steps 1-4 explaining flow
+   - Large drop area (dashed border, "点这里上传 ZIP")
+   - List of past imports with date + counts + status chip
+4. Section "路径 2 · Shortcut 自动化":
+   - Description: "装到 iOS 快捷指令，每天早上自动同步"
+   - Big button "获取 Shortcut 模板" primary
+   - QR code image 120x120
+   - Small text: "首次装配后需授权读健康数据"
+5. Bottom safe area
+
+STYLE: explain platform limitations honestly. Two clear paths, no jargon.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s18">
+  <h2><span class="num">18</span>交互规范</h2>
+  <p class="desc">动画 · 触觉 · 手势 · 状态。</p>
+  <div class="rule"></div>
+
+  <h3>动画时长与曲线</h3>
+  <ul>
+    <li>快速反馈：150ms · <code>cubic-bezier(0.4, 0, 0.2, 1)</code></li>
+    <li>页面切换：300ms · iOS 系统曲线</li>
+    <li>数字滚动：600ms ease-out（卡路里从 0 滚到 480）</li>
+    <li>环形加载：1.2s 无限（描边 dash 变化，不旋转）</li>
+    <li>respect prefers-reduced-motion：降级为 crossfade</li>
+  </ul>
+
+  <h3>触觉反馈（iOS）</h3>
+  <ul>
+    <li>轻按选择：<code>UISelectionFeedback</code></li>
+    <li>成功记录：<code>UINotificationFeedback(.success)</code></li>
+    <li>删除/拒绝：<code>UINotificationFeedback(.warning)</code></li>
+    <li>拍照成功：<code>UIImpactFeedback(.medium)</code></li>
+    <li>PWA 用 <code>navigator.vibrate([10])</code>（iOS 部分支持）</li>
+  </ul>
+
+  <h3>手势</h3>
+  <ul>
+    <li>左划食物条目 → 显示"删除"</li>
+    <li>下拉刷新首页</li>
+    <li>底部 sheet 支持下滑关闭</li>
+    <li>头像长按 → 快速切换人设</li>
+  </ul>
+
+  <h3>状态命名（每屏必备）</h3>
+  <ul>
+    <li>初始 · 加载中 · 无数据（EmptyState）· 数据展示 · 错误 · 无网络</li>
+    <li>断网时顶部条："无网络 · 已切离线，记录会稍后上传"</li>
+  </ul>
+
+  <h3>iOS PWA 特殊考虑</h3>
+  <ul>
+    <li>安全区：<code>env(safe-area-inset-top/bottom)</code></li>
+    <li>加桌面后无地址栏 · 自定义 splash 用 <code>apple-touch-startup-image</code></li>
+    <li>横屏禁用（<code>orientation: portrait</code>）</li>
+    <li>Pull-to-refresh 需自实现（默认 Safari 会触发返回上一页）</li>
+  </ul>
+</section>
+
+<section id="s19">
+  <h2><span class="num">19</span>Stitch 使用技巧</h2>
+  <p class="desc">让 Stitch 产出图更接近你要的样子。</p>
+  <div class="rule"></div>
+
+  <div class="callout tip">
+    <span class="tag">出图技巧</span>
+    <ul>
+      <li><strong>用 HEX 不用形容词</strong> · 写 <code>#C64B2A</code> 比 "warm orange" 精准 10 倍</li>
+      <li><strong>指定字体族</strong> · "PingFang SC style, or SF Pro if Chinese not available"</li>
+      <li><strong>指定尺寸</strong> · 明确 iPhone 15 Pro (393 × 852)</li>
+      <li><strong>用 "NOT" 排除</strong> · "NOT dark mode, NOT flat 2D illustration, NOT gradient background"</li>
+      <li><strong>先立 system prompt</strong> · §3 建基调后不要每次单屏重写视觉规范</li>
+      <li><strong>迭代小步走</strong> · 出一屏满意再出下一屏</li>
+      <li><strong>示例参考</strong> · "reference similar apps: Apple Health, Streaks, Bear Notes"</li>
+    </ul>
+  </div>
+
+  <h3>Prompt 通用模板</h3>
+  <pre>iPhone [screen purpose] screen for "千卡日记" ([English gloss]), Chinese diet diary PWA.
+
+LAYOUT (top to bottom):
+1. [Status bar / top nav / header]
+2. [Hero section]
+3. [Main content sections]
+4. [Bottom action / TabBar]
+
+STYLE: warm ivory #FAF9F5 background, ink text #1D1917, accent #C64B2A. Chinese font PingFang SC style. Rounded 12-14 cards. Very subtle shadows.
+
+COMPONENTS: [list from §4]
+
+DATA: [what's shown]
+
+INTERACTIONS: [key ones]
+
+Design both light and dark mode variants.</pre>
+
+  <h3>下一步 / 待办</h3>
+  <div class="callout note">
+    <span class="tag">你 review 完 UI Spec 后</span>
+    <ul>
+      <li>把 §3 System Prompt 丢给 Stitch 建基调</li>
+      <li>先出 3 屏关键（首页 · 加食物 · AI 对话），看视觉是否符合预期</li>
+      <li>如果不符合 —— 调整 §2 视觉规范里的 tokens，我更新 System Prompt</li>
+      <li>视觉锁定后，逐屏出图，收集到 Figma 或本地拼版</li>
+      <li>视觉稿定稿后：<strong>进入编码阶段</strong>（W1 项目脚手架）</li>
+    </ul>
+  </div>
+
+  <div class="callout note">
+    <span class="tag">仍待你确认的（三份文档汇总）</span>
+    <ul>
+      <li>Slogan 三选一</li>
+      <li>域名候选 / 已有域名</li>
+      <li>服务器硬件规格 · 备案信息</li>
+      <li>QQ 邮箱账号 + 授权码</li>
+      <li>DeepSeek + 阿里云百炼 API Key</li>
+      <li>营养师内容团队时间线</li>
+      <li>UI 视觉基调是否 OK：暖纸 + 酱橙 + 茶绿 · 有温度的日记感（还是你想要别的方向）</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer">千卡日记 · UI Spec v0.1 · 2026-07-09 · 待评审</div>
+
+</div>
+</body>
+</html>

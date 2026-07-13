@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 选个搭子</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#a53314",
+                    "outline": "#8c716a",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#d6ec9a",
+                    "primary-fixed": "#ffdbd2",
+                    "inverse-surface": "#342f2d",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-primary-fixed": "#3c0800",
+                    "surface-container": "#f6ece8",
+                    "surface-bright": "#fff8f5",
+                    "surface-container-high": "#f0e6e2",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#fbf2ee",
+                    "on-secondary-container": "#596b28",
+                    "on-primary": "#ffffff",
+                    "surface": "#fff8f5",
+                    "outline-variant": "#e0bfb7",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "on-error": "#ffffff",
+                    "on-background": "#1f1b19",
+                    "surface-dim": "#e1d8d4",
+                    "inverse-on-surface": "#f8efeb",
+                    "on-primary-container": "#fff9f8",
+                    "tertiary": "#7e5100",
+                    "secondary": "#536523",
+                    "on-secondary-fixed": "#161f00",
+                    "primary-container": "#c64b2a",
+                    "on-primary-fixed-variant": "#881f01",
+                    "secondary-container": "#d6ec9a",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#58413c",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "inverse-primary": "#ffb4a1",
+                    "tertiary-fixed": "#ffddb5",
+                    "background": "#FAF9F5",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#eae1dd",
+                    "on-tertiary-container": "#fff9f5",
+                    "surface-tint": "#a93717",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-surface": "#1D1917",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "tertiary-container": "#9f6702",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#bacf81",
+                    "surface-container-highest": "#eae1dd",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "14px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xl": "32px",
+                    "sm": "12px",
+                    "lg": "24px",
+                    "xs": "8px",
+                    "md": "16px",
+                    "margin-mobile": "20px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "body-17": ["PingFang SC", "sans-serif"],
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .persona-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .persona-card:active {
+            transform: scale(0.98);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 antialiased min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background/80 backdrop-blur-md flex justify-between items-center px-margin-mobile h-16 w-full">
+<button class="flex items-center justify-center w-10 h-10 -ml-2 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface absolute left-1/2 -translate-x-1/2">选个搭子</h1>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</header>
+<main class="flex-1 px-margin-mobile pb-32">
+<!-- Section Title -->
+<h2 class="font-section-22 text-section-22 text-on-surface mt-lg mb-md">
+            TA 会陪你怎么记
+        </h2>
+<!-- Persona Grid -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Persona 1 (Selected) -->
+<div class="persona-card relative bg-surface-container-lowest p-md rounded-2xl flex flex-col items-center text-center border-2 border-primary-container card-shadow" onclick="selectPersona(this)">
+<div class="w-20 h-20 rounded-full overflow-hidden mb-sm bg-surface-container-high border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="A soft, minimal line-art illustration of a warm, smiling person with gentle eyes, surrounded by soft organic shapes in tea green and soy orange. The style is editorial and tactile, reminiscent of high-quality watercolor on ivory paper. The lighting is bright and airy, conveying a sense of calm and safety for a private health diary app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD16QBN3c0b2YMT3VCYAtrNwKABHgL4cP7piBwcuQUzUeGxnjBOD9LBOQy9DbSbm0_3PZKQg5rgNyedUh0KT3nUT-HA2oikYuLYqSiyXGUFtoPzjy4f22pyTu50A7tHX1U5rJn-7qZGDKlm9Bmno1I4Cb0aSYQM_1HlsFgHBfvwF5FWzpCmwaNE0qpGeZFGTFnf7NTBHYSXHzzDV2S9TTbYD4WnF6QFshR7Hdt4TM38O2GjAPiTxudLYLuyYv9QkDcihmloxyflkLzQ"/>
+</div>
+<h3 class="font-body-17 font-semibold text-on-surface mb-xs">温柔知心</h3>
+<p class="font-caption-13 text-on-surface-variant opacity-70 italic line-clamp-2">“今天也要好好吃饭哦”</p>
+<!-- Selected Indicator -->
+<div class="absolute top-2 right-2 bg-primary-container text-white rounded-full w-5 h-5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Persona 2 -->
+<div class="persona-card bg-surface-container-lowest p-md rounded-2xl flex flex-col items-center text-center border-2 border-transparent card-shadow" onclick="selectPersona(this)">
+<div class="w-20 h-20 rounded-full overflow-hidden mb-sm bg-surface-container-high border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="A minimalist line-art character illustration depicting a focused and energetic coach with sharp, clean lines. The art style uses a refined palette of warm blacks and subtle grays on an ivory background. The mood is disciplined yet encouraging, perfectly fitting a sophisticated nutrition tracking application's aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHhlUA3J5axKYF-aYKvxppc16t9ARWM5h9l1EEcJCOOyPtoyML3LwtQUyy-ipjtJ6-4C9UpLBeeI-wrkKJ9_583y1Xc_PC6zjSxhDLcddyA9hJtKfcDI76GEEd7vEtaG7cmJHePZljZKs_iMASKjKRSUrLuzzlC1ulYpjIVJuKiLhp1GM0Oh8sY5rnDrE6HeDKEuPXAiyM3-Ex8lYvRi6OiOfPfiOBuq2DBp1jvHSRpW44GOIMdxQyTYVG-FDdllGqsBoDC1nbJ0R-"/>
+</div>
+<h3 class="font-body-17 font-semibold text-on-surface mb-xs">毒舌教练</h3>
+<p class="font-caption-13 text-on-surface-variant opacity-70 italic line-clamp-2">“这点热量你认真的吗？”</p>
+</div>
+<!-- Persona 3 -->
+<div class="persona-card bg-surface-container-lowest p-md rounded-2xl flex flex-col items-center text-center border-2 border-transparent card-shadow" onclick="selectPersona(this)">
+<div class="w-20 h-20 rounded-full overflow-hidden mb-sm bg-surface-container-high border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="A trendy and friendly character illustration in a contemporary flat-line style. The character looks approachable and stylish, wearing a simple beret. Colors are muted earth tones like terracotta and sage. The vibe is like a supportive best friend, warm and grounded, rendered with a tactile paper texture effect." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjYZA6j7aOSWWZAfV0gbP0ynsJAtag6uOxg9EDVP3ofvzQZlc6YrKAotRUvd5GnlSelvjiaCESOu_387hEsm-jCVQMFiDqsHjYVTepsFiA0n7qMnM7tGM21BR-hnWMpXH6SqxO0tyfgDiB4kvTrfbrWmLd9FtJ5xGrhhHeQinKSTIhRT6Tn_FwQrl3Mt95q3KSRZfCDQ7gNbAYh9sFf9ytYADWlKhoq9NZTV7xH0z6mcb1ULvj-Z_hWHPW-uTMKo_RAmm5u23p5vzB"/>
+</div>
+<h3 class="font-body-17 font-semibold text-on-surface mb-xs">闺蜜风</h3>
+<p class="font-caption-13 text-on-surface-variant opacity-70 italic line-clamp-2">“宝，这顿咱少吃点”</p>
+</div>
+<!-- Persona 4 -->
+<div class="persona-card bg-surface-container-lowest p-md rounded-2xl flex flex-col items-center text-center border-2 border-transparent card-shadow" onclick="selectPersona(this)">
+<div class="w-20 h-20 rounded-full overflow-hidden mb-sm bg-surface-container-high border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="A sophisticated and professional minimalist illustration of a nutritionist with subtle medical cues like a stethoscope or a clipboard rendered as simple geometric lines. The aesthetic is clean, academic, and trustworthy, using a palette of ivory, warm white, and deep soy orange accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYYziZ38MHfM-l-QcYvEaQtgGNWZpmymLsGxjAl8Bokq-B3FYF4CdEFqlExFnkSsiBeOTg8frtXuNkqBUjeYiNUy8gUCpuNqPkvtmBUTheuzajUa4BuJILJmMxEZaoeP2pPihU5rJChGILNkJ5fPBh7EjZA5BnNYc5Nr0T2tfZhRb6TyZfsFJKnfxJslkP87xyaGUwCufed5MNtnfdkCm4FfNtiXXQtPLKbX8T-Euw_udxCCq2pkQJlWCmOepUygSOEEt14U4jccPf"/>
+</div>
+<h3 class="font-body-17 font-semibold text-on-surface mb-xs">专业营养师</h3>
+<p class="font-caption-13 text-on-surface-variant opacity-70 italic line-clamp-2">“根据您的身体数据建议...”</p>
+</div>
+</div>
+<!-- Ghost Button Action -->
+<div class="mt-xl flex justify-center">
+<button class="flex items-center gap-xs px-md py-sm text-primary font-body-17 active:opacity-60 transition-all">
+<span>换头像和聊天背景</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Sticky Footer -->
+<footer class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-background via-background/95 to-transparent pb-safe">
+<button class="w-full h-14 bg-primary-container text-surface-container-lowest font-section-22 rounded-full shadow-lg active:scale-[0.98] transition-all duration-200" id="confirm-btn">
+            使用 温柔知心
+        </button>
+</footer>
+<script>
+        function selectPersona(element) {
+            // Remove selection from all cards
+            document.querySelectorAll('.persona-card').forEach(card => {
+                card.classList.remove('border-primary-container');
+                card.classList.add('border-transparent');
+                
+                // Remove check icon if exists
+                const existingCheck = card.querySelector('.selected-indicator');
+                if (existingCheck) existingCheck.remove();
+            });
+
+            // Add selection to clicked card
+            element.classList.remove('border-transparent');
+            element.classList.add('border-primary-container');
+
+            // Add check icon
+            const indicator = document.createElement('div');
+            indicator.className = 'selected-indicator absolute top-2 right-2 bg-primary-container text-white rounded-full w-5 h-5 flex items-center justify-center';
+            indicator.innerHTML = '<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: \'FILL\' 1;">check</span>';
+            element.appendChild(indicator);
+
+            // Update footer button text
+            const name = element.querySelector('h3').innerText;
+            const btn = document.getElementById('confirm-btn');
+            btn.innerText = `使用 ${name}`;
+            
+            // Subtle haptic feedback feel
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        }
+    </script>
+</body></html>

@@ -1,0 +1,33 @@
+{
+  "name": "@qianka/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "千卡日记 Vue3 PWA",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 7110 --host",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --port 7110",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@vueuse/core": "^11.1.0",
+    "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
+    "dexie": "^4.0.8",
+    "jszip": "^3.10.1",
+    "pinia": "^2.2.4",
+    "vue": "^3.5.10",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.10",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "sass": "^1.79.4",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-pwa": "^0.20.5",
+    "vue-tsc": "^2.1.6",
+    "workbox-window": "^7.1.0"
+  }
+}

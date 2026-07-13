@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 识别结果</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#fff9f8",
+                    "background": "#FAF9F5",
+                    "surface": "#FAF9F5",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#f6ece8",
+                    "surface-variant": "#eae1dd",
+                    "tertiary-fixed": "#ffddb5",
+                    "surface-container-highest": "#eae1dd",
+                    "secondary-fixed-dim": "#bacf81",
+                    "secondary-container": "#d6ec9a",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-primary-fixed": "#3c0800",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#c64b2a",
+                    "on-surface": "#1f1b19",
+                    "surface-tint": "#a93717",
+                    "secondary": "#536523",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#e1d8d4",
+                    "on-primary-fixed-variant": "#881f01",
+                    "on-secondary-container": "#596b28",
+                    "primary-fixed": "#ffdbd2",
+                    "tertiary": "#7e5100",
+                    "outline": "#8c716a",
+                    "on-surface-variant": "#58413c",
+                    "surface-container-high": "#f0e6e2",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#161f00",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f8efeb",
+                    "surface-container-low": "#fbf2ee",
+                    "tertiary-container": "#9f6702",
+                    "surface-bright": "#fff8f5",
+                    "on-background": "#1f1b19",
+                    "on-tertiary-fixed": "#2a1800",
+                    "outline-variant": "#e0bfb7",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "inverse-surface": "#342f2d",
+                    "inverse-primary": "#ffb4a1",
+                    "primary": "#a53314"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "8px",
+                    "xl": "12px",
+                    "2xl": "14px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "xl": "32px",
+                    "margin-mobile": "20px",
+                    "xs": "8px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "base": "4px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "caption-13": ["PingFang SC", "Noto Sans SC"],
+                    "body-17": ["PingFang SC", "Noto Sans SC"],
+                    "section-22": ["PingFang SC", "Noto Sans SC"],
+                    "label-11": ["PingFang SC", "Noto Sans SC"],
+                    "title-28": ["PingFang SC", "Noto Sans SC"],
+                    "hero-34": ["PingFang SC", "Noto Sans SC"]
+            },
+            "fontSize": {
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            font-family: 'PingFang SC', 'Noto Sans SC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .diary-card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .active-press:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top AppBar (Back to previous screen context, so BottomNav is suppressed per rule) -->
+<header class="sticky top-0 z-50 bg-background/80 backdrop-blur-md px-margin-mobile h-16 flex items-center justify-between">
+<button class="active-press flex items-center justify-center w-10 h-10 -ml-2">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface">识别结果</h1>
+<button class="active-press text-primary font-body-17 px-2">重拍</button>
+</header>
+<main class="flex-1 px-margin-mobile pb-32">
+<!-- Photo Section -->
+<section class="mt-base mb-lg">
+<div class="relative w-full h-[180px] rounded-2xl overflow-hidden diary-card-shadow">
+<img class="w-full h-full object-cover" data-alt="A top-down aesthetic food photograph of a Chinese meal consisting of Kung Pao Chicken, a bowl of white steamed rice, and a side of smashed cucumber salad. The photo is taken in natural, soft daylight on a clean, light-colored wooden table, reflecting a warm and calm editorial lifestyle aesthetic. The colors are vibrant yet soft, focusing on the textures of the food." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3XSDXl3Cmb7ffG9zXPDf5Tq6wcAeBXit2A1Kl-7ZV6AZz6AAKLm9JbwWuo_03zxrK_0PZD9iW_LwrXcKJcovGrMTE7WtOEKPHoAF6hx8ipHosph5dg0-BctrUJuSCo-S0aqNm7aCJagE8hcCpbEAl64WxIFxjzR0imTA6SSdDgTrI3T6Urbq8qh00JxwKJ1FwU0-HnlrBae38_4VnABSq7zyaFBpcr7s_KSnFmarJ54QJg5p9Ue1Dtoh4A1FQIV2Rz-upcpB4a0Bk"/>
+<div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+</div>
+</section>
+<!-- Recognition Summary Header -->
+<div class="flex items-center gap-xs mb-md">
+<div class="w-5 h-5 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<h2 class="font-section-22 text-section-22">识别到 3 项</h2>
+</div>
+<!-- Recognition List -->
+<div class="space-y-sm">
+<!-- Card 1: 宫保鸡丁 -->
+<div class="flex items-center p-md bg-[#F3F0E7] rounded-xl active-press transition-all duration-200">
+<div class="w-2 h-2 rounded-full bg-primary mr-sm shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-body-17 text-on-surface font-semibold truncate">宫保鸡丁</span>
+<div class="flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-[#E9EBD8] text-[#6C7F3A] font-label-11 text-label-11">89% 可能</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">edit</span>
+</div>
+</div>
+<p class="font-caption-13 text-on-surface-variant tabular-nums">约 220g · 385 kcal</p>
+</div>
+</div>
+<!-- Card 2: 米饭 -->
+<div class="flex items-center p-md bg-[#F3F0E7] rounded-xl active-press transition-all duration-200">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim mr-sm shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-body-17 text-on-surface font-semibold truncate">米饭</span>
+<div class="flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-[#E9F5E9] text-[#2E7D32] font-label-11 text-label-11">95% 可能</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">edit</span>
+</div>
+</div>
+<p class="font-caption-13 text-on-surface-variant tabular-nums">150g · 195 kcal</p>
+</div>
+</div>
+<!-- Card 3: 凉拌黄瓜 -->
+<div class="flex items-center p-md bg-[#F3F0E7] rounded-xl active-press transition-all duration-200">
+<div class="w-2 h-2 rounded-full bg-tertiary mr-sm shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-body-17 text-on-surface font-semibold truncate">凉拌黄瓜</span>
+<div class="flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-[#F5E9CE] text-[#B3781A] font-label-11 text-label-11">72% 可能</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">edit</span>
+</div>
+</div>
+<p class="font-caption-13 text-on-surface-variant tabular-nums">80g · 42 kcal</p>
+</div>
+</div>
+</div>
+<!-- Add Manual Item -->
+<button class="mt-lg w-full h-10 flex items-center justify-center border border-dashed border-primary-container rounded-xl text-primary-container font-body-17 active-press">
+<span class="material-symbols-outlined mr-base text-[20px]">add</span>
+            手动加一项
+        </button>
+</main>
+<!-- Sticky Bottom Section -->
+<div class="fixed bottom-0 left-0 w-full bg-background/95 backdrop-blur-xl pt-md pb-safe px-margin-mobile border-t border-[#EFECE4] shadow-[0_-8px_24px_rgba(29,25,23,0.04)]">
+<div class="flex items-baseline justify-between mb-sm">
+<span class="font-caption-13 text-on-surface-variant">合计</span>
+<div class="flex items-baseline gap-1">
+<span class="font-section-22 text-section-22 font-semibold text-primary-container tabular-nums">622</span>
+<span class="font-caption-13 text-primary-container">kcal</span>
+</div>
+</div>
+<button class="w-full h-12 bg-primary-container text-white rounded-[10px] font-section-22 text-[18px] flex items-center justify-center active-press shadow-lg shadow-primary-container/20 transition-all">
+            全部记入 午餐
+        </button>
+</div>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.active-press').forEach(button => {
+            button.addEventListener('touchstart', () => {
+                button.style.transform = 'scale(0.98)';
+                button.style.opacity = '0.9';
+            });
+            button.addEventListener('touchend', () => {
+                button.style.transform = 'scale(1)';
+                button.style.opacity = '1';
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#7e5100",
+                        "on-tertiary-fixed": "#2a1800",
+                        "surface-variant": "#eae1dd",
+                        "surface-container": "#f6ece8",
+                        "secondary": "#536523",
+                        "on-tertiary-container": "#fff9f5",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "secondary-fixed-dim": "#bacf81",
+                        "outline-variant": "#e0bfb7",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-bright": "#fff8f5",
+                        "inverse-primary": "#ffb4a1",
+                        "primary-container": "#c64b2a",
+                        "on-surface-variant": "#58413c",
+                        "surface-tint": "#a93717",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "on-secondary-container": "#596b28",
+                        "background": "#fff8f5",
+                        "surface-container-highest": "#eae1dd",
+                        "on-surface": "#1f1b19",
+                        "secondary-fixed": "#d6ec9a",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f8efeb",
+                        "secondary-container": "#d6ec9a",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#e1d8d4",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#fbf2ee",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#342f2d",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#f0e6e2",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "on-primary-fixed": "#3c0800",
+                        "surface": "#fff8f5",
+                        "tertiary-container": "#9f6702",
+                        "outline": "#8c716a",
+                        "on-primary-container": "#fff9f8",
+                        "on-primary-fixed-variant": "#881f01",
+                        "on-background": "#1f1b19",
+                        "primary-fixed": "#ffdbd2",
+                        "primary": "#a53314"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "margin-mobile": "20px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "section-22": ["PingFang SC"],
+                        "hero-34": ["PingFang SC"],
+                        "body-17": ["PingFang SC"],
+                        "title-28": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .chart-grid-line {
+            stroke: #EFECE4;
+            stroke-dasharray: 4 4;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .ios-segmented-control {
+            background-color: rgba(118, 118, 128, 0.12);
+            border-radius: 9px;
+            padding: 2px;
+        }
+        .ios-segmented-control .active {
+            background-color: #FFFFFF;
+            box-shadow: 0 3px 8px 0 rgba(0,0,0,0.12), 0 3px 1px 0 rgba(0,0,0,0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-on-surface selection:bg-primary-fixed">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex justify-between items-center px-margin-mobile h-16 w-full bg-background dark:bg-background">
+<div class="flex items-center gap-2">
+<span class="font-title-28 text-title-28 text-primary dark:text-primary-fixed-dim">统计</span>
+</div>
+<div class="flex items-center">
+<button class="w-10 h-10 flex items-center justify-center rounded-full active:scale-95 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined text-primary" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</header>
+<main class="pb-24 px-margin-mobile">
+<!-- Segmented Control -->
+<div class="ios-segmented-control flex w-full mb-lg">
+<button class="flex-1 py-1.5 font-caption-13 text-on-surface-variant transition-all">日</button>
+<button class="flex-1 py-1.5 font-caption-13 text-on-surface active transition-all font-bold">周</button>
+<button class="flex-1 py-1.5 font-caption-13 text-on-surface-variant transition-all">月</button>
+<button class="flex-1 py-1.5 font-caption-13 text-on-surface-variant transition-all">年</button>
+</div>
+<!-- Chart 1: Calorie Balance -->
+<section class="bg-surface-container-lowest rounded-xl p-md mb-md shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] h-[190px] flex flex-col">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-section-22 text-[16px] text-on-surface">热量收支</h3>
+<div class="text-right">
+<p class="font-caption-13 text-on-surface-variant">周平均</p>
+<p class="font-body-17 tabular-nums font-bold text-primary">1680 <span class="font-label-11 font-normal opacity-70">kcal</span></p>
+</div>
+</div>
+<div class="flex-1 relative flex items-end justify-between gap-2 pt-2">
+<!-- Target Dash Line -->
+<div class="absolute w-full border-t border-dashed border-outline-variant opacity-50 top-1/4 pointer-events-none"></div>
+<!-- Bars Mon-Sun -->
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 40%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 50%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">一</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 35%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 45%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">二</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 55%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 60%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">三</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 45%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 55%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">四</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 30%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 40%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">五</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 25%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 35%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">六</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+<div class="w-2.5 rounded-t-full bg-secondary opacity-80" style="height: 20%"></div>
+<div class="w-2.5 rounded-b-full bg-primary" style="height: 30%"></div>
+<span class="font-label-11 text-on-surface-variant mt-1">日</span>
+</div>
+</div>
+</section>
+<!-- Chart 2: Macro Structure -->
+<section class="bg-surface-container-lowest rounded-xl p-md mb-md shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] h-[160px]">
+<h3 class="font-section-22 text-[16px] text-on-surface mb-sm">宏营养素结构</h3>
+<div class="relative h-20 w-full overflow-hidden">
+<!-- Stacked Area Chart Simulation -->
+<svg class="w-full h-full preserve-aspect-ratio" preserveaspectratio="none" viewbox="0 0 100 40">
+<!-- Fat -->
+<path d="M0,40 Q15,35 30,38 T60,35 T100,40 L100,40 L0,40 Z" fill="#D6EC9A" fill-opacity="0.6"></path>
+<!-- Protein -->
+<path d="M0,30 Q15,25 30,28 T60,20 T100,25 L100,40 L0,40 Z" fill="#FFB4A1" fill-opacity="0.5"></path>
+<!-- Carbs -->
+<path d="M0,15 Q15,10 30,12 T60,5 T100,10 L100,40 L0,40 Z" fill="#C64B2A" fill-opacity="0.3"></path>
+</svg>
+<div class="absolute bottom-0 left-0 w-full flex justify-between px-1">
+<span class="font-label-11 text-on-surface-variant opacity-40">一</span>
+<span class="font-label-11 text-on-surface-variant opacity-40">日</span>
+</div>
+</div>
+<div class="flex gap-4 mt-2">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-label-11">碳水</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-[#FFB4A1]"></div>
+<span class="font-label-11">蛋白质</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-[#D6EC9A]"></div>
+<span class="font-label-11">脂肪</span>
+</div>
+</div>
+</section>
+<!-- Chart 3: Weight Curve -->
+<section class="bg-surface-container-lowest rounded-xl p-md mb-lg shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] h-[160px] relative overflow-hidden">
+<div class="flex justify-between mb-sm">
+<h3 class="font-section-22 text-[16px] text-on-surface">体重曲线</h3>
+<span class="font-body-17 tabular-nums text-primary font-bold">64.5 <span class="font-label-11 font-normal opacity-70">kg</span></span>
+</div>
+<div class="h-24 w-full relative">
+<!-- Goal Line -->
+<div class="absolute top-[60%] w-full border-t border-dashed border-outline-variant opacity-30"></div>
+<!-- Line Chart -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path d="M0,35 L20,32 L40,34 L60,30 L80,25 L100,22" fill="none" stroke="#C64B2A" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="20" cy="32" fill="#C64B2A" r="1.5"></circle>
+<circle cx="60" cy="30" fill="#C64B2A" r="1.5"></circle>
+<circle cx="100" cy="22" fill="#C64B2A" r="1.5"></circle>
+</svg>
+<div class="absolute bottom-0 left-0 w-full flex justify-between px-1">
+<span class="font-label-11 text-on-surface-variant opacity-40">10/01</span>
+<span class="font-label-11 text-on-surface-variant opacity-40">今天</span>
+</div>
+</div>
+</section>
+<!-- Insight Grid -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] flex flex-col justify-between aspect-square">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-caption-13 text-on-surface-variant">本周达标</p>
+<p class="font-section-22 tabular-nums">4 <span class="font-body-17 font-normal">天</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] flex flex-col justify-between aspect-square">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="trending_down">trending_down</span>
+</div>
+<div>
+<p class="font-caption-13 text-on-surface-variant">平均缺口</p>
+<p class="font-section-22 tabular-nums">−320 <span class="font-body-17 font-normal">kcal</span></p>
+</div>
+</div>
+<div class="col-span-2 bg-surface-container-lowest p-md rounded-xl shadow-[0_4px_12px_0_rgba(29,25,23,0.04)] flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="restaurant_menu">restaurant_menu</span>
+</div>
+<div>
+<p class="font-caption-13 text-on-surface-variant">营养建议</p>
+<p class="font-body-17">宏营养偏碳水，建议增加优质蛋白质摄入</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-xs pb-6 px-xs bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-11 text-label-11">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-11 text-label-11">记录</span>
+</a>
+<div class="flex flex-col items-center justify-center -mt-6">
+<button class="w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all text-on-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart" style="font-variation-settings: 'FILL' 1;">bar_chart</span>
+<span class="font-label-11 text-label-11">统计</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-11 text-label-11">我的</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.ios-segmented-control button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('active', 'font-bold');
+                    b.classList.add('text-on-surface-variant');
+                });
+                this.classList.add('active', 'font-bold');
+                this.classList.remove('text-on-surface-variant');
+                
+                // Add feedback
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(5);
+                }
+            });
+        });
+
+        // Dark mode toggle simulation (can be linked to OS setting)
+        // Check for reduced motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+            // Add subtle entry animation for cards
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('section, .grid > div').forEach((el, i) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.1}s`;
+                observer.observe(el);
+            });
+        }
+    </script>
+</body></html>

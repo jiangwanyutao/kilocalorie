@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-highest": "#eae1dd",
+                        "on-primary-fixed": "#3c0800",
+                        "surface-variant": "#eae1dd",
+                        "on-background": "#1f1b19",
+                        "on-primary-container": "#fff9f8",
+                        "tertiary-container": "#9f6702",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#e1d8d4",
+                        "on-primary-fixed-variant": "#881f01",
+                        "surface-bright": "#fff8f5",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#d6ec9a",
+                        "on-tertiary-fixed": "#2a1800",
+                        "secondary-fixed": "#d6ec9a",
+                        "secondary": "#536523",
+                        "on-secondary-container": "#596b28",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "surface-tint": "#a93717",
+                        "surface": "#fff8f5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#f0e6e2",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "secondary-fixed-dim": "#bacf81",
+                        "primary-fixed": "#ffdbd2",
+                        "inverse-surface": "#342f2d",
+                        "tertiary": "#7e5100",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#e0bfb7",
+                        "on-surface-variant": "#58413c",
+                        "background": "#fff8f5",
+                        "outline": "#8c716a",
+                        "on-tertiary-container": "#fff9f5",
+                        "primary-container": "#c64b2a",
+                        "surface-container-low": "#fbf2ee",
+                        "inverse-primary": "#ffb4a1",
+                        "inverse-on-surface": "#f8efeb",
+                        "surface-container": "#f6ece8",
+                        "on-surface": "#1f1b19",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#a53314",
+                        "warm-ivory": "#FAF9F5",
+                        "soy-orange": "#C64B2A",
+                        "card-bg": "#F3F0E7",
+                        "highlight-bg": "#F0E4D5",
+                        "progress-unfilled": "#E3E0D6",
+                        "muted-text": "#5C5852",
+                        "warm-black": "#1D1917"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "14px",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "md": "16px",
+                        "gutter": "12px",
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "base": "4px"
+                    },
+                    fontFamily: {
+                        "body-17": ["PingFang SC", "sans-serif"],
+                        "caption-13": ["PingFang SC", "sans-serif"],
+                        "hero-34": ["PingFang SC", "sans-serif"],
+                        "title-28": ["PingFang SC", "sans-serif"],
+                        "section-22": ["PingFang SC", "sans-serif"],
+                        "label-11": ["PingFang SC", "sans-serif"]
+                    },
+                    fontSize: {
+                        "body-17": ["17px", { "lineHeight": "26px", "fontWeight": "400" }],
+                        "caption-13": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "hero-34": ["34px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-28": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "section-22": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+                        "label-11": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "onboarding-title": ["26px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "hero-num": ["32px", { "lineHeight": "38px", "fontWeight": "600" }],
+                        "mega-hero": ["44px", { "lineHeight": "52px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .safe-area-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 34px);
+        }
+        .safe-area-top {
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+        .chip-active {
+            background-color: #C64B2A;
+            color: #FFFFFF;
+        }
+        .chip-inactive {
+            background-color: #F3F0E7;
+            color: #5C5852;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 selection:bg-primary-container selection:text-on-primary-container">
+<div class="max-w-[600px] mx-auto min-h-screen flex flex-col px-margin-mobile safe-area-top">
+<!-- Top Bar & Progress -->
+<header class="flex items-center justify-between h-14 mt-xs">
+<button aria-label="返回" class="w-10 h-10 flex items-center justify-start active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-warm-black" style="font-variation-settings: 'wght' 300;">arrow_back_ios</span>
+</button>
+<div class="flex-1 px-sm flex gap-1.5 h-1">
+<div class="flex-1 bg-soy-orange rounded-full"></div>
+<div class="flex-1 bg-soy-orange rounded-full"></div>
+<div class="flex-1 bg-progress-unfilled rounded-full"></div>
+</div>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</header>
+<!-- Main Content -->
+<main class="flex-1 pt-lg pb-xl">
+<!-- Section Title -->
+<h1 class="text-onboarding-title text-warm-black mb-xl">给你一个起点</h1>
+<!-- Stats Row -->
+<div class="grid grid-cols-2 gap-sm mb-xl">
+<!-- Card A -->
+<div class="bg-card-bg rounded-2xl p-md card-shadow flex flex-col justify-between aspect-square">
+<span class="text-label-11 text-muted-text">基础代谢 BMR</span>
+<div>
+<span class="text-hero-num tabular-nums text-warm-black">1425</span>
+<span class="text-caption-13 text-muted-text ml-xs">kcal</span>
+</div>
+</div>
+<!-- Card B -->
+<div class="bg-card-bg rounded-2xl p-md card-shadow flex flex-col justify-between aspect-square">
+<span class="text-label-11 text-muted-text">每日总消耗 TDEE</span>
+<div>
+<span class="text-hero-num tabular-nums text-warm-black">1960</span>
+<span class="text-caption-13 text-muted-text ml-xs">kcal</span>
+</div>
+</div>
+</div>
+<!-- Goal Section -->
+<div class="mb-gutter">
+<h2 class="text-caption-13 font-semibold text-warm-black mb-sm">你的目标</h2>
+<div class="flex gap-xs overflow-x-auto no-scrollbar pb-xs">
+<button class="chip-inactive whitespace-nowrap px-md py-xs rounded-full text-caption-13 transition-all active:scale-95">维持</button>
+<button class="chip-active whitespace-nowrap px-md py-xs rounded-full text-caption-13 transition-all active:scale-95 shadow-sm">温和减脂</button>
+<button class="chip-inactive whitespace-nowrap px-md py-xs rounded-full text-caption-13 transition-all active:scale-95">标准减脂</button>
+<button class="chip-inactive whitespace-nowrap px-md py-xs rounded-full text-caption-13 transition-all active:scale-95">温和增肌</button>
+</div>
+</div>
+<!-- Recommended Card -->
+<div class="bg-highlight-bg rounded-2xl p-lg text-center mt-gutter card-shadow transition-all hover:opacity-95">
+<span class="text-caption-13 text-muted-text block mb-xs">推荐每日热量</span>
+<h3 class="text-mega-hero tabular-nums text-soy-orange mb-xs">1660 <span class="text-section-22 font-normal">kcal</span></h3>
+<p class="text-caption-13 text-muted-text mb-md">TDEE − 300 · 温和减脂</p>
+<button class="text-caption-13 font-semibold text-soy-orange hover:underline">自定义 →</button>
+</div>
+<!-- Helper Text -->
+<p class="text-[12px] text-muted-text text-center mt-md">
+                宏营养默认 C 50% · P 25% · F 25%，稍后可改
+            </p>
+</main>
+<!-- Bottom Actions -->
+<footer class="flex flex-col gap-xs pb-safe safe-area-bottom mt-auto">
+<button class="w-full h-12 bg-soy-orange text-white rounded-[10px] font-semibold text-body-17 active:scale-[0.98] transition-all shadow-md">
+                使用推荐
+            </button>
+<button class="w-full py-md text-[15px] text-muted-text font-medium active:opacity-70 transition-opacity">
+                跳过 · 我随便看看
+            </button>
+</footer>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chips = document.querySelectorAll('.flex.gap-xs button');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chips.forEach(c => {
+                        c.classList.remove('chip-active', 'shadow-sm');
+                        c.classList.add('chip-inactive');
+                    });
+                    chip.classList.remove('chip-inactive');
+                    chip.classList.add('chip-active', 'shadow-sm');
+                    
+                    // Simple logic to "pulse" the main recommended card when a new goal is selected
+                    const heroCard = document.querySelector('.bg-highlight-bg');
+                    heroCard.classList.add('scale-[1.02]');
+                    setTimeout(() => {
+                        heroCard.classList.remove('scale-[1.02]');
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body></html>

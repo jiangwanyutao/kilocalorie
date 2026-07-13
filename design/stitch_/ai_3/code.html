@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - AI 搭子</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            font-size: 24px;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        body {
+            background-color: #FAF9F5; /* Warm Ivory Paper */
+            color: #1F1B19;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .chat-container {
+            height: calc(100vh - 54px - 84px);
+        }
+        /* Custom scrollbar for better visual integration */
+        .chat-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #EFECE4;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fff8f5",
+                        "secondary": "#536523",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d6ec9a",
+                        "tertiary-container": "#9f6702",
+                        "secondary-container": "#d6ec9a",
+                        "surface-container": "#f6ece8",
+                        "outline": "#8c716a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#a53314",
+                        "on-background": "#1f1b19",
+                        "primary-fixed": "#ffdbd2",
+                        "surface-dim": "#e1d8d4",
+                        "inverse-primary": "#ffb4a1",
+                        "on-tertiary-fixed": "#2a1800",
+                        "on-primary-container": "#fff9f8",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffddb5",
+                        "surface": "#fff8f5",
+                        "inverse-on-surface": "#f8efeb",
+                        "surface-variant": "#eae1dd",
+                        "outline-variant": "#e0bfb7",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#eae1dd",
+                        "primary-container": "#c64b2a",
+                        "surface-tint": "#a93717",
+                        "tertiary": "#7e5100",
+                        "on-secondary-container": "#596b28",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fff9f5",
+                        "surface-container-low": "#fbf2ee",
+                        "on-surface-variant": "#58413c",
+                        "secondary-fixed-dim": "#bacf81",
+                        "inverse-surface": "#342f2d",
+                        "background": "#fff8f5",
+                        "on-secondary-fixed": "#161f00",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "on-primary-fixed-variant": "#881f01",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e6e2",
+                        "on-primary-fixed": "#3c0800",
+                        "on-surface": "#1f1b19"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "gutter": "12px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "section-22": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "hero-34": ["PingFang SC"],
+                        "title-28": ["PingFang SC"],
+                        "body-17": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background flex flex-col min-h-screen">
+<!-- Top App Bar (54px) -->
+<header class="h-[54px] w-full flex items-center justify-between px-margin-mobile bg-background z-50 sticky top-0">
+<button aria-label="返回" class="flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-xs">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A portrait of a gentle AI assistant persona, styled as a soft digital illustration. The avatar features warm pastel tones, a friendly and empathetic expression, and a clean minimalist aesthetic. The lighting is soft and diffused, matching a calm ivory paper journal theme with subtle orange accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtN7_b4DQjUKagoKXcPb3M7ugEfsXAO2eHj53I543OSDvwOOaCe1bgjieUs-6bWG-SeZ7clnDPO5OpG_JfLB40FQxBhDZ-WWADUE6BqI-Serch4n1Nlia-nYxqO6idT9pfZvcjk_QVMvbvUgGkjP6ybESI6mg4xeT62O0chdeSr7uZwDTptLQbdTRKN3xqpDmwCwdAKsfuTI61kCX03qlwemwXT4jIwZ0BWu48A9cWHwr1gq5yG7S6HU27ybsoVCggtU5B1bntm0ZV"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-17 text-[14px] leading-tight font-bold">小卡</span>
+<span class="bg-secondary-container text-on-secondary-container px-xs rounded-full font-label-11 text-[10px]">温柔知心</span>
+</div>
+</div>
+</div>
+<button aria-label="更多操作" class="flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</header>
+<!-- Chat Content -->
+<main class="chat-container flex-1 overflow-y-auto px-margin-mobile pt-lg pb-xl space-y-lg">
+<!-- AI Greeting -->
+<div class="flex items-start gap-xs max-w-[85%]">
+<div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-xs border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar icon representing a gentle AI companion. The character is depicted in a soft, modern watercolor style with a warm, empathetic facial expression and subtle orange-hued hair. The overall vibe is calm and supportive, fitting for a personal health diary application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAkhj9RGa-f7rlH5CzMh2qwqXNRfc2SnQue_mbcewNFfq5WFUf2Vn5lhkCc3BYNea62XchTbwNgzInhBVLJrbPpqjSxLxL7PHbz9NaOGjnakEwaoD3fPGJ_SgEyrf7mKf9BxSmc-RR0q5HQ4yQ3hjL2mAJk-36gQjl8oiydRvz8Mj4HZg8EDZ1uzp-kvi739iz4ncQ0qFVe5enhf_1QQGlnphbBRQZLB3IKff_yeckUxZBh79AwhijJGbHojsPN3Y6mHhGCa2EpQ8Q"/>
+</div>
+<div class="space-y-base">
+<div class="bg-surface-container-lowest border border-[#E3E0D6] rounded-[14px] px-md py-sm shadow-sm">
+<p class="font-body-17 text-on-surface text-[15px]">早上好呀！今天想记点什么？</p>
+</div>
+<p class="font-label-11 text-on-surface-variant opacity-60 ml-xs">07:12</p>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex justify-end w-full">
+<div class="bg-[#F0E4D5] rounded-[14px] px-md py-sm max-w-[80%] shadow-sm">
+<p class="font-body-17 text-on-surface text-[15px]">我中午吃了一份番茄炒蛋和一碗米饭</p>
+</div>
+</div>
+<!-- Food Log Confirmation Card -->
+<div class="flex items-start gap-xs w-[92%]">
+<div class="w-6 h-6 rounded-full flex-shrink-0"></div> <!-- Spacer for alignment -->
+<div class="bg-surface-container-lowest border border-[#E3E0D6] rounded-[14px] w-full shadow-sm overflow-hidden">
+<div class="p-md space-y-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">restaurant</span>
+<h3 class="font-body-17 font-bold text-[15px]">帮你记入午餐？</h3>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between items-center text-[14px]">
+<span class="text-on-surface">番茄炒蛋 · 1份</span>
+<span class="tabular-nums text-on-surface-variant">~120 kcal</span>
+</div>
+<div class="flex justify-between items-center text-[14px]">
+<span class="text-on-surface">米饭 · 1碗 · 200g</span>
+<span class="tabular-nums text-on-surface-variant">~232 kcal</span>
+</div>
+</div>
+<div class="pt-sm border-t border-outline-variant flex justify-between items-center">
+<span class="font-body-17 font-bold">合计</span>
+<span class="tabular-nums font-section-22 text-primary text-[20px]">352 kcal</span>
+</div>
+<div class="flex gap-sm pt-xs">
+<button class="flex-1 py-xs border border-outline-variant text-on-surface-variant font-label-11 rounded-lg hover:bg-surface-container-low transition-colors">编辑</button>
+<button class="flex-1 py-xs text-on-surface-variant font-label-11 hover:bg-surface-container-low rounded-lg transition-colors">先不了</button>
+<button class="flex-[1.5] py-xs bg-primary-container text-on-primary-container font-label-11 rounded-lg flex items-center justify-center gap-xs active:scale-[0.98] transition-transform">
+                            记下 <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Follow-up -->
+<div class="flex items-start gap-xs max-w-[85%]">
+<div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-xs border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A small avatar of the AI character 小卡, shown with a peaceful and helpful expression. The art style is minimalist with a tactile, paper-like texture. The color palette emphasizes warm ivories and soft soy orange, creating a non-judgmental and encouraging atmosphere for the user." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiKpwrW__5XR_L2YbTjemP0EisiPghTWo3B2esuDpNX5weuf8GnP5_JYd4WlKfGWMyC8CJTpb3MOL_rNpYbFSqQUBgmoYfAYhdCryLz0ebM8MWtWCeMw0t3Ho8yWyFoP6qHQzLZuXw5Kpb7rj-33WS1zok5o88jekYK_JFCETk0AO_n-AZDxPdB7YkEUTngJaRUBi4Pe90cR09nxC6XOSQ5GcIyNaIpOdHprg6L72rutBP_IsGjDcQRczn7nVY7u_QOMMFubH5RbG-"/>
+</div>
+<div class="bg-surface-container-lowest border border-[#E3E0D6] rounded-[14px] px-md py-sm shadow-sm">
+<p class="font-body-17 text-on-surface text-[15px]">记好了。今天还剩 500 kcal，晚餐可以吃个轻的~</p>
+</div>
+</div>
+<!-- Memory Update Card -->
+<div class="flex items-start gap-xs w-[85%]">
+<div class="w-6 h-6 rounded-full flex-shrink-0"></div>
+<div class="bg-[#F0E4D5] border-l-[3px] border-primary-container rounded-[14px] w-full shadow-sm p-md space-y-sm">
+<div class="flex items-center">
+<span class="bg-primary-container text-on-primary-container px-xs py-[2px] rounded-full font-label-11 text-[10px]">记忆更新</span>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-md">
+<span class="text-[12px] text-on-surface-variant w-4">旧</span>
+<span class="text-on-surface-variant line-through text-[14px]">目标体重 62 kg</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="text-[12px] font-bold w-4">新</span>
+<span class="font-bold text-[14px]">目标体重 60 kg</span>
+</div>
+<p class="text-[12px] text-on-surface-variant italic mt-xs">“你刚才说想再瘦点”</p>
+</div>
+<div class="flex gap-sm pt-sm">
+<button class="flex-1 py-xs border border-outline text-on-surface-variant font-label-11 rounded-lg">拒绝</button>
+<button class="flex-1 py-xs text-on-surface-variant font-label-11">编辑再确认</button>
+<button class="flex-1 py-xs bg-primary-container text-on-primary-container font-label-11 rounded-lg active:scale-95 transition-transform">确认</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Composer Bar -->
+<footer class="bg-background pb-safe px-margin-mobile pt-sm h-auto flex flex-col gap-sm border-t border-transparent">
+<div class="flex items-center gap-md mb-xs">
+<div class="flex-1 flex items-center bg-surface-container-low rounded-xl px-md py-sm border border-outline-variant/30">
+<input class="bg-transparent border-none focus:ring-0 w-full text-[15px] font-body-17 placeholder:text-on-surface-variant/40" placeholder="跟我聊聊今天…" type="text"/>
+</div>
+<button class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container active:scale-90 transition-all shadow-md">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+<div class="flex items-center gap-lg pb-sm px-xs">
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[22px]">image</span>
+</button>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[22px]">mic</span>
+</button>
+</div>
+</footer>
+<script>
+        // Micro-interaction for input focus
+        const input = document.querySelector('input');
+        const footer = document.querySelector('footer');
+        
+        input.addEventListener('focus', () => {
+            footer.classList.add('shadow-[0_-4px_20px_0_rgba(29,25,23,0.06)]');
+        });
+        
+        input.addEventListener('blur', () => {
+            footer.classList.remove('shadow-[0_-4px_20px_0_rgba(29,25,23,0.06)]');
+        });
+
+        // Simple bounce animation for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.add('scale-95');
+                setTimeout(() => btn.classList.remove('scale-95'), 100);
+            });
+        });
+    </script>
+</body></html>

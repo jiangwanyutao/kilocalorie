@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>千卡日记 - AI 识餐</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#d6ec9a",
+                    "surface-container-low": "#fbf2ee",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#e0bfb7",
+                    "inverse-primary": "#ffb4a1",
+                    "surface-container": "#f6ece8",
+                    "on-surface-variant": "#58413c",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#9f6702",
+                    "on-secondary-container": "#596b28",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-tertiary-fixed": "#2a1800",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "primary-fixed": "#ffdbd2",
+                    "inverse-on-surface": "#f8efeb",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "tertiary-fixed": "#ffddb5",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-primary": "#ffffff",
+                    "secondary": "#536523",
+                    "on-primary-container": "#fff9f8",
+                    "on-background": "#1f1b19",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#161f00",
+                    "primary-container": "#c64b2a",
+                    "surface-tint": "#a93717",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#f0e6e2",
+                    "outline": "#8c716a",
+                    "on-primary-fixed": "#3c0800",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#fff8f5",
+                    "on-primary-fixed-variant": "#881f01",
+                    "background": "#fff8f5",
+                    "surface": "#fff8f5",
+                    "inverse-surface": "#342f2d",
+                    "tertiary": "#7e5100",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#1f1b19",
+                    "surface-dim": "#e1d8d4",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "surface-variant": "#eae1dd",
+                    "surface-container-highest": "#eae1dd",
+                    "primary": "#a53314"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "margin-mobile": "20px",
+                    "gutter": "12px",
+                    "xl": "32px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "md": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "body-17": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shutter-active:active .shutter-inner {
+            transform: scale(0.9);
+        }
+        .shutter-inner {
+            transition: transform 0.15s ease-out;
+        }
+        .viewfinder-corner {
+            width: 24px;
+            height: 24px;
+            border-color: white;
+            position: absolute;
+        }
+        .camera-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.6) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-on-surface select-none">
+<!-- Viewfinder Background -->
+<div class="fixed inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-90 scale-105 transition-transform duration-700" data-alt="A top-down view through a high-end smartphone camera lens of a beautifully plated healthy meal. The scene features a ceramic bowl of quinoa salad with vibrant roasted vegetables, sliced avocado, and a side of fresh fruit on a rustic wooden table. Soft, natural morning light creates gentle shadows, emphasizing the 'warm ivory paper' aesthetic of the app. The depth of field is shallow, focusing on the textures of the food." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIno1TsCXp8lTfiWilDah2Ek1tQKCrZvY6unOwj1rKbdrbDI_Or948QlX8qw_5Hd5R6tDR1BJC0xPzarmbfjie4AVqDcp97iSp6utk3RuKrQSE_Rfz5CyzGMhOTrF6EcRRW3ELY18JADfbEKNkDWeKe6is7uFBEV8AMWqJ62ErpYo5WGBHn16kfDLYk4rv_rh6kiF2CtTiefjW1dCFgvZKgAdtfiuU7rFhXocf34ord_I6orwLazc6oCjTw8nyvqj_SIPepKKvjbbn')">
+</div>
+<!-- Scanned Mesh Animation Overlay -->
+<div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
+</div>
+<!-- UI Canvas -->
+<div class="relative z-10 flex flex-col h-screen w-full overflow-hidden">
+<!-- Top Overlay Bar -->
+<header class="flex justify-between items-center px-margin-mobile pt-14 pb-4 backdrop-blur-md bg-black/30">
+<button class="w-10 h-10 flex items-center justify-start text-white active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[28px]">close</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-white">拍一张饭</h1>
+<button class="w-10 h-10 flex items-center justify-end text-white active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[24px]">help</span>
+</button>
+</header>
+<!-- Hint Chip -->
+<div class="flex justify-center mt-6">
+<div class="px-5 py-2 rounded-full bg-[#F0E4D5]/80 backdrop-blur-sm border border-white/10 flex items-center gap-2 animate-pulse">
+<span class="material-symbols-outlined text-[18px] text-[#C64B2A]" style="font-variation-settings: 'FILL' 1;">camera_alt</span>
+<span class="font-caption-13 text-caption-13 text-[#C64B2A] tracking-wide">俯拍完整餐具，识别更准</span>
+</div>
+</div>
+<!-- Center Framing Guide -->
+<div class="flex-grow flex items-center justify-center p-xl">
+<div class="relative w-full aspect-square max-w-[320px] border-[1.5px] border-dashed border-white/40 rounded-xl">
+<!-- Framing Corners -->
+<div class="viewfinder-corner top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-lg"></div>
+<div class="viewfinder-corner top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-lg"></div>
+<div class="viewfinder-corner bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-lg"></div>
+<div class="viewfinder-corner bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-lg"></div>
+<!-- AI Scanning Line Effect (CSS Animation) -->
+<div class="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#ffdbd2]/60 to-transparent shadow-[0_0_15px_#ffdbd2] top-0 animate-[scan_3s_ease-in-out_infinite]"></div>
+</div>
+</div>
+<!-- Bottom Controls -->
+<footer class="pb-12 pt-8 backdrop-blur-md bg-black/40 px-margin-mobile flex flex-col items-center gap-6">
+<div class="w-full flex justify-between items-center max-w-[400px]">
+<!-- Photo Library -->
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">photo_library</span>
+</button>
+<!-- Shutter Button -->
+<div class="relative flex items-center justify-center shutter-active group cursor-pointer" onclick="takePhoto()">
+<div class="w-[76px] h-[76px] rounded-full border-[3px] border-white flex items-center justify-center">
+<div class="shutter-inner w-[60px] h-[60px] rounded-full bg-white"></div>
+</div>
+<!-- Feedback Ring -->
+<div class="absolute inset-0 rounded-full border-4 border-primary opacity-0 transition-opacity" id="flash-ring"></div>
+</div>
+<!-- Flip Camera -->
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">flip_camera_ios</span>
+</button>
+</div>
+<!-- Microcopy -->
+<p class="text-white/60 font-label-11 text-label-11 tracking-wider">
+                点一下拍照 · 长按录像（暂不支持）
+            </p>
+</footer>
+</div>
+<!-- Hidden Flash Effect -->
+<div class="fixed inset-0 bg-white z-[100] opacity-0 pointer-events-none transition-opacity duration-75" id="flash-effect"></div>
+<style>
+        @keyframes scan {
+            0% { top: 10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
+    </style>
+<script>
+        function takePhoto() {
+            // Haptic Feedback Simulation
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(50);
+            }
+
+            const flash = document.getElementById('flash-effect');
+            const ring = document.getElementById('flash-ring');
+            
+            // Visual feedback
+            flash.style.opacity = '0.8';
+            ring.style.opacity = '1';
+            
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                ring.style.opacity = '0';
+            }, 100);
+
+            // Intent Navigation (Simulation)
+            console.log("Photo captured. Initializing AI Food Recognition...");
+        }
+
+        // Handle immersive mode sizing for PWA
+        function updateViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', updateViewportHeight);
+        updateViewportHeight();
+    </script>
+</body></html>

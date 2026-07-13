@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>千卡日记 - 注册</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#342f2d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#f6ece8",
+                        "surface-tint": "#a93717",
+                        "on-secondary-fixed": "#161f00",
+                        "surface-container-low": "#fbf2ee",
+                        "surface-container-high": "#f0e6e2",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-secondary-container": "#596b28",
+                        "secondary-fixed": "#d6ec9a",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#2a1800",
+                        "primary": "#a53314",
+                        "secondary-fixed-dim": "#bacf81",
+                        "tertiary-container": "#9f6702",
+                        "on-surface-variant": "#58413c",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "inverse-on-surface": "#f8efeb",
+                        "secondary": "#536523",
+                        "primary-fixed": "#ffdbd2",
+                        "on-primary-fixed": "#3c0800",
+                        "primary-container": "#c64b2a",
+                        "on-background": "#1f1b19",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fff8f5",
+                        "surface-bright": "#fff8f5",
+                        "surface": "#fff8f5",
+                        "outline": "#8c716a",
+                        "on-primary-fixed-variant": "#881f01",
+                        "secondary-container": "#d6ec9a",
+                        "surface-variant": "#eae1dd",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#7e5100",
+                        "outline-variant": "#e0bfb7",
+                        "on-tertiary-container": "#fff9f5",
+                        "on-primary-container": "#fff9f8",
+                        "inverse-primary": "#ffb4a1",
+                        "surface-container-highest": "#eae1dd",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e1d8d4",
+                        "on-surface": "#1f1b19",
+                        "tertiary-fixed": "#ffddb5",
+                        "on-secondary-fixed-variant": "#3c4d0c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "ios": "10px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "margin-mobile": "20px",
+                        "safe-bottom": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "body-17": ["PingFang SC", "sans-serif"],
+                        "title-28": ["PingFang SC", "sans-serif"],
+                        "caption-13": ["PingFang SC", "sans-serif"],
+                        "hero-34": ["PingFang SC", "sans-serif"],
+                        "section-22": ["PingFang SC", "sans-serif"],
+                        "label-11": ["PingFang SC", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Warm Ivory as requested */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .form-underline {
+            border-bottom: 1px solid #E3E0D6;
+        }
+        .floating-label-group:focus-within label {
+            transform: translateY(-20px) scale(0.85);
+            color: #a53314;
+        }
+        .floating-label-group input:not(:placeholder-shown) + label {
+            transform: translateY(-20px) scale(0.85);
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        /* Custom checkbox appearance */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid #8c716a;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            background: transparent;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #a53314;
+            border-color: #a53314;
+        }
+        input[type="checkbox"]:checked::after {
+            content: 'check';
+            font-family: 'Material Symbols Outlined';
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-variation-settings: 'wght' 700;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen font-body-17 text-on-surface">
+<!-- 1. Top Nav -->
+<nav class="sticky top-0 z-50 flex items-center justify-between h-11 px-4 bg-[#FAF9F5]/80 backdrop-blur-md">
+<button aria-label="返回" class="flex items-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[24px] text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-body-17 font-semibold text-[17px] text-on-surface">注册</h1>
+<div class="w-6"></div> <!-- Spacer for center alignment -->
+</nav>
+<main class="flex-grow px-margin-mobile pt-8 pb-xl">
+<!-- 2. Header -->
+<header class="mb-12">
+<h2 class="font-section-22 text-section-22 text-[#1D1917] mb-xs">开始你的日记</h2>
+<p class="font-body-17 text-[15px] text-[#5C5852]">每一口都值得被看见</p>
+</header>
+<!-- 3. Form -->
+<form class="space-y-10" onsubmit="return false;">
+<!-- Email Input -->
+<div class="relative floating-label-group">
+<input class="w-full bg-transparent border-0 border-b border-[#E3E0D6] focus:ring-0 focus:border-primary px-0 py-2 transition-colors outline-none font-body-17" id="email" name="email" placeholder=" " required="" type="email"/>
+<label class="absolute left-0 top-2 text-[#8c716a] transition-all duration-200 pointer-events-none origin-left" for="email">
+                    邮箱 (you@example.com)
+                </label>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="relative floating-label-group">
+<input class="w-full bg-transparent border-0 border-b border-[#E3E0D6] focus:ring-0 focus:border-primary px-0 py-2 pr-10 transition-colors outline-none font-body-17" id="password" name="password" placeholder=" " required="" type="password"/>
+<label class="absolute left-0 top-2 text-[#8c716a] transition-all duration-200 pointer-events-none origin-left" for="password">
+                        密码
+                    </label>
+<button class="absolute right-0 top-2 text-[#8c716a] active:scale-95 transition-transform" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+</button>
+</div>
+<p class="font-caption-13 text-[#8c716a] tabular-nums">8-32位，含字母和数字</p>
+</div>
+<!-- 4. Agreement -->
+<div class="flex items-start gap-3 mt-xl">
+<input class="mt-0.5" id="agreement" type="checkbox"/>
+<label class="font-caption-13 text-on-surface-variant leading-relaxed" for="agreement">
+                    我已阅读并同意 <a class="text-primary-container font-medium hover:underline" href="#">用户协议</a> 和 <a class="text-primary-container font-medium hover:underline" href="#">隐私政策</a>
+</label>
+</div>
+<!-- 5. CTA -->
+<button class="w-full h-[48px] bg-primary-container text-white font-body-17 font-semibold rounded-ios active:scale-[0.98] transition-all duration-200 shadow-md" type="submit">
+                注册
+            </button>
+</form>
+<!-- 6. Footer -->
+<footer class="mt-12 text-center">
+<p class="font-body-17 text-on-surface-variant">
+                已有账号？ <a class="text-primary-container font-semibold ml-1" href="#">登录</a>
+</p>
+</footer>
+</main>
+<!-- Decorative Element: Warm Ivory Texture -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" style="background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');"></div>
+<!-- 7. Bottom Safe Area -->
+<div class="h-safe-bottom"></div>
+<script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerText = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerText = 'visibility';
+            }
+        }
+
+        // Active state simulation for visual feedback
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('touchstart', () => {
+                el.classList.add('opacity-70');
+            });
+            el.addEventListener('touchend', () => {
+                el.classList.remove('opacity-70');
+            });
+        });
+    </script>
+</body></html>

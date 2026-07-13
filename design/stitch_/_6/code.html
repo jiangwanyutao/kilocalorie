@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 首页</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#ffb4a1",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#eae1dd",
+                    "outline": "#8c716a",
+                    "on-tertiary-fixed": "#2a1800",
+                    "secondary-container": "#d6ec9a",
+                    "surface-container-low": "#fbf2ee",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#9f6702",
+                    "primary-fixed": "#ffdbd2",
+                    "on-surface": "#1f1b19",
+                    "inverse-surface": "#342f2d",
+                    "surface-tint": "#a93717",
+                    "surface-container-high": "#f0e6e2",
+                    "inverse-on-surface": "#f8efeb",
+                    "surface-variant": "#eae1dd",
+                    "surface-container": "#f6ece8",
+                    "tertiary": "#7e5100",
+                    "on-background": "#1f1b19",
+                    "tertiary-fixed": "#ffddb5",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "surface-bright": "#fff8f5",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-tertiary-container": "#fff9f5",
+                    "primary": "#a53314",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#fff9f8",
+                    "surface-dim": "#e1d8d4",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#c64b2a",
+                    "secondary": "#536523",
+                    "error": "#ba1a1a",
+                    "ivory-bg": "#FAF9F5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "card": "14px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "margin-mobile": "20px",
+                    "lg": "24px",
+                    "gutter": "12px"
+            },
+            "fontFamily": {
+                    "hero-34": ["PingFang SC", "sans-serif"],
+                    "body-17": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "num-52": ["52px", {"lineHeight": "1", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1f1b19;
+            -webkit-font-smoothing: antialiased;
+            font-feature-settings: "tnum";
+        }
+        .paper-shadow {
+            box-shadow: 0 4px 12px rgba(29, 25, 23, 0.04);
+        }
+        .cal-ring {
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-scale:active {
+            transform: scale(0.96);
+            transition: transform 0.2s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="flex justify-between items-start w-full px-margin-mobile pt-14 pb-4 sticky top-0 bg-ivory-bg z-40">
+<div class="flex flex-col">
+<h1 class="font-title-28 text-title-28 text-on-surface">早上好，鹿鸣</h1>
+<p class="font-caption-13 text-caption-13 text-on-surface-variant opacity-70">10月8日 · 星期二</p>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant paper-shadow">
+<img class="w-full h-full object-cover" data-alt="A sophisticated professional headshot of a young creative person in a warm, minimalist studio setting. The lighting is soft and natural, reflecting the calm ivory paper aesthetic of the UI. The individual has a gentle, inviting expression, fitting for a personalized health and wellness diary application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHtDoZNsFW9-cxfxz1lJ29NyR26s0ynK-6X5t5UZGWMqYaYTLu5u4OQ8VzOz0GZwC3SdJx7i7PgdAhHbVEkMQEcwgH3eCYoSLitdRz43ea_kV0baDiyNKMqVjhj4eZFGK6rjlNqZUNcsHlhnUT1j0ohoOobHxV-E64rIS1fGDSkZPefAZ1LUxRlyrmmJC76cCgFmTmJsmdRgum2oJTDHtL8VLXCpy_hQVMk3dKaXQyEFTqijSzhgD5mjjPL2VZFOSWmvQkmJcc5owK"/>
+</div>
+</header>
+<main class="px-margin-mobile space-y-lg">
+<!-- HERO — Calorie ring -->
+<section class="bg-surface-container-lowest rounded-card p-xl paper-shadow flex flex-col items-center justify-center relative overflow-hidden">
+<div class="relative w-56 h-56 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="112" cy="112" fill="transparent" r="100" stroke="currentColor" stroke-width="12"></circle>
+<circle class="cal-ring" cx="112" cy="112" fill="transparent" r="100" stroke="#C64B2A" stroke-dasharray="628" stroke-dashoffset="188" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-label-11 text-label-11 text-on-surface-variant mb-xs">剩余</span>
+<span class="font-num-52 text-num-52 text-primary tracking-tight">1,248</span>
+<span class="font-caption-13 text-caption-13 text-on-surface-variant mt-xs">kcal</span>
+</div>
+</div>
+<div class="w-full flex justify-between mt-xl px-2">
+<div class="flex flex-col items-center">
+<span class="text-[12px] text-on-surface-variant opacity-60">摄入</span>
+<span class="font-body-17 text-body-17 font-medium">852</span>
+</div>
+<div class="w-[1px] h-8 bg-outline-variant opacity-50"></div>
+<div class="flex flex-col items-center">
+<span class="text-[12px] text-on-surface-variant opacity-60">运动</span>
+<span class="font-body-17 text-body-17 font-medium">320</span>
+</div>
+<div class="w-[1px] h-8 bg-outline-variant opacity-50"></div>
+<div class="flex flex-col items-center">
+<span class="text-[12px] text-on-surface-variant opacity-60">目标</span>
+<span class="font-body-17 text-body-17 font-medium">1660</span>
+</div>
+</div>
+</section>
+<!-- MacroBar Section -->
+<section class="space-y-md">
+<div class="flex justify-between items-center mb-xs px-1">
+<h2 class="font-section-22 text-[18px] text-on-surface">营养配比</h2>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</div>
+<div class="grid grid-cols-1 gap-sm">
+<!-- Carbs -->
+<div class="space-y-2">
+<div class="flex justify-between text-[13px] text-on-surface-variant">
+<span>碳水化合物</span>
+<span>145g / 208g</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-[#C64B2A]" style="width: 70%"></div>
+</div>
+</div>
+<!-- Protein -->
+<div class="space-y-2">
+<div class="flex justify-between text-[13px] text-on-surface-variant">
+<span>蛋白质</span>
+<span>58g / 104g</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-[#6C7F3A]" style="width: 55%"></div>
+</div>
+</div>
+<!-- Fat -->
+<div class="space-y-2">
+<div class="flex justify-between text-[13px] text-on-surface-variant">
+<span>脂肪</span>
+<span>42g / 46g</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-[#B3781A]" style="width: 91%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- MealCards list -->
+<section class="space-y-sm">
+<!-- Breakfast -->
+<div class="bg-surface-container-lowest p-md rounded-card paper-shadow flex items-center justify-between active-scale">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">bakery_dining</span>
+</div>
+<div>
+<h3 class="font-body-17 text-body-17 font-medium">早餐</h3>
+<p class="text-[13px] text-on-surface-variant opacity-60">燕麦奶、全麦面包</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-body-17 font-medium">320</span>
+<span class="text-[12px] text-on-surface-variant"> kcal</span>
+</div>
+</div>
+<!-- Lunch -->
+<div class="bg-surface-container-lowest p-md rounded-card paper-shadow flex items-center justify-between active-scale">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">dinner_dining</span>
+</div>
+<div>
+<h3 class="font-body-17 text-body-17 font-medium">午餐</h3>
+<p class="text-[13px] text-on-surface-variant opacity-60">鸡胸肉沙拉、糙米饭</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-17 text-body-17 font-medium">480</span>
+<span class="text-[12px] text-on-surface-variant"> kcal</span>
+</div>
+</div>
+<!-- Dinner (Empty state) -->
+<div class="bg-surface-container-lowest p-md rounded-card border border-dashed border-outline-variant flex items-center justify-between active-scale">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant opacity-40">nights_stay</span>
+</div>
+<div>
+<h3 class="font-body-17 text-body-17 font-medium text-on-surface-variant">晚餐</h3>
+<p class="text-[13px] text-primary font-medium">记一笔</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">add</span>
+</div>
+<!-- Snack (Empty) -->
+<div class="bg-surface-container-lowest p-md rounded-card border border-dashed border-outline-variant flex items-center justify-between active-scale opacity-80">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant opacity-40">cookie</span>
+</div>
+<div>
+<h3 class="font-body-17 text-body-17 font-medium text-on-surface-variant">加餐</h3>
+<p class="text-[13px] text-on-surface-variant opacity-40">待记录</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">add</span>
+</div>
+</section>
+<!-- Quote -->
+<footer class="py-xl flex justify-center">
+<p class="italic text-[14px] text-on-surface-variant text-center leading-relaxed opacity-60 max-w-[280px]">
+                “好的饮食不仅仅是数字的堆砌，而是对生活品质的细腻表达。”
+            </p>
+</footer>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end px-2 pb-safe h-20 bg-surface border-t border-outline-variant shadow-[0_-4px_12px_rgba(29,25,23,0.04)]">
+<button class="flex flex-col items-center justify-center flex-1 h-full text-primary font-bold active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-11 text-label-11 mt-1">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center flex-1 h-full text-on-surface-variant hover:bg-surface-container-low active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-11 text-label-11 mt-1">记录</span>
+</button>
+<div class="flex flex-col items-center justify-start flex-1 h-full -mt-8 relative">
+<button class="w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-white text-[32px]">add</span>
+</button>
+<div class="h-10"></div>
+</div>
+<button class="flex flex-col items-center justify-center flex-1 h-full text-on-surface-variant hover:bg-surface-container-low active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-11 text-label-11 mt-1">AI 搭子</span>
+</button>
+<button class="flex flex-col items-center justify-center flex-1 h-full text-on-surface-variant hover:bg-surface-container-low active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-11 text-label-11 mt-1">我的</span>
+</button>
+</nav>
+<script>
+        // Simple haptic-like scale effect on click
+        document.querySelectorAll('.active-scale').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

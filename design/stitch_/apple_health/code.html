@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Apple 健康 数据接入 - 千卡日记</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#1f1b19",
+                    "on-secondary-fixed": "#161f00",
+                    "inverse-on-surface": "#f8efeb",
+                    "on-tertiary-container": "#fff9f5",
+                    "secondary-container": "#d6ec9a",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#3c0800",
+                    "outline-variant": "#e0bfb7",
+                    "on-primary-fixed-variant": "#881f01",
+                    "secondary": "#536523",
+                    "background": "#fff8f5",
+                    "inverse-primary": "#ffb4a1",
+                    "surface-dim": "#e1d8d4",
+                    "surface-bright": "#fff8f5",
+                    "surface-container-low": "#fbf2ee",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#596b28",
+                    "primary-container": "#c64b2a",
+                    "on-surface": "#1f1b19",
+                    "on-primary-container": "#fff9f8",
+                    "surface-container-high": "#f0e6e2",
+                    "surface-variant": "#eae1dd",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#58413c",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#9f6702",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "outline": "#8c716a",
+                    "primary-fixed": "#ffdbd2",
+                    "primary": "#a53314",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "surface": "#fff8f5",
+                    "surface-container-highest": "#eae1dd",
+                    "tertiary": "#7e5100",
+                    "surface-container": "#f6ece8",
+                    "tertiary-fixed": "#ffddb5",
+                    "surface-tint": "#a93717",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "inverse-surface": "#342f2d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "8px",
+                    "md": "16px",
+                    "gutter": "12px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"],
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "body-17": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Brand Ivory Background */
+            color: #1D1917; /* Ink Text */
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'PingFang SC', sans-serif;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .drop-zone-active {
+            background-color: #F0E6E2;
+            border-color: #A53314;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 bg-[#FAF9F5]/80 backdrop-blur-md flex items-center justify-between px-margin-mobile h-16">
+<button class="w-10 h-10 flex items-center justify-start active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios</span>
+</button>
+<h1 class="font-body-17 text-body-17 font-semibold text-on-surface">Apple 健康 数据接入</h1>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</nav>
+<main class="flex-1 px-margin-mobile pb-xl space-y-lg overflow-y-auto">
+<!-- Explainer Card -->
+<section class="bg-[#F0E4D5] rounded-[14px] p-md flex gap-md items-start">
+<div class="bg-white/40 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0, 'wght' 400;">sync_saved_locally</span>
+</div>
+<div class="flex flex-col space-y-1">
+<h2 class="text-[15px] font-semibold text-on-surface">PWA 拿不到实时 HealthKit</h2>
+<p class="text-caption-13 text-[#5C5852]">我们提供两条路：一次性导出全部历史，加自动化每日同步。</p>
+</div>
+</section>
+<!-- Section 1: History Import -->
+<section class="space-y-md">
+<h3 class="font-body-17 text-body-17 font-semibold flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[12px] font-bold">1</span>
+                路径 1 · 一次性导入历史
+            </h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<ol class="space-y-base text-caption-13 text-on-surface-variant list-decimal list-inside marker:text-primary marker:font-bold">
+<li>打开 iOS「健康」App，点击右上角头像</li>
+<li>滑动至底部，点击「导出所有健康数据」</li>
+<li>等待系统生成 ZIP 文件并保存至「文件」</li>
+<li>回到此处，将导出的 ZIP 文件上传即可</li>
+</ol>
+</div>
+<!-- Upload Zone -->
+<div class="relative border-2 border-dashed border-[#E3E0D6] bg-[#FAF9F5] rounded-xl h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors duration-200 active:scale-[0.98]" id="drop-zone">
+<input accept=".zip" class="absolute inset-0 opacity-0 cursor-pointer" id="file-input" type="file"/>
+<span class="material-symbols-outlined text-outline text-[32px] mb-2">upload_file</span>
+<p class="text-caption-13 font-medium text-on-surface-variant">点这里上传 ZIP</p>
+</div>
+<!-- History List -->
+<div class="space-y-sm">
+<div class="flex items-center justify-between py-sm border-b border-outline-variant">
+<span class="text-caption-13 tabular-nums text-on-surface font-medium">2026-06-12</span>
+<span class="text-caption-13 tabular-nums text-on-surface-variant">1200 条</span>
+<span class="flex items-center gap-1 text-[12px] text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        已完成
+                    </span>
+</div>
+<div class="flex items-center justify-between py-sm border-b border-outline-variant">
+<span class="text-caption-13 tabular-nums text-on-surface font-medium">2026-06-01</span>
+<span class="text-caption-13 tabular-nums text-on-surface-variant">850 条</span>
+<span class="flex items-center gap-1 text-[12px] text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        已完成
+                    </span>
+</div>
+</div>
+</section>
+<!-- Section 2: Shortcut Automation -->
+<section class="space-y-md pt-base">
+<h3 class="font-body-17 text-body-17 font-semibold flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[12px] font-bold">2</span>
+                路径 2 · Shortcut 自动化
+            </h3>
+<p class="text-caption-13 text-on-surface-variant">装到 iOS 快捷指令，每天早上自动同步数据到日记。</p>
+<button class="w-full bg-primary-container text-on-primary-container font-body-17 h-12 rounded-[10px] flex items-center justify-center gap-2 shadow-sm active:scale-[0.97] transition-all">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+                获取 Shortcut 模板
+            </button>
+<!-- QR Code and Helper -->
+<div class="flex flex-col items-center py-md space-y-sm">
+<div class="p-3 bg-white rounded-xl shadow-[0_4px_12px_rgba(29,25,23,0.04)]">
+<img class="w-[120px] h-[120px] object-contain" data-alt="A clean, minimalist vector QR code centered on a white card. The style is modern and high-tech, fitting the Apple aesthetic. The background is a very soft ivory tone to match the overall health app UI design. The lighting is bright and professional with high-key characteristics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSjGnjHDR7ypTwzjsX5W6DUCPYPlJCciVDocNSvY_cqzG7Y9lfF0iaQOQFxSholrZCBEq6vPx1oaGlzdiqhZvu776afif6pn_sZKIB3WLq-2dzQqfzpOyLRAfRKM3xgN6HdQg7mnUyWjprg-p8WUW76oZR0N_P0RiAAyPwsmFChgv4PUQdyXxvcpDwgoxv87OQHB9F8HWn511DiYeERRF6C8JOl32lj10afFiwT0s4q8yPwi0zSMFi-u0sAqibz_a7_7n76f4qnr8S"/>
+</div>
+<div class="text-center">
+<p class="text-label-11 text-on-surface-variant flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                        首次装配后需授权读健康数据
+                    </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Safe Area Spacer -->
+<div class="h-10 pb-safe"></div>
+<script>
+        // Simple micro-interaction for file drop zone
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                dropZone.classList.add('bg-secondary-container/20');
+                dropZone.querySelector('p').innerText = e.target.files[0].name;
+                dropZone.querySelector('span').innerText = 'check_circle';
+                dropZone.querySelector('span').classList.replace('text-outline', 'text-secondary');
+            }
+        });
+
+        // Prevention for default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        dropZone.addEventListener('dragenter', () => dropZone.classList.add('drop-zone-active'));
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drop-zone-active'));
+        dropZone.addEventListener('drop', (e) => {
+            dropZone.classList.remove('drop-zone-active');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        });
+    </script>
+</body></html>

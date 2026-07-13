@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#fff9f8",
+                    "on-surface": "#1f1b19",
+                    "inverse-surface": "#342f2d",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed-variant": "#881f01",
+                    "primary": "#a53314",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#596b28",
+                    "tertiary": "#7e5100",
+                    "inverse-on-surface": "#f8efeb",
+                    "outline-variant": "#e0bfb7",
+                    "surface-variant": "#eae1dd",
+                    "secondary-container": "#d6ec9a",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#9f6702",
+                    "surface-bright": "#fff8f5",
+                    "surface-container-low": "#fbf2ee",
+                    "outline": "#8c716a",
+                    "inverse-primary": "#ffb4a1",
+                    "primary-fixed": "#ffdbd2",
+                    "on-secondary-fixed": "#161f00",
+                    "surface-dim": "#e1d8d4",
+                    "secondary": "#536523",
+                    "surface": "#fff8f5",
+                    "surface-tint": "#a93717",
+                    "surface-container-highest": "#eae1dd",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "background": "#fff8f5",
+                    "on-background": "#1f1b19",
+                    "on-primary-fixed": "#3c0800",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "tertiary-fixed": "#ffddb5",
+                    "secondary-fixed": "#d6ec9a",
+                    "surface-container-high": "#f0e6e2",
+                    "surface-container": "#f6ece8",
+                    "secondary-fixed-dim": "#bacf81",
+                    "on-tertiary-fixed": "#2a1800",
+                    "primary-container": "#c64b2a",
+                    "on-surface-variant": "#58413c",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "xl": "32px",
+                    "gutter": "12px",
+                    "md": "16px",
+                    "sm": "12px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "title-28": ["PingFang SC"],
+                    "label-11": ["PingFang SC"],
+                    "caption-13": ["PingFang SC"],
+                    "hero-34": ["PingFang SC"],
+                    "body-17": ["PingFang SC"],
+                    "section-22": ["PingFang SC"]
+            },
+            "fontSize": {
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FAF9F5; /* Specific Ivory Paper Base */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .paper-card {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-on-surface antialiased">
+<!-- Top AppBar -->
+<nav class="flex justify-between items-center px-margin-mobile h-16 w-full fixed top-0 bg-background z-50">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A soft, warm-toned close-up portrait of a serene young woman with a natural look, set against a blurred ivory-colored background. The lighting is soft and diffuse, creating a gentle and approachable profile image that fits a personal health and diary application's calm aesthetic. High-quality editorial photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvMHlIMWhBSb38nb5-Irzm6UVEfqqwkSgVwehOn_BLrdIJ4dyL-cWVrTBP4nIyRrQw6LEse4Tr3X1kqzRT8uuaZh0BLkUbdhm-lZDknHu2YJ90sEMZu1wi0Ii3-qsusoWxyD_g5MOMJgY0ahKw1PDDB2J_7gBfVVOBEsqYIh37H25q3QMhbn0k2-snxjbjRQU2c9dU_zHxGHBuCKl25PorUp64B3xSkZ-R2j3UKHdrHrRxm9pC_w0wFKK8pCazI5bGEAKGqaNH8JEt"/>
+</div>
+</div>
+<h1 class="font-section-22 text-section-22 text-primary">千卡日记</h1>
+<button class="material-symbols-outlined text-primary hover:opacity-80 active:scale-95 transition-transform">settings</button>
+</nav>
+<!-- Content Canvas -->
+<main class="pt-20 pb-32 px-margin-mobile max-w-[600px] mx-auto space-y-lg">
+<!-- Profile Header -->
+<header class="flex flex-col items-center py-lg">
+<div class="w-24 h-24 rounded-full overflow-hidden paper-card border-4 border-surface-container-lowest mb-md">
+<img class="w-full h-full object-cover" data-alt="A detailed close-up of a premium quality profile picture for a health app. The subject is a person radiating wellness and calm, with soft natural lighting illuminating their face against a clean, textured off-white wall. The overall style is minimalist and high-end, resembling a lifestyle magazine feature. The palette is dominated by warm ivory and subtle earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdebIC-nc32btfneOeuOlkuGeqwvsTGmyZjoOePDJRKmWlEXW-EHjA2oYHX8WfrohrD49SLrBxXobkTBxy55lXhxPKD2OjbR-fRsWwj1Cd4rzmwpa1_EkHp977V2JZd2Nr1gt04KjB3tgrervcudNSHOA2NrMPLMivsHRW2mhq0yLYA0dCWCrWfXN4D8oylWzH5iaxiIKcNtJpMY6GCGRIEZ9__NQQU6LXxYBFY9UyeNfKUf5CEwvFoEzOeW688oGVJeTroOdKPm3"/>
+</div>
+<h2 class="font-title-28 text-title-28 mb-base">林舒清</h2>
+<p class="font-caption-13 text-caption-13 text-on-surface-variant opacity-70">在每一个清晨，遇见更好的自己</p>
+</header>
+<!-- Stats Bento-ish Grid -->
+<section class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest p-md rounded-xl paper-card flex flex-col items-center justify-center text-center">
+<span class="font-label-11 text-label-11 text-on-surface-variant uppercase mb-xs">已记录天数</span>
+<div class="flex items-baseline gap-1">
+<span class="font-hero-34 text-hero-34 text-primary">128</span>
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">天</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-md rounded-xl paper-card flex flex-col items-center justify-center text-center">
+<span class="font-label-11 text-label-11 text-on-surface-variant uppercase mb-xs">平均热量</span>
+<div class="flex items-baseline gap-1">
+<span class="font-hero-34 text-hero-34 text-primary">1,640</span>
+<span class="font-caption-13 text-caption-13 text-on-surface-variant">kcal</span>
+</div>
+</div>
+</section>
+<!-- Settings List -->
+<section class="bg-surface-container-lowest rounded-xl paper-card overflow-hidden">
+<div class="divide-y divide-[#EFECE4]">
+<!-- Item 1 -->
+<button class="w-full flex items-center justify-between p-md hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant opacity-80" style="font-variation-settings: 'wght' 300;">target</span>
+<span class="font-body-17 text-body-17">身体目标</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="font-caption-13 text-caption-13 text-on-surface-variant opacity-60">减脂中</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-40 text-[20px]">chevron_right</span>
+</div>
+</button>
+<!-- Item 2 -->
+<button class="w-full flex items-center justify-between p-md hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant opacity-80" style="font-variation-settings: 'wght' 300;">shield_person</span>
+<span class="font-body-17 text-body-17">隐私与安全</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-40 text-[20px]">chevron_right</span>
+</button>
+<!-- Item 3 -->
+<button class="w-full flex items-center justify-between p-md hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant opacity-80" style="font-variation-settings: 'wght' 300;">file_export</span>
+<span class="font-body-17 text-body-17">日记导出</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-40 text-[20px]">chevron_right</span>
+</button>
+<!-- Item 4 (Toggle) -->
+<div class="w-full flex items-center justify-between p-md">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant opacity-80" style="font-variation-settings: 'wght' 300;">dark_mode</span>
+<span class="font-body-17 text-body-17">深色模式切换</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" id="dark-mode-toggle" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Quote / Decorative Element -->
+<section class="py-xl flex flex-col items-center opacity-40 text-center px-lg">
+<span class="material-symbols-outlined text-primary mb-sm">format_quote</span>
+<p class="font-body-17 italic text-[15px] leading-relaxed">
+                记录不是为了束缚，而是为了更清晰地看见自己。
+            </p>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-xs pb-safe px-xs bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] rounded-t-xl">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low p-2 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-11 text-label-11">首页</span>
+</a>
+<!-- Log -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low p-2 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-11 text-label-11">记录</span>
+</a>
+<!-- Add (FAB-like) -->
+<a class="flex items-center justify-center -mt-8" href="#">
+<div class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</div>
+</a>
+<!-- AI Assistant -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-container-low p-2 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-11 text-label-11">AI 搭子</span>
+</a>
+<!-- Profile (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold p-2 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined active-icon">person</span>
+<span class="font-label-11 text-label-11">我的</span>
+</a>
+</nav>
+<script>
+        // Simple Micro-interaction for dark mode toggle simulation
+        const toggle = document.getElementById('dark-mode-toggle');
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Add active states to buttons
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

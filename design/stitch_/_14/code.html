@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 记体重</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#fbf2ee",
+                    "on-primary-fixed": "#3c0800",
+                    "on-error-container": "#93000a",
+                    "surface": "#fff8f5",
+                    "surface-dim": "#e1d8d4",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#342f2d",
+                    "inverse-on-surface": "#f8efeb",
+                    "on-surface": "#1f1b19",
+                    "on-background": "#1f1b19",
+                    "on-tertiary-fixed": "#2a1800",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#ffdbd2",
+                    "on-primary-container": "#fff9f8",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#ffddb5",
+                    "secondary-fixed-dim": "#bacf81",
+                    "primary-container": "#c64b2a",
+                    "outline-variant": "#e0bfb7",
+                    "surface-tint": "#a93717",
+                    "on-tertiary-container": "#fff9f5",
+                    "surface-container-high": "#f0e6e2",
+                    "inverse-primary": "#ffb4a1",
+                    "on-primary-fixed-variant": "#881f01",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#7e5100",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#9f6702",
+                    "surface-container-highest": "#eae1dd",
+                    "primary": "#a53314",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#536523",
+                    "surface-container": "#f6ece8",
+                    "surface-variant": "#eae1dd",
+                    "secondary-container": "#d6ec9a",
+                    "on-surface-variant": "#58413c",
+                    "secondary-fixed": "#d6ec9a",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "outline": "#8c716a",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "on-secondary-container": "#596b28",
+                    "on-secondary-fixed": "#161f00",
+                    "background": "#FAF9F5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "margin-mobile": "20px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "title-28": ["PingFang SC", "sans-serif"],
+                    "label-11": ["PingFang SC", "sans-serif"],
+                    "caption-13": ["PingFang SC", "sans-serif"],
+                    "hero-34": ["PingFang SC", "sans-serif"],
+                    "section-22": ["PingFang SC", "sans-serif"],
+                    "body-17": ["PingFang SC", "sans-serif"]
+            },
+            "fontSize": {
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                    "hero-72": ["72px", {"lineHeight": "1", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            font-family: 'PingFang SC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .chart-bg { background-color: #F3F0E7; }
+        .btn-press:active { transform: scale(0.96); transition: transform 0.1s ease; }
+        
+        /* Custom scrollbar for subtle ivory feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #EFECE4; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top AppBar (Back & Title) -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full sticky top-0 z-10 bg-background/80 backdrop-blur-md">
+<button class="w-10 h-10 flex items-center justify-start text-on-surface-variant btn-press">
+<span class="material-symbols-outlined text-2xl" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface">记体重</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="flex-1 px-margin-mobile pb-32">
+<!-- 30-Day Weight Sparkline Card -->
+<section class="mt-xs">
+<div class="chart-bg rounded-[14px] h-[120px] w-full p-md flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-baseline mb-auto">
+<span class="text-[10px] uppercase tracking-wider text-on-surface-variant opacity-60">最近 30 天</span>
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="text-[10px] text-on-surface-variant">65.2 kg</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full border border-dashed border-on-surface-variant opacity-40"></span>
+<span class="text-[10px] text-on-surface-variant">目标 60.0 kg</span>
+</div>
+</div>
+</div>
+<!-- Sparkline Canvas (Simulated with SVG for precision) -->
+<div class="flex-1 relative mt-2">
+<!-- Goal Line (Dashed) -->
+<div class="absolute w-full h-[1px] border-t border-dashed border-on-surface-variant/30 bottom-[20%]"></div>
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 300 60">
+<!-- Subtle Shadow Path -->
+<path d="M0,45 Q20,40 40,48 T80,35 T120,40 T160,25 T200,30 T240,20 T300,15" fill="none" stroke="#C64B2A" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<!-- Current Value Dot -->
+<circle cx="300" cy="15" fill="#C64B2A" r="4"></circle>
+<circle cx="300" cy="15" fill="#C64B2A" fill-opacity="0.1" r="8"></circle>
+</svg>
+</div>
+<div class="flex justify-between items-center mt-1">
+<span class="text-[10px] text-on-surface-variant opacity-50 tabular-nums">30天前</span>
+<span class="text-[10px] font-bold text-primary tabular-nums">今天 62.5 kg</span>
+</div>
+</div>
+</section>
+<!-- Hero Weight Input Section -->
+<section class="mt-xl flex flex-col items-center">
+<span class="font-label-11 text-label-11 text-on-surface-variant opacity-60">今天的体重</span>
+<div class="flex items-center justify-center gap-xl mt-md">
+<!-- Circular Ghost Button Minus -->
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant btn-press" onclick="adjustWeight(-0.1)">
+<span class="material-symbols-outlined text-xl" data-icon="remove">remove</span>
+</button>
+<div class="flex flex-col items-center">
+<div class="flex items-baseline">
+<span class="font-hero-72 text-hero-72 tabular-nums" id="weight-display">62.5</span>
+</div>
+<span class="text-[15px] text-on-surface-variant font-medium mt-1">kg</span>
+</div>
+<!-- Circular Accent Button Plus -->
+<button class="w-12 h-12 rounded-full bg-[#F0E4D5] flex items-center justify-center text-primary btn-press" onclick="adjustWeight(0.1)">
+<span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+</button>
+</div>
+<!-- Comparison Chip -->
+<div class="mt-lg bg-[#E9EBD8] px-sm py-1.5 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-[#6C7F3A]" data-icon="trending_down">trending_down</span>
+<span class="text-[13px] font-medium text-[#6C7F3A]">较昨日 −0.3 kg</span>
+</div>
+</section>
+<!-- Configuration Rows -->
+<section class="mt-xl space-y-md">
+<!-- Time Picker Button -->
+<button class="w-full flex items-center justify-center py-sm px-md text-on-surface-variant btn-press">
+<span class="material-symbols-outlined text-xl mr-2 opacity-60" data-icon="schedule">schedule</span>
+<span class="text-caption-13 font-medium">记录时间 · 今天 07:20</span>
+<span class="material-symbols-outlined text-lg ml-1 opacity-40" data-icon="expand_more">expand_more</span>
+</button>
+<!-- Note Field -->
+<div class="relative group">
+<textarea class="w-full bg-white/40 border-2 border-dashed border-[#EFECE4] rounded-xl p-md text-body-17 focus:border-primary-container focus:ring-0 transition-colors resize-none placeholder:text-on-surface-variant/40" placeholder="加一句备注（可选）" rows="3"></textarea>
+</div>
+</section>
+<!-- Decorative Elements for Ivory Journal Feel -->
+<div class="mt-xl flex justify-center opacity-10">
+<span class="material-symbols-outlined text-4xl" data-icon="water_drop">water_drop</span>
+<span class="material-symbols-outlined text-4xl mx-8" data-icon="psychiatry">psychiatry</span>
+<span class="material-symbols-outlined text-4xl" data-icon="monitoring">monitoring</span>
+</div>
+</main>
+<!-- Sticky Bottom Action -->
+<div class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-background via-background to-transparent pt-8">
+<button class="w-full h-[48px] bg-[#C64B2A] text-white rounded-[10px] font-bold text-body-17 shadow-lg shadow-primary-container/20 btn-press flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+            记入日记
+        </button>
+</div>
+<!-- Hidden Bottom Nav for top-level context (Suppressed based on transactional rule, but kept placeholder structure if needed) -->
+<script>
+        let currentWeight = 62.5;
+        const weightDisplay = document.getElementById('weight-display');
+
+        function adjustWeight(amount) {
+            currentWeight = parseFloat((currentWeight + amount).toFixed(1));
+            weightDisplay.textContent = currentWeight.toFixed(1);
+            
+            // Subtle feedback animation
+            weightDisplay.classList.remove('scale-105');
+            void weightDisplay.offsetWidth; // trigger reflow
+            weightDisplay.classList.add('scale-105', 'transition-transform', 'duration-75');
+            setTimeout(() => {
+                weightDisplay.classList.remove('scale-105');
+            }, 75);
+        }
+
+        // Horizontal Ruler Interaction Simulation (Optional Micro-interaction)
+        // Would normally go here to allow scrubbing the number
+    </script>
+</body></html>

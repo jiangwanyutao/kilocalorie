@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>千卡日记 - 我的</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#ffb4a1",
+                    "surface-container-low": "#fbf2ee",
+                    "tertiary-container": "#9f6702",
+                    "surface-bright": "#fff8f5",
+                    "error": "#ba1a1a",
+                    "outline": "#8c716a",
+                    "tertiary": "#7e5100",
+                    "outline-variant": "#e0bfb7",
+                    "inverse-on-surface": "#f8efeb",
+                    "surface-variant": "#eae1dd",
+                    "secondary-container": "#d6ec9a",
+                    "primary": "#a53314",
+                    "on-secondary-container": "#596b28",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#fff9f5",
+                    "on-secondary-fixed-variant": "#3c4d0c",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#881f01",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb958",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#342f2d",
+                    "on-primary-container": "#fff9f8",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#1f1b19",
+                    "primary-container": "#c64b2a",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#58413c",
+                    "secondary-fixed-dim": "#bacf81",
+                    "surface-container-high": "#f0e6e2",
+                    "surface-container": "#f6ece8",
+                    "on-tertiary-fixed": "#2a1800",
+                    "tertiary-fixed": "#ffddb5",
+                    "secondary-fixed": "#d6ec9a",
+                    "on-tertiary-fixed-variant": "#643f00",
+                    "on-primary-fixed": "#3c0800",
+                    "primary-fixed-dim": "#ffb4a1",
+                    "on-background": "#1f1b19",
+                    "background": "#fff8f5",
+                    "surface-tint": "#a93717",
+                    "surface-container-highest": "#eae1dd",
+                    "surface": "#fff8f5",
+                    "primary-fixed": "#ffdbd2",
+                    "on-secondary-fixed": "#161f00",
+                    "secondary": "#536523",
+                    "surface-dim": "#e1d8d4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "sm": "12px",
+                    "md": "16px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "margin-mobile": "20px",
+                    "xs": "8px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "title-28": ["PingFang SC"],
+                    "label-11": ["PingFang SC"],
+                    "hero-34": ["PingFang SC"],
+                    "caption-13": ["PingFang SC"],
+                    "section-22": ["PingFang SC"],
+                    "body-17": ["PingFang SC"]
+            },
+            "fontSize": {
+                    "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5;
+            color: #1D1917;
+            font-family: 'PingFang SC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+        }
+        .diary-divider {
+            border-bottom: 1px solid #E3E0D6;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full sticky top-0 bg-background/80 backdrop-blur-md z-40">
+<h1 class="font-section-22 text-section-22 text-primary">千卡日记</h1>
+<button class="active:scale-95 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+</header>
+<main class="px-margin-mobile pt-4 space-y-lg">
+<!-- User Profile Section -->
+<section class="flex items-center justify-between">
+<div class="flex items-center space-x-md">
+<div class="w-16 h-16 rounded-full overflow-hidden border border-surface-variant bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A warm, soft-focus portrait of a serene person in a minimalist, sunlit studio with ivory walls. The lighting is gentle and natural, creating a calm, editorial atmosphere. The image uses a palette of soft whites, beiges, and subtle earth tones, reflecting a healthy and intentional lifestyle, perfect for a high-end wellness diary profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_5-Iglw_4wv06jj2WuyqTxohcIAc3qDrkTCde4UYy8wdRFRn4Q73M00_dPss4oRJNTr0m7gK_vX0rP0bKvahw-PSE_k1DOvQDN3TPE5iu73AVnUCzYXitp3o84qmgI_bYr_7s4qkOGFBSCOBZTla837NgamAImZTDT3qCS49SR2NdPp19iggSn7ilZAb-r41U8qDc3pUvdt-I19d-HBAThoJSvPuwZXUWd1xX7kYastF00GkjlmRZcVzN1cRikm0PUMJ9qVuEYZtH"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center space-x-2">
+<span class="font-section-22 text-section-22">鹿鸣</span>
+<span class="px-2 py-0.5 rounded-full bg-[#F0E4D5] text-on-surface-variant font-label-11 text-[10px]">免费用户</span>
+</div>
+<span class="font-caption-13 text-on-surface-variant opacity-60">lumin@example.com</span>
+</div>
+</div>
+</section>
+<!-- Stat Summary Card -->
+<section class="bg-surface-container-lowest rounded-xl soft-shadow p-md flex justify-between items-center">
+<div class="flex flex-col items-center flex-1">
+<span class="font-label-11 text-on-surface-variant opacity-60 uppercase mb-1">记录天数</span>
+<span class="font-section-22 text-section-22 tabular-nums">62</span>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div class="flex flex-col items-center flex-1">
+<span class="font-label-11 text-on-surface-variant opacity-60 uppercase mb-1">累计条目</span>
+<span class="font-section-22 text-section-22 tabular-nums">380</span>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div class="flex flex-col items-center flex-1">
+<span class="font-label-11 text-on-surface-variant opacity-60 uppercase mb-1">连续</span>
+<span class="font-section-22 text-section-22 tabular-nums">12 <small class="text-caption-13 font-normal">天</small></span>
+</div>
+</section>
+<!-- Personal Section -->
+<section>
+<h3 class="font-label-11 text-on-surface-variant opacity-60 px-base mb-2">个人</h3>
+<div class="bg-surface-container-lowest rounded-xl soft-shadow overflow-hidden">
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">track_changes</span>
+<span class="flex-grow font-body-17 text-body-17">目标设置</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">notifications</span>
+<span class="flex-grow font-body-17 text-body-17">提醒设置</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">inventory_2</span>
+<span class="flex-grow font-body-17 text-body-17">私人食物库</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Data Section -->
+<section>
+<h3 class="font-label-11 text-on-surface-variant opacity-60 px-base mb-2">数据</h3>
+<div class="bg-surface-container-lowest rounded-xl soft-shadow overflow-hidden">
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">favorite</span>
+<span class="flex-grow font-body-17 text-body-17">Apple Health 导入</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center active:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-md">download</span>
+<span class="flex-grow font-body-17 text-body-17">数据导出</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section>
+<h3 class="font-label-11 text-on-surface-variant opacity-60 px-base mb-2">关于</h3>
+<div class="bg-surface-container-lowest rounded-xl soft-shadow overflow-hidden">
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="flex-grow font-body-17 text-body-17">用户协议</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="flex-grow font-body-17 text-body-17">隐私政策</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center diary-divider active:bg-surface-container-low transition-colors">
+<span class="flex-grow font-body-17 text-body-17">备案信息</span>
+<span class="material-symbols-outlined text-surface-variant text-sm">chevron_right</span>
+</div>
+<div class="h-14 px-md flex items-center opacity-60">
+<span class="flex-grow font-body-17 text-body-17">版本</span>
+<span class="font-body-17 text-body-17">v0.1.0</span>
+</div>
+</div>
+</section>
+<!-- Danger Area -->
+<section class="flex flex-col space-y-md pt-lg pb-xl">
+<button class="w-full h-12 flex items-center justify-center text-[#B3781A] font-body-17 active:scale-[0.98] transition-all">
+                退出登录
+            </button>
+<button class="w-full h-12 flex items-center justify-center text-[#B3781A] font-body-17 opacity-60 active:scale-[0.98] transition-all">
+                删除账号
+            </button>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-xs pb-6 px-xs bg-surface-container-lowest shadow-[0_-4px_12px_0_rgba(29,25,23,0.04)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-11 text-label-11">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">edit_note</span>
+<span class="font-label-11 text-label-11">记录</span>
+</a>
+<div class="relative -top-4">
+<button class="bg-primary-container text-on-primary-container w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-container-low active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">smart_toy</span>
+<span class="font-label-11 text-label-11">AI 搭子</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-11 text-label-11">我的</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interactions for the diary feel
+        document.querySelectorAll('.active\\:bg-surface-container-low').forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.style.opacity = '0.7';
+            });
+            item.addEventListener('touchend', () => {
+                item.style.opacity = '1';
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>AI 记忆 - 千卡日记</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#eae1dd",
+                        "outline": "#8c716a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e6e2",
+                        "outline-variant": "#e0bfb7",
+                        "on-secondary-fixed": "#161f00",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#9f6702",
+                        "surface-dim": "#e1d8d4",
+                        "on-primary-fixed": "#3c0800",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-secondary-container": "#596b28",
+                        "surface-container": "#f6ece8",
+                        "primary": "#a53314",
+                        "on-tertiary-fixed": "#2a1800",
+                        "on-primary-container": "#fff9f8",
+                        "primary-container": "#c64b2a",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#58413c",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#342f2d",
+                        "on-primary-fixed-variant": "#881f01",
+                        "primary-fixed": "#ffdbd2",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f8efeb",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "on-background": "#1f1b19",
+                        "secondary": "#536523",
+                        "secondary-container": "#d6ec9a",
+                        "tertiary": "#7e5100",
+                        "surface-container-highest": "#eae1dd",
+                        "inverse-primary": "#ffb4a1",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#fff9f5",
+                        "secondary-fixed": "#d6ec9a",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "surface-container-low": "#fbf2ee",
+                        "surface": "#fff8f5",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "on-surface": "#1f1b19",
+                        "tertiary-fixed": "#ffddb5",
+                        "secondary-fixed-dim": "#bacf81",
+                        "surface-tint": "#a93717",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#fff8f5",
+                        "background": "#fff8f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "12px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "xl": "32px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-17": ["PingFang SC", "sans-serif"],
+                        "section-22": ["PingFang SC", "sans-serif"],
+                        "title-28": ["PingFang SC", "sans-serif"],
+                        "label-11": ["PingFang SC", "sans-serif"],
+                        "caption-13": ["PingFang SC", "sans-serif"],
+                        "hero-34": ["PingFang SC", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-17": ["17px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "section-22": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "title-28": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "label-11": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "caption-13": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "hero-34": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF9F5; /* Brand Ivory Background */
+            color: #1F1B19;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .ios-segmented-control {
+            background: #EFECE4;
+            padding: 2px;
+            border-radius: 10px;
+        }
+        .ios-segmented-item {
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .ios-segmented-item.active {
+            background: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .memory-card {
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.04);
+            border: 1px solid rgba(239, 236, 228, 0.5);
+            transition: transform 0.2s;
+        }
+        .memory-card:active {
+            transform: scale(0.98);
+        }
+        .strikethrough {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-body-17">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#FAF9F5]/90 backdrop-blur-md flex justify-between items-center px-margin-mobile h-16">
+<button class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios</span>
+</button>
+<h1 class="font-section-22 text-section-22 text-on-surface">AI 记忆</h1>
+<button class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">help</span>
+</button>
+</header>
+<main class="pt-20 pb-32 px-margin-mobile max-w-[600px] mx-auto space-y-lg">
+<!-- Notice Banner -->
+<div class="bg-[#F0E4D5] p-md rounded-xl flex justify-between items-center cursor-pointer active:opacity-80 transition-opacity">
+<span class="font-body-17 text-on-surface-variant">有 2 条记忆想改，看看？</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</div>
+<!-- Search Input -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[20px]">search</span>
+<input class="w-full bg-[#F3F0E7] border-none rounded-[10px] py-xs pl-10 pr-md focus:ring-1 focus:ring-primary/20 placeholder:text-on-surface-variant/40 font-body-17" placeholder="搜一条记忆..." type="text"/>
+</div>
+<!-- Segmented Control -->
+<div class="ios-segmented-control flex justify-between text-caption-13 font-caption-13 text-on-surface-variant">
+<button class="ios-segmented-item active flex-1">全部</button>
+<button class="ios-segmented-item flex-1">事实</button>
+<button class="ios-segmented-item flex-1">偏好</button>
+<button class="ios-segmented-item flex-1">目标</button>
+<button class="ios-segmented-item flex-1">习惯</button>
+</div>
+<!-- Section: 目标 -->
+<section class="space-y-sm">
+<h2 class="font-label-11 text-label-11 text-on-surface-variant/60 tracking-wider">目标</h2>
+<!-- Memory Card 1 -->
+<div class="memory-card p-md rounded-xl">
+<div class="flex justify-between items-start">
+<p class="font-semibold text-body-17">3 个月减 5 kg</p>
+<div class="flex gap-[2px] text-primary">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-sm">
+<span class="bg-[#F0E4D5] text-on-surface-variant px-2 py-[2px] rounded-full text-label-11 font-label-11">目标</span>
+<span class="text-label-11 text-on-surface-variant/60 tabular-nums">记于 2 天前</span>
+</div>
+</div>
+<!-- Memory Card 2 -->
+<div class="memory-card p-md rounded-xl">
+<div class="flex justify-between items-start">
+<p class="text-body-17">想瘦回大学时的体重</p>
+<div class="flex gap-[2px] text-primary">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px] opacity-20" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="material-symbols-outlined text-[12px] opacity-20" style="font-variation-settings: 'FILL' 1;">circle</span>
+</div>
+</div>
+<div class="flex items-center gap-xs mt-sm">
+<span class="bg-[#F0E4D5] text-on-surface-variant px-2 py-[2px] rounded-full text-label-11 font-label-11">目标</span>
+<span class="text-label-11 text-on-surface-variant/60 tabular-nums">记于 1 周前</span>
+</div>
+</div>
+</section>
+<!-- Section: 偏好 -->
+<section class="space-y-sm">
+<h2 class="font-label-11 text-label-11 text-on-surface-variant/60 tracking-wider">偏好</h2>
+<div class="memory-card p-md rounded-xl">
+<p class="text-body-17">不吃香菜</p>
+<div class="flex items-center gap-xs mt-sm">
+<span class="bg-[#EFECE4] text-on-surface-variant px-2 py-[2px] rounded-full text-label-11 font-label-11">偏好</span>
+</div>
+</div>
+<div class="memory-card p-md rounded-xl">
+<p class="text-body-17">早餐吃甜的</p>
+<div class="flex items-center gap-xs mt-sm">
+<span class="bg-[#EFECE4] text-on-surface-variant px-2 py-[2px] rounded-full text-label-11 font-label-11">偏好</span>
+</div>
+</div>
+</section>
+<!-- Section: 已过时 -->
+<section class="space-y-sm">
+<h2 class="font-label-11 text-label-11 text-on-surface-variant/40 tracking-wider">已过时</h2>
+<div class="memory-card p-md rounded-xl bg-surface-container-low border-dashed">
+<div class="flex justify-between items-center">
+<p class="text-body-17 strikethrough">目标 62 kg</p>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-high text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Bar -->
+<footer class="fixed bottom-0 left-0 w-full bg-[#FAF9F5]/90 backdrop-blur-md border-t border-[#EFECE4] pb-safe">
+<div class="flex items-center justify-between px-margin-mobile h-20 max-w-[600px] mx-auto">
+<button class="flex items-center gap-xs font-body-17 text-on-surface-variant active:opacity-60 transition-all">
+<span class="material-symbols-outlined text-[22px]">ios_share</span>
+                导出所有
+            </button>
+<button class="flex items-center gap-xs font-body-17 text-[#B3781A] active:opacity-60 transition-all">
+<span class="material-symbols-outlined text-[22px]">delete_sweep</span>
+                清空全部
+            </button>
+</div>
+</footer>
+<script>
+        // Micro-interaction for segmented control
+        const segments = document.querySelectorAll('.ios-segmented-item');
+        segments.forEach(seg => {
+            seg.addEventListener('click', () => {
+                segments.forEach(s => s.classList.remove('active'));
+                seg.classList.add('active');
+            });
+        });
+
+        // Simple haptic-like feedback on cards
+        const cards = document.querySelectorAll('.memory-card');
+        cards.forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

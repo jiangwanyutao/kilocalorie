@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=PingFang+SC:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fff8f5",
+                        "secondary": "#536523",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d6ec9a",
+                        "tertiary-container": "#9f6702",
+                        "secondary-container": "#d6ec9a",
+                        "surface-container": "#f6ece8",
+                        "outline": "#8c716a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#a53314",
+                        "on-background": "#1f1b19",
+                        "primary-fixed": "#ffdbd2",
+                        "surface-dim": "#e1d8d4",
+                        "inverse-primary": "#ffb4a1",
+                        "on-tertiary-fixed": "#2a1800",
+                        "on-primary-container": "#fff9f8",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#ffddb5",
+                        "surface": "#fff8f5",
+                        "inverse-on-surface": "#f8efeb",
+                        "surface-variant": "#eae1dd",
+                        "outline-variant": "#e0bfb7",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#eae1dd",
+                        "primary-container": "#c64b2a",
+                        "surface-tint": "#a93717",
+                        "tertiary": "#7e5100",
+                        "on-secondary-container": "#596b28",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fff9f5",
+                        "surface-container-low": "#fbf2ee",
+                        "on-surface-variant": "#58413c",
+                        "secondary-fixed-dim": "#bacf81",
+                        "inverse-surface": "#342f2d",
+                        "background": "#fff8f5",
+                        "on-secondary-fixed": "#161f00",
+                        "primary-fixed-dim": "#ffb4a1",
+                        "on-tertiary-fixed-variant": "#643f00",
+                        "tertiary-fixed-dim": "#ffb958",
+                        "on-secondary-fixed-variant": "#3c4d0c",
+                        "on-primary-fixed-variant": "#881f01",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e6e2",
+                        "on-primary-fixed": "#3c0800",
+                        "on-surface": "#1f1b19"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "md": "16px",
+                        "margin-mobile": "20px",
+                        "gutter": "12px",
+                        "xs": "8px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "section-22": ["PingFang SC"],
+                        "caption-13": ["PingFang SC"],
+                        "label-11": ["PingFang SC"],
+                        "hero-34": ["PingFang SC"],
+                        "title-28": ["PingFang SC"],
+                        "body-17": ["PingFang SC"]
+                    },
+                    "fontSize": {
+                        "section-22": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+                        "caption-13": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "label-11": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "hero-34": ["34px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-28": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-17": ["17px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #17140F; /* Warm Dark Base */
+            color: #EFECE4; /* Ivory Paper Text */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .chat-bubble-ai {
+            background-color: #2A2620;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px 0 rgba(29, 25, 23, 0.08);
+        }
+        .chat-bubble-user {
+            background-color: #2A211A;
+            border-radius: 14px;
+        }
+        .food-card {
+            background-color: #201C16;
+            border: 1px solid rgba(239, 236, 228, 0.08);
+            border-radius: 14px;
+        }
+        .memory-card {
+            background-color: #2A211A;
+            border-left: 3px solid #E86A44;
+            border-radius: 4px 14px 14px 4px;
+        }
+        .glass-top {
+            background-color: rgba(23, 20, 15, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .input-bar {
+            background-color: #2A2620;
+            border: 1px solid rgba(239, 236, 228, 0.05);
+        }
+        .soy-orange { color: #E86A44; }
+        .bg-soy-orange { background-color: #E86A44; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-17 text-body-17 overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="glass-top h-[54px] flex items-center justify-between px-margin-mobile flex-shrink-0 z-50">
+<div class="flex items-center gap-sm">
+<button class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">arrow_back_ios</span>
+</button>
+</div>
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-xs">
+<div class="w-7 h-7 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional close-up digital portrait of a friendly AI character with soft, glowing orange features and a calm expression. The background is a warm, dark brown, consistent with a high-end personal health diary aesthetic. The character exudes wisdom and empathy, rendered in a clean, minimalist 3D style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2pqekF27JJbSCnIqZ0M_mhtdU-NvTIwLZx-T2YtZwV1SD96BluD4kVKqDEKGySa8if5GS8aPd3IEMxMJWqlauitxNrz0LuIWHk428chte-E2fiQJZ7Vbh2or_2_jyAsmfzL13f7TBZwhqsO2vax7rX_hVzMSN1_3iam1WoZManj_VK66opubm3wjo2BjKSDYBZ5H9OS4D9HaPJMTE21zC_zsvyhHy9fXSZZ75Y7YVghriatP33yc7s2hX4J_1o22zmxz9DtLjyjhc"/>
+</div>
+<span class="font-section-22 text-[17px] leading-tight">小卡</span>
+<span class="bg-primary-container/20 text-[#E86A44] font-label-11 text-[10px] px-2 py-0.5 rounded-full border border-[#E86A44]/30">温柔知心</span>
+</div>
+</div>
+<button class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px]">more_horiz</span>
+</button>
+</header>
+<!-- Chat Message List -->
+<main class="flex-1 overflow-y-auto px-margin-mobile py-lg space-y-lg flex flex-col custom-scrollbar">
+<!-- AI Greeting -->
+<div class="flex items-start gap-sm animate-fade-in">
+<div class="w-8 h-8 rounded-full flex-shrink-0 bg-surface-container overflow-hidden mt-1">
+<img class="w-full h-full object-cover" data-alt="A detailed, empathetic digital avatar for a health AI companion, featuring subtle warm highlights and a minimalist, organic design. Set against a dark, warm background, the character represents care and intelligence. The visual style is editorial and clean, fitting a premium journaling app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArON6iEUxKWywtccT3956ftSQCQUCj0daoFF4iTReeN600Vzgc1kXJu4Cupq_BkMZKsGh04AT4rbIJR1cvZNuOjdxI663o_lby7HvlCRbN6jrFYhcgcPMNmk9P7-bsT84aLxIuY2-zAsfwM0f_WS8itFjwxZhb4N7Pq_UffGJ-JxFC00B300RVE7lvSfhpJ9w4GLJvfhNGJRQJYQjb-WgxuN8SANy0KPhp91UAKrGhzTNqffWNNIvyxXu_W7z0x914XLICMVLWXOCj"/>
+</div>
+<div class="chat-bubble-ai px-md py-sm max-w-[80%]">
+<p class="text-[#EFECE4] leading-relaxed">早上好呀！今天想记点什么？</p>
+</div>
+</div>
+<!-- User Input -->
+<div class="flex justify-end animate-fade-in delay-100">
+<div class="chat-bubble-user px-md py-sm max-w-[80%]">
+<p class="text-[#EFECE4] leading-relaxed">我中午吃了一份番茄炒蛋和一碗米饭</p>
+</div>
+</div>
+<!-- Food Log Confirmation Card -->
+<div class="flex items-start gap-sm animate-fade-in delay-200">
+<div class="w-8 h-8 rounded-full flex-shrink-0 opacity-0"></div> <!-- Placeholder to align -->
+<div class="food-card w-full max-w-[280px] p-md space-y-md">
+<div class="flex justify-between items-center border-b border-[#EFECE4]/5 pb-xs">
+<span class="font-label-11 text-[#EFECE4]/60 uppercase tracking-widest">午餐识别</span>
+<span class="font-section-22 text-soy-orange text-[18px]">485 <span class="text-caption-13 font-normal opacity-70">kcal</span></span>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-body-17">
+<span class="text-[#EFECE4]">番茄炒蛋</span>
+<span class="text-[#EFECE4]/60 text-caption-13">315 kcal</span>
+</div>
+<div class="flex justify-between text-body-17">
+<span class="text-[#EFECE4]">白米饭 (小碗)</span>
+<span class="text-[#EFECE4]/60 text-caption-13">170 kcal</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-xs gap-xs">
+<div class="flex gap-xs">
+<button class="text-caption-13 text-[#EFECE4]/40 hover:text-[#EFECE4]/60 transition-colors">编辑</button>
+<button class="text-caption-13 text-[#EFECE4]/40 hover:text-[#EFECE4]/60 transition-colors">先不了</button>
+</div>
+<button class="bg-soy-orange text-white text-caption-13 font-bold px-4 py-2 rounded-full active:scale-95 transition-all flex items-center gap-1">
+                        记下 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- AI Follow-up -->
+<div class="flex items-start gap-sm animate-fade-in delay-300">
+<div class="w-8 h-8 rounded-full flex-shrink-0 bg-surface-container overflow-hidden mt-1">
+<img class="w-full h-full object-cover" data-alt="The AI companion avatar again, showing a slight positive shift in expression to denote successful task completion. The lighting is soft and localized, maintaining the warm dark mood of the application. The background remains a consistent deep ivory and warm black aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIFmaWUZUtUUE2-QnRJARnT8C3JmkBPagLKs7ZI9SbokaNG7t2s2yK0pEZj5kDpwVgf3pO7NuPodDlkRg2OtE8K3O1bq0pZw9btvcs3lONjpvQvU8cQuvYBChrjDbYvEvlKc5NN1PTCZBWr468Ivyjhjnr4MFeaasgQSCOsPz-QxTMW1nKrAfNlNUDmBoPKZ9SdMk9rcFKN7aS43XSjs2C3tzfe0ChhtcWVrR7F-56cx-Cy81yfenDbwmC_922qFa2JNNropQ68MSs"/>
+</div>
+<div class="chat-bubble-ai px-md py-sm max-w-[80%]">
+<p class="text-[#EFECE4] leading-relaxed">记好了。今天还剩 500 kcal，晚餐可以吃个轻的~</p>
+</div>
+</div>
+<!-- Memory Update Card -->
+<div class="flex items-start gap-sm animate-fade-in delay-400">
+<div class="w-8 h-8 rounded-full flex-shrink-0 opacity-0"></div>
+<div class="memory-card w-full max-w-[280px] p-md">
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-soy-orange text-[18px]">auto_awesome</span>
+<span class="text-caption-13 text-soy-orange font-bold">目标记忆更新</span>
+</div>
+<p class="text-caption-13 text-[#EFECE4]/80 leading-snug">根据我们之前的交流，我已将你的阶段目标从 <span class="line-through opacity-50">62kg</span> 更新为 <span class="text-[#EFECE4] font-bold">60kg</span>。我们会一起努力的。</p>
+</div>
+</div>
+</main>
+<!-- Bottom Composer -->
+<footer class="pb-safe pt-sm px-margin-mobile bg-[#17140F] flex-shrink-0">
+<div class="input-bar rounded-full flex items-center p-1 pl-md mb-xs">
+<input class="bg-transparent border-none focus:ring-0 text-[#EFECE4] placeholder-[#EFECE4]/30 flex-1 py-2 text-body-17" placeholder="聊聊今天的饮食或心情..." type="text"/>
+<button class="bg-[#201C16] text-soy-orange w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform ml-xs">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<div class="flex justify-between items-center px-md pb-xs">
+<div class="flex gap-lg">
+<button class="text-[#EFECE4]/40 flex items-center gap-1 active:opacity-60">
+<span class="material-symbols-outlined text-[20px]">photo_library</span>
+</button>
+<button class="text-[#EFECE4]/40 flex items-center gap-1 active:opacity-60">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</button>
+<button class="text-[#EFECE4]/40 flex items-center gap-1 active:opacity-60">
+<span class="material-symbols-outlined text-[20px]">barcode_reader</span>
+</button>
+</div>
+</div>
+</footer>
+<script>
+        // Simple entry animation handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.animate-fade-in');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'all 0.5s ease-out';
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, (index * 150) + 200);
+            });
+        });
+    </script>
+</body></html>

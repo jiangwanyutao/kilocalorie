@@ -1,0 +1,29 @@
+{
+  "name": "qianka-diary",
+  "version": "0.1.0",
+  "private": true,
+  "description": "千卡日记 · 开放注册饮食日记 PWA (Vue3 + NestJS + Postgres + pgvector + MinIO)",
+  "packageManager": "pnpm@9.15.0",
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev:web": "pnpm --filter web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "db:init": "psql -h $DB_HOST -p $DB_PORT -U $DB_ADMIN_USER -f scripts/init.sql",
+    "db:seed:foods": "bash scripts/seed-food-std.sh",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
