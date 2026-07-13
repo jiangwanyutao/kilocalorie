@@ -122,3 +122,20 @@ export class FoodUser extends BaseEntity {
   @Column({ name: 'use_count', type: 'int4', default: 0, comment: '使用次数 排序用' })
   useCount!: number;
 }
+
+@Entity({ name: 'food_favorite', comment: '用户食物收藏' })
+@Index('uk_food_favorite', ['userId', 'foodSrc', 'foodId'], { unique: true, where: `del_flag = 'N'` })
+@Index('ix_food_favorite_uid', ['userId'], { where: `del_flag = 'N'` })
+export class FoodFavorite extends BaseEntity {
+  @PrimaryColumn({ type: 'varchar', length: 12 })
+  id!: string;
+
+  @Column({ name: 'user_id', type: 'varchar', length: 6 })
+  userId!: string;
+
+  @Column({ name: 'food_src', type: 'varchar', length: 1, comment: 'S=food_std U=food_user' })
+  foodSrc!: string;
+
+  @Column({ name: 'food_id', type: 'varchar', length: 10, comment: '引用 food_std.id 或 food_user.id' })
+  foodId!: string;
+}

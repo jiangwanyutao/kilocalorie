@@ -69,6 +69,7 @@ export const TableIdLen = {
   user_remind: 10,
   food_std: 6,
   food_user: 10,
+  food_favorite: 12,
   meal_entry: 12,
   meal_item: 14,
   meal_photo: 12,

@@ -15,7 +15,7 @@ export * from './sub.entity';
 
 import { SysDict, SysLoginLog, SysOpLog } from './sys.entity';
 import { UserInfo, UserAuth, UserSession, UserVerify, UserGoal, UserRemind } from './user.entity';
-import { FoodStd, FoodUser } from './food.entity';
+import { FoodStd, FoodUser, FoodFavorite } from './food.entity';
 import { MealEntry, MealItem, MealPhoto } from './meal.entity';
 import { WaterEntry } from './water.entity';
 import { ExType, ExEntry } from './ex.entity';
@@ -29,7 +29,7 @@ import { SubPlan, SubOrder, SubMember } from './sub.entity';
 export const ALL_ENTITIES = [
   SysDict, SysLoginLog, SysOpLog,
   UserInfo, UserAuth, UserSession, UserVerify, UserGoal, UserRemind,
-  FoodStd, FoodUser,
+  FoodStd, FoodUser, FoodFavorite,
   MealEntry, MealItem, MealPhoto,
   WaterEntry,
   ExType, ExEntry,

@@ -22,4 +22,23 @@ export const foodApi = {
         params: { q: q ?? undefined, cat: cat ?? undefined, limit },
       })
       .then((r) => r.data),
+
+  favorites: () =>
+    http.get<FoodStdItem[]>('/food/favorites').then((r) => r.data),
+
+  toggleFavorite: (foodSrc: 'S' | 'U', foodId: string) =>
+    http.post<{ favorited: boolean }>('/food/favorite', { foodSrc, foodId }).then((r) => r.data),
+
+  frequent: (limit = 30) =>
+    http.get<FoodStdItem[]>('/food/frequent', { params: { limit } }).then((r) => r.data),
+
+  userFoods: (limit = 60) =>
+    http.get<FoodStdItem[]>('/food/user', { params: { limit } }).then((r) => r.data),
+
+  createUserFood: (dto: {
+    foodName: string; kcal: number;
+    portionG?: number; portionDesc?: string;
+    carbG?: number; protG?: number; fatG?: number;
+    catCode?: string;
+  }) => http.post<{ id: string }>('/food/user', dto).then((r) => r.data),
 };

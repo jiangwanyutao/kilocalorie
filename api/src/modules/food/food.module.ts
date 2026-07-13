@@ -1,19 +1,27 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Injectable,
   Logger,
   Module,
   OnModuleInit,
+  Param,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { IsIn, IsString, Length } from 'class-validator';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
-import { Brackets, Repository } from 'typeorm';
+import { Brackets, In, Repository } from 'typeorm';
 
 import { IdGeneratorService } from '@/common/id-generator.service';
-import { FoodStd } from '@/entities';
-import { JwtAuthGuard } from '../auth/auth.helpers';
+import { FoodStd, FoodUser, FoodFavorite, MealItem } from '@/entities';
+import { CurrentUser, JwtAuthGuard } from '../auth/auth.helpers';
+import type { AuthUser } from '../auth/jwt.strategy';
 
 interface SeedRow {
   n: string; s: string; c: string;
@@ -223,22 +231,200 @@ export class FoodService implements OnModuleInit {
   }
 }
 
+/** 收藏 / 常用 / 自建食物 · 独立 Service · 依赖多 repo */
+@Injectable()
+export class FoodPersonalService {
+  constructor(
+    @InjectRepository(FoodStd) private readonly stdRepo: Repository<FoodStd>,
+    @InjectRepository(FoodUser) private readonly userRepo: Repository<FoodUser>,
+    @InjectRepository(FoodFavorite) private readonly favRepo: Repository<FoodFavorite>,
+    @InjectRepository(MealItem) private readonly itemRepo: Repository<MealItem>,
+    private readonly idGen: IdGeneratorService,
+  ) {}
+
+  private mapStd(f: FoodStd) {
+    return {
+      id: f.id, foodName: f.foodName, spellCode: f.spellCode ?? '',
+      catCode: f.catCode, brand: f.brand ?? null,
+      unitG: f.unitG, portionG: f.portionG ?? 100, portionDesc: f.portionDesc ?? '',
+      kcal: Number(f.kcal), carbG: Number(f.carbG),
+      protG: Number(f.protG), fatG: Number(f.fatG),
+    };
+  }
+  private mapUsr(f: FoodUser) {
+    return {
+      id: f.id, foodName: f.foodName, spellCode: f.spellCode ?? '',
+      catCode: f.catCode ?? '', brand: null,
+      unitG: f.unitG, portionG: f.portionG ?? 100, portionDesc: f.portionDesc ?? '自定义',
+      kcal: Number(f.kcal), carbG: Number(f.carbG),
+      protG: Number(f.protG), fatG: Number(f.fatG),
+    };
+  }
+
+  /** 收藏列表 · 展开 food_std / food_user */
+  async favorites(userId: string) {
+    const favs = await this.favRepo.find({
+      where: { userId, delFlag: 'N' },
+      order: { createTime: 'DESC' },
+    });
+    if (favs.length === 0) return [];
+    const stdIds = favs.filter((f) => f.foodSrc === 'S').map((f) => f.foodId);
+    const usrIds = favs.filter((f) => f.foodSrc === 'U').map((f) => f.foodId);
+    const [stds, usrs] = await Promise.all([
+      stdIds.length ? this.stdRepo.find({ where: { id: In(stdIds), delFlag: 'N' } }) : Promise.resolve([] as FoodStd[]),
+      usrIds.length ? this.userRepo.find({ where: { id: In(usrIds), userId, delFlag: 'N' } }) : Promise.resolve([] as FoodUser[]),
+    ]);
+    const map = new Map<string, ReturnType<typeof this.mapStd> | ReturnType<typeof this.mapUsr>>();
+    stds.forEach((f) => map.set('S:' + f.id, this.mapStd(f)));
+    usrs.forEach((f) => map.set('U:' + f.id, this.mapUsr(f)));
+    return favs.map((f) => map.get(f.foodSrc + ':' + f.foodId)).filter((x) => !!x);
+  }
+
+  async toggleFavorite(userId: string, foodSrc: 'S' | 'U', foodId: string) {
+    const existing = await this.favRepo.findOne({
+      where: { userId, foodSrc, foodId, delFlag: 'N' },
+    });
+    if (existing) {
+      await this.favRepo.update({ id: existing.id }, {
+        delFlag: 'Y', deleteTime: new Date(), deleteBy: userId,
+      });
+      return { favorited: false };
+    }
+    const id = await this.idGen.next('food_favorite');
+    const now = new Date();
+    await this.favRepo.insert({
+      id, userId, foodSrc, foodId,
+      delFlag: 'N', createBy: userId, updateBy: userId,
+      createTime: now, updateTime: now,
+    });
+    return { favorited: true };
+  }
+
+  /** 常用 · 从 meal_item 里 GROUP BY food_id 排序（只统计 food_std · foodSrc='S'） */
+  async frequent(userId: string, limit = 30) {
+    const rows = await this.itemRepo
+      .createQueryBuilder('mi')
+      .innerJoin('meal_entry', 'me', "me.id = mi.entry_id AND me.user_id = :u AND me.del_flag = 'N'", { u: userId })
+      .select('mi.food_id', 'foodId')
+      .addSelect('mi.food_src', 'foodSrc')
+      .addSelect('COUNT(*)', 'cnt')
+      .addSelect('MAX(me.meal_time)', 'lastAt')
+      .where("mi.del_flag = 'N'")
+      .andWhere("mi.food_id IS NOT NULL")
+      .andWhere("mi.food_src IN ('S', 'U')")
+      .groupBy('mi.food_id').addGroupBy('mi.food_src')
+      .orderBy('cnt', 'DESC').addOrderBy('"lastAt"', 'DESC')
+      .limit(Math.min(limit, 100))
+      .getRawMany();
+
+    if (rows.length === 0) return [];
+    const stdIds = rows.filter((r) => r.foodSrc === 'S').map((r) => r.foodId as string);
+    const usrIds = rows.filter((r) => r.foodSrc === 'U').map((r) => r.foodId as string);
+    const [stds, usrs] = await Promise.all([
+      stdIds.length ? this.stdRepo.find({ where: { id: In(stdIds), delFlag: 'N' } }) : Promise.resolve([] as FoodStd[]),
+      usrIds.length ? this.userRepo.find({ where: { id: In(usrIds), userId, delFlag: 'N' } }) : Promise.resolve([] as FoodUser[]),
+    ]);
+    const map = new Map<string, ReturnType<typeof this.mapStd> | ReturnType<typeof this.mapUsr>>();
+    stds.forEach((f) => map.set('S:' + f.id, this.mapStd(f)));
+    usrs.forEach((f) => map.set('U:' + f.id, this.mapUsr(f)));
+    return rows.map((r) => map.get(r.foodSrc + ':' + r.foodId)).filter((x) => !!x);
+  }
+
+  /** 用户自建食物列表 */
+  async userFoods(userId: string, limit = 60) {
+    const list = await this.userRepo.find({
+      where: { userId, delFlag: 'N' },
+      order: { useCount: 'DESC', updateTime: 'DESC' },
+      take: Math.min(limit, 200),
+    });
+    return list.map((f) => this.mapUsr(f));
+  }
+
+  async createUserFood(userId: string, dto: {
+    foodName: string; kcal: number;
+    portionG?: number; portionDesc?: string;
+    carbG?: number; protG?: number; fatG?: number;
+    catCode?: string;
+  }) {
+    const id = await this.idGen.next('food_user');
+    const now = new Date();
+    await this.userRepo.insert({
+      id, userId,
+      foodName: dto.foodName,
+      catCode: dto.catCode ?? '11',
+      unitG: 100,
+      portionG: dto.portionG ?? 100,
+      portionDesc: dto.portionDesc ?? '1 份',
+      kcal: Number(dto.kcal).toFixed(2),
+      carbG: (dto.carbG ?? 0).toFixed(2),
+      protG: (dto.protG ?? 0).toFixed(2),
+      fatG: (dto.fatG ?? 0).toFixed(2),
+      useCount: 0,
+      delFlag: 'N', createBy: userId, updateBy: userId,
+      createTime: now, updateTime: now,
+    } as Record<string, unknown>);
+    return { id };
+  }
+}
+
+class ToggleFavDto {
+  @IsString() @IsIn(['S', 'U']) foodSrc!: 'S' | 'U';
+  @IsString() @Length(1, 10) foodId!: string;
+}
+
+class CreateUserFoodDto {
+  @IsString() @Length(1, 50) foodName!: string;
+}
+
 @Controller('food')
 @UseGuards(JwtAuthGuard)
 export class FoodController {
-  constructor(private readonly svc: FoodService) {}
+  constructor(
+    private readonly svc: FoodService,
+    private readonly ps: FoodPersonalService,
+  ) {}
 
   @Get('search')
   search(@Query('q') q?: string, @Query('cat') cat?: string, @Query('limit') limit?: string) {
     const n = limit ? Number(limit) : 30;
     return this.svc.search(q, cat, Number.isFinite(n) ? n : 30);
   }
+
+  @Get('favorites')
+  favorites(@CurrentUser() u: AuthUser) {
+    return this.ps.favorites(u.id);
+  }
+
+  @Post('favorite')
+  @HttpCode(200)
+  toggleFav(@CurrentUser() u: AuthUser, @Body() dto: ToggleFavDto) {
+    return this.ps.toggleFavorite(u.id, dto.foodSrc, dto.foodId);
+  }
+
+  @Get('frequent')
+  frequent(@CurrentUser() u: AuthUser, @Query('limit') limit?: string) {
+    const n = limit ? Number(limit) : 30;
+    return this.ps.frequent(u.id, Number.isFinite(n) ? n : 30);
+  }
+
+  @Get('user')
+  userFoods(@CurrentUser() u: AuthUser, @Query('limit') limit?: string) {
+    const n = limit ? Number(limit) : 60;
+    return this.ps.userFoods(u.id, Number.isFinite(n) ? n : 60);
+  }
+
+  @Post('user')
+  @HttpCode(200)
+  createUserFood(@CurrentUser() u: AuthUser, @Body() dto: CreateUserFoodDto & Record<string, unknown>) {
+    if (!dto.foodName || !dto.kcal) throw new BadRequestException('缺 foodName / kcal');
+    return this.ps.createUserFood(u.id, dto as never);
+  }
 }
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FoodStd])],
+  imports: [TypeOrmModule.forFeature([FoodStd, FoodUser, FoodFavorite, MealItem])],
   controllers: [FoodController],
-  providers: [FoodService],
-  exports: [FoodService],
+  providers: [FoodService, FoodPersonalService],
+  exports: [FoodService, FoodPersonalService],
 })
 export class FoodModule {}

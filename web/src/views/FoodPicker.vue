@@ -48,37 +48,27 @@ const items = ref<FoodStdItem[]>([]);
 const loading = ref(false);
 const err = ref('');
 
-const FAV_KEY = 'qk.food.fav';
-const USED_KEY = 'qk.food.used';
-function readIds(k: string): string[] {
-  try { const v = JSON.parse(localStorage.getItem(k) || '[]'); return Array.isArray(v) ? v : []; }
-  catch { return []; }
-}
-function writeIds(k: string, ids: string[]) {
-  localStorage.setItem(k, JSON.stringify(ids.slice(0, 100)));
-}
-const favSet = ref(new Set<string>(readIds(FAV_KEY)));
-function toggleFav(id: string, ev?: Event) {
-  ev?.stopPropagation();
-  const arr = readIds(FAV_KEY);
-  const i = arr.indexOf(id);
-  if (i < 0) arr.unshift(id); else arr.splice(i, 1);
-  writeIds(FAV_KEY, arr);
-  favSet.value = new Set(arr);
-}
-function bumpUsed(id: string) {
-  const arr = readIds(USED_KEY);
-  const i = arr.indexOf(id);
-  if (i >= 0) arr.splice(i, 1);
-  arr.unshift(id);
-  writeIds(USED_KEY, arr);
+/** 收藏集合 · 用 API 拉 · 展示星标 & toggle */
+const favSet = ref<Set<string>>(new Set());
+async function refreshFavSet() {
+  try {
+    const list = await foodApi.favorites();
+    favSet.value = new Set(list.map((f) => f.id));
+  } catch { /* silent */ }
 }
 
-async function fetchByIds(ids: string[]): Promise<FoodStdItem[]> {
-  if (ids.length === 0) return [];
-  const all = await foodApi.search('', undefined, 100);
-  const m = new Map(all.map((f) => [f.id, f]));
-  return ids.map((id) => m.get(id)).filter((f): f is FoodStdItem => !!f);
+async function toggleFav(id: string, ev?: Event) {
+  ev?.stopPropagation();
+  // 后端 toggle · 只支持 foodSrc=S（自定义 U 的 toggle 由自建页管理）
+  try {
+    const r = await foodApi.toggleFavorite('S', id);
+    const s = new Set(favSet.value);
+    if (r.favorited) s.add(id); else s.delete(id);
+    favSet.value = s;
+    if (activeCat.value === '__fav__') load(); // 刷新列表
+  } catch (e) {
+    err.value = pickErrMsg(e, '操作失败');
+  }
 }
 
 async function load() {
@@ -86,9 +76,9 @@ async function load() {
   err.value = '';
   try {
     const cat = activeCat.value;
-    if (cat === '__fav__') items.value = await fetchByIds(readIds(FAV_KEY));
-    else if (cat === '__used__') items.value = await fetchByIds(readIds(USED_KEY));
-    else if (cat === '__mine__' || cat === '__custom__') items.value = []; // TODO: 需后端 food_user 接口
+    if (cat === '__fav__') items.value = await foodApi.favorites();
+    else if (cat === '__used__') items.value = await foodApi.frequent(60);
+    else if (cat === '__mine__' || cat === '__custom__') items.value = await foodApi.userFoods(60);
     else if (cat === '__ku__') items.value = await foodApi.search('库迪', undefined, 60);
     else if (cat === '__lu__') items.value = await foodApi.search('瑞幸', undefined, 60);
     else if (cat === '06_04') {
@@ -124,7 +114,10 @@ watch(q, (v) => {
   }
 });
 watch(activeCat, () => { q.value = ''; load(); });
-onMounted(load);
+onMounted(async () => {
+  await refreshFavSet();
+  load();
+});
 
 // ── 份量选择 sheet ──
 const picked = ref<FoodStdItem | null>(null);
@@ -178,7 +171,7 @@ async function submit() {
       ? new Date(`${date.value}T12:00:00`).toISOString()
       : new Date().toISOString();
     await mealApi.createEntry({ mealType: meal.value, mealTime, entrySrc: 'M', items: [item] });
-    bumpUsed(f.id);
+    // 常用 · 由后端 meal_item 统计 · 不再本地
     router.replace({ path: '/log', query: date.value ? { date: date.value } : {} });
   } catch (e) {
     err.value = pickErrMsg(e, '保存失败');
