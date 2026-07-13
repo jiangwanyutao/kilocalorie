@@ -269,18 +269,13 @@ const meals = computed(() =>
           @click="pickDay(c.iso)"
         >
           <span v-if="c.day" class="mc-day num">{{ c.day }}</span>
-          <span v-if="c.logged && !c.isToday" class="mc-dot" aria-hidden="true"></span>
+          <span v-if="c.logged && c.kcal" class="mc-kcal num">{{ Math.round(c.kcal) }}</span>
         </button>
       </div>
-      <div class="mc-foot">
-        <div class="mc-legend">
-          <span class="lg-dot today"></span><span>今天</span>
-          <span class="lg-dot logged"></span><span>已记录</span>
-        </div>
-        <button class="mc-collapse" @click="calendarOpen = false" aria-label="收起月历">
-          <span class="col-bar"></span>
-          <span class="col-hint">点这里收起</span>
-        </button>
+      <div class="mc-legend">
+        <span class="lg-dot today" aria-hidden="true"></span><span>今天</span>
+        <span class="lg-dot logged" aria-hidden="true"></span><span>已记录</span>
+        <span class="lg-tip">点某天查看详情</span>
       </div>
     </section>
 
@@ -548,37 +543,93 @@ const meals = computed(() =>
 .sd-dot { font-size: 12px; color: var(--color-outline); line-height: 1; margin-top: 1px; opacity: 0.5; }
 .strip-day.on .sd-kcal { color: var(--color-on-primary); }
 
-/* Month calendar */
-.month-cal { padding: 12px; background: var(--color-surface-container-lowest); border-radius: var(--radius-xl); border: 1px solid var(--color-outline-variant); box-shadow: 0 8px 24px rgba(29, 25, 23, 0.08), 0 2px 6px rgba(29, 25, 23, 0.04); }
-.mc-head { display: flex; justify-content: space-between; align-items: center; padding: 4px 4px 12px; border-bottom: 1px solid var(--color-surface-container-high); margin-bottom: 8px; }
-.mc-nav { display: flex; align-items: center; gap: 6px; }
-.mc-arrow { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-surface-container); color: var(--color-on-surface); font-size: 20px; font-weight: 400; }
-.mc-arrow:active { background: var(--color-surface-container-high); }
-.mc-month { font-size: var(--font-size-body); font-weight: 600; color: var(--color-on-surface); min-width: 88px; text-align: center; }
-.mc-close { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-full); background: var(--color-primary-fixed); color: var(--color-primary); font-size: var(--font-size-caption); font-weight: 500; }
-.mc-close:active { background: var(--color-primary-fixed-dim); }
+/* Month calendar · 现代化 */
+.month-cal {
+  padding: 16px 14px 14px;
+  background: var(--color-surface-container-lowest);
+  border-radius: 24px;
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: 0 12px 32px rgba(29, 25, 23, 0.10), 0 2px 8px rgba(29, 25, 23, 0.04);
+}
+.mc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.mc-nav { display: flex; align-items: center; gap: 4px; }
+.mc-arrow { width: 34px; height: 34px; border-radius: 50%; background: var(--color-surface-container); color: var(--color-on-surface); font-size: 18px; font-weight: 400; transition: all var(--duration-fast); }
+.mc-arrow:active { background: var(--color-surface-container-high); transform: scale(0.94); }
+.mc-month { font-size: 17px; font-weight: 600; color: var(--color-on-surface); min-width: 96px; text-align: center; letter-spacing: 0.02em; }
+.mc-close { display: inline-flex; align-items: center; gap: 4px; padding: 6px 14px; border-radius: var(--radius-full); background: var(--color-primary-fixed); color: var(--color-primary); font-size: var(--font-size-caption); font-weight: 500; transition: all var(--duration-fast); }
+.mc-close:active { background: var(--color-primary-fixed-dim); transform: scale(0.96); }
 .mc-close svg { stroke: currentColor; }
-.mc-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-surface-container-high); }
-.mc-collapse { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 12px; background: transparent; color: var(--color-primary); }
-.col-bar { width: 32px; height: 3px; border-radius: 2px; background: var(--color-primary); }
-.col-hint { font-size: var(--font-size-label); letter-spacing: 0.05em; }
-.mc-wdrow { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
-.mc-wd { text-align: center; font-size: var(--font-size-label); letter-spacing: 0.1em; color: var(--color-outline); padding: 4px 0; }
+.mc-wdrow { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+.mc-wd { text-align: center; font-size: 11px; letter-spacing: 0.08em; color: var(--color-outline); padding: 6px 0; font-weight: 500; }
 .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-.mc-cell { position: relative; aspect-ratio: 1; display: grid; place-items: center; border-radius: 10px; background: transparent; color: var(--color-on-surface); font-family: var(--font-family-num); font-weight: 500; font-size: var(--font-size-body); transition: all var(--duration-fast); }
+
+/* 每格：日期 + kcal 数字两行显示 */
+.mc-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--color-on-surface);
+  font-family: var(--font-family-num);
+  font-weight: 500;
+  border: 0; cursor: pointer;
+  padding: 2px 0;
+  transition: transform var(--duration-fast) var(--ease-out-expo),
+              background var(--duration-fast);
+}
 .mc-cell.empty { visibility: hidden; }
-.mc-cell.today { background: var(--color-primary); color: var(--color-on-primary); box-shadow: 0 4px 10px rgba(165, 51, 20, 0.28); }
-.mc-cell.logged { background: var(--color-secondary-container); color: var(--color-on-secondary-container); }
-.mc-cell.logged:hover { background: var(--color-secondary); color: var(--color-on-secondary); }
-.mc-dot { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--color-secondary); }
-.mc-cell:not(.empty):not(.today):not(.logged):hover { background: var(--color-surface-container); }
-.mc-cell { border: 0; cursor: pointer; }
 .mc-cell:disabled { cursor: default; }
-.mc-cell:active:not(:disabled) { transform: scale(0.94); }
-.mc-legend { display: flex; align-items: center; gap: 10px; font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-on-surface-variant); }
-.lg-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.lg-dot.today { background: var(--color-primary); }
+.mc-cell:active:not(:disabled) { transform: scale(0.92); }
+
+.mc-day { font-size: 15px; line-height: 1; font-weight: 500; }
+.mc-kcal {
+  font-size: 10px; line-height: 1;
+  color: var(--color-primary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px 5px;
+  background: var(--color-primary-fixed);
+  border-radius: 8px;
+  min-width: 26px;
+  text-align: center;
+}
+
+/* 今日：主色渐变 · 突出但不刺眼 */
+.mc-cell.today {
+  background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+  color: var(--color-on-primary);
+  box-shadow: 0 6px 14px rgba(165, 51, 20, 0.32);
+}
+.mc-cell.today .mc-day { font-weight: 700; color: inherit; }
+.mc-cell.today .mc-kcal {
+  background: rgba(255, 255, 255, 0.24);
+  color: var(--color-on-primary);
+}
+
+/* 已记录：柔和茶绿背景 */
+.mc-cell.logged {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+.mc-cell.logged .mc-kcal {
+  background: rgba(83, 101, 35, 0.14);
+  color: var(--color-secondary);
+}
+
+/* Legend 简化 · 单行 */
+.mc-legend {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid var(--color-surface-container-high);
+  font-size: 11px; letter-spacing: 0.03em; color: var(--color-on-surface-variant);
+}
+.lg-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.lg-dot.today { background: var(--color-primary); box-shadow: 0 0 0 2px var(--color-primary-fixed); }
 .lg-dot.logged { background: var(--color-secondary); }
+.lg-tip { margin-left: auto; color: var(--color-outline); }
 .sd-wd { font-size: 10px; letter-spacing: 0.1em; }
 .sd-day { font-size: 18px; font-weight: 600; line-height: 1; }
 
