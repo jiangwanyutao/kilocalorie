@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 interface BIPEvent extends Event {
   prompt: () => Promise<void>;
@@ -11,6 +13,9 @@ type Platform = 'ios' | 'android' | 'desktop' | 'unknown';
 const DISMISS_KEY = 'qk.pwa.dismissed';
 const NEVER_KEY = 'qk.pwa.never';
 const RE_SHOW_DAYS = 3;
+
+const route = useRoute();
+const auth = useAuthStore();
 
 const visible = ref(false);
 const platform = ref<Platform>('unknown');
@@ -33,6 +38,9 @@ function isStandalone(): boolean {
 
 function shouldShow(): boolean {
   if (isStandalone()) return false;
+  // 未登录 / 在 guest 页（welcome/login/register/forgot/reset/verify-email）不打扰
+  if (!auth.isAuthed) return false;
+  if (route.meta?.guest === true) return false;
   if (localStorage.getItem(NEVER_KEY) === 'Y') return false;
   const dismissed = localStorage.getItem(DISMISS_KEY);
   if (dismissed) {
