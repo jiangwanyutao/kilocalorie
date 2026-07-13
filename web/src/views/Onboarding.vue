@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
+import WheelPicker from '@/components/WheelPicker.vue';
 import { userApi, type SetupPayload, type MeResponse } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
 import { pickErrMsg } from '@/api/http';
@@ -31,12 +32,22 @@ const WEIGHT_MAX = 200;
 
 const age = computed(() => CURRENT_YEAR - birthYear.value);
 
-function pct(v: number, min: number, max: number): string {
-  return `${((v - min) / (max - min)) * 100}%`;
-}
-const yearPct = computed(() => pct(birthYear.value, YEAR_MIN, YEAR_MAX));
-const heightPct = computed(() => pct(heightCm.value, HEIGHT_MIN, HEIGHT_MAX));
-const weightPct = computed(() => pct(currentWeightKg.value, WEIGHT_MIN, WEIGHT_MAX));
+/** 滚轮候选：从大到小 · 让今年在最上（近端优先）· 用户往下滑到自己出生年 */
+const yearValues: (number | string)[] = (() => {
+  const arr: number[] = [];
+  for (let y = YEAR_MAX; y >= YEAR_MIN; y--) arr.push(y);
+  return arr;
+})();
+const heightValues: (number | string)[] = (() => {
+  const arr: number[] = [];
+  for (let h = HEIGHT_MIN; h <= HEIGHT_MAX; h++) arr.push(h);
+  return arr;
+})();
+const weightValues: (number | string)[] = (() => {
+  const arr: number[] = [];
+  for (let w = WEIGHT_MIN; w <= WEIGHT_MAX; w++) arr.push(w);
+  return arr;
+})();
 
 const ACTIVITY = [
   { v: '1', label: '久坐 · 基本无运动' },
@@ -134,60 +145,21 @@ function finish() {
               <span class="lbl">出生年份</span>
               <span class="value num">{{ birthYear }}<span class="unit"> · {{ age }} 岁</span></span>
             </div>
-            <input
-              class="slider"
-              type="range"
-              v-model.number="birthYear"
-              :min="YEAR_MIN"
-              :max="YEAR_MAX"
-              step="1"
-              aria-label="出生年份"
-              :style="{ '--pct': yearPct }"
-            />
-            <div class="scale">
-              <span>{{ YEAR_MIN }}</span>
-              <span>{{ YEAR_MAX }}</span>
-            </div>
+            <WheelPicker v-model="birthYear" :values="yearValues" />
           </div>
           <div class="field">
             <div class="rowlbl">
               <span class="lbl">身高</span>
               <span class="value num">{{ heightCm }}<span class="unit"> cm</span></span>
             </div>
-            <input
-              class="slider"
-              type="range"
-              v-model.number="heightCm"
-              :min="HEIGHT_MIN"
-              :max="HEIGHT_MAX"
-              step="1"
-              aria-label="身高"
-              :style="{ '--pct': heightPct }"
-            />
-            <div class="scale">
-              <span>{{ HEIGHT_MIN }}</span>
-              <span>{{ HEIGHT_MAX }}</span>
-            </div>
+            <WheelPicker v-model="heightCm" :values="heightValues" unit="cm" />
           </div>
           <div class="field">
             <div class="rowlbl">
               <span class="lbl">当前体重</span>
               <span class="value num">{{ currentWeightKg }}<span class="unit"> kg</span></span>
             </div>
-            <input
-              class="slider"
-              type="range"
-              v-model.number="currentWeightKg"
-              :min="WEIGHT_MIN"
-              :max="WEIGHT_MAX"
-              step="1"
-              aria-label="当前体重"
-              :style="{ '--pct': weightPct }"
-            />
-            <div class="scale">
-              <span>{{ WEIGHT_MIN }}</span>
-              <span>{{ WEIGHT_MAX }}</span>
-            </div>
+            <WheelPicker v-model="currentWeightKg" :values="weightValues" unit="kg" />
           </div>
         </div>
         <button class="primary" :disabled="!canNext1" @click="next">下一步</button>
