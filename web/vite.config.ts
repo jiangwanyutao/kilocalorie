@@ -25,12 +25,25 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: null,
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        // 只 precache 静态 assets · index.html 走 runtimeCaching NetworkFirst
+        globPatterns: ['**/*.{js,css,ico,png,svg,woff,woff2}'],
+        navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/api/],
-        // 部署新版后 · 老 SW 引用的旧 chunk hash 会 404 · 需要新 SW 立即接管
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
+        runtimeCaching: [
+          {
+            // navigation 请求（页面加载）永远优先走网络 · 拿最新 index.html
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'qk-pages',
+              networkTimeoutSeconds: 3,
+              expiration: { maxAgeSeconds: 60 * 60 * 24 * 7 },
+            },
+          },
+        ],
       },
       manifest: {
         name: '千卡日记',
