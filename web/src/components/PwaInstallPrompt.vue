@@ -115,31 +115,40 @@ const canOneClick = computed(() => deferredPrompt.value != null);
             <div class="step">
               <span class="step-num">1</span>
               <div class="step-body">
-                <p class="step-title">点底部
-                  <svg class="ios-share" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                    <path d="M12 3l0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
-                    <path d="M8 7l4-4 4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M5 12v8h14v-8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                  分享
+                <p class="step-title">点<b>右下角</b>
+                  <span class="ios-dots" aria-hidden="true">•••</span>
+                  <b>更多</b>
                 </p>
-                <p class="step-hint">Safari 底部菜单栏中间那个</p>
+                <p class="step-hint">Safari 底部工具栏右下</p>
               </div>
             </div>
             <div class="step">
               <span class="step-num">2</span>
               <div class="step-body">
-                <p class="step-title">向下滑 · 找 <b>加到主屏幕</b></p>
-                <p class="step-hint">图标是加号方框 <span class="ios-add">+</span></p>
+                <p class="step-title">点
+                  <svg class="ios-share" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path d="M12 3l0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                    <path d="M8 7l4-4 4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M5 12v8h14v-8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <b>共享</b>
+                </p>
               </div>
             </div>
             <div class="step">
               <span class="step-num">3</span>
               <div class="step-body">
-                <p class="step-title">右上 <b>添加</b> · 完成</p>
-                <p class="step-hint">桌面就会有"千卡"图标</p>
+                <p class="step-title">滑一下 · 点 <b>查看更多</b></p>
               </div>
             </div>
+            <div class="step">
+              <span class="step-num">4</span>
+              <div class="step-body">
+                <p class="step-title">找 <b>添加到主屏幕</b> <span class="ios-add">+</span></p>
+                <p class="step-hint">右上角 <b>添加</b> · 完成 · 桌面出现"千卡"图标</p>
+              </div>
+            </div>
+            <p class="ios-old-hint">iOS 25 及更早：分享按钮在 Safari 底部菜单中间</p>
           </template>
 
           <template v-else-if="canOneClick">
@@ -279,6 +288,7 @@ const canOneClick = computed(() => deferredPrompt.value != null);
 }
 .step:nth-child(2) { animation-delay: 0.08s; }
 .step:nth-child(3) { animation-delay: 0.16s; }
+.step:nth-child(4) { animation-delay: 0.24s; }
 @keyframes slidein {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -331,6 +341,32 @@ const canOneClick = computed(() => deferredPrompt.value != null);
   font-weight: 600;
   font-size: 14px;
   vertical-align: middle;
+}
+.ios-dots {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: var(--color-primary-fixed);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+.ios-old-hint {
+  margin: 4px 4px 0;
+  padding: 8px 12px;
+  background: var(--color-surface-container);
+  border-left: 3px solid var(--color-outline);
+  border-radius: 0 8px 8px 0;
+  font-size: var(--font-size-label);
+  letter-spacing: 0.03em;
+  color: var(--color-outline);
+  line-height: 1.5;
 }
 
 .one-click-hint {

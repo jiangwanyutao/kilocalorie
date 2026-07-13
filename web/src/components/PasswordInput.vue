@@ -56,8 +56,15 @@ function onInput(e: Event) {
 .pw-wrap { position: relative; display: block; width: 100%; }
 .pw-wrap input {
   width: 100%;
-  padding-right: 44px;
+  height: 52px;
+  padding: 0 44px 0 var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-lowest);
+  font-size: var(--font-size-body);
+  color: var(--color-on-surface);
 }
+.pw-wrap input:focus { outline: none; border-color: var(--color-primary); }
 .eye {
   position: absolute;
   right: 6px;
