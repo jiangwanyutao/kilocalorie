@@ -1,7 +1,10 @@
-import { Body, Controller, Get, HttpCode, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query, Req, UseGuards } from '@nestjs/common';
 import type { FastifyRequest } from 'fastify';
 import { AuthService } from './auth.service';
+import { CurrentUser, JwtAuthGuard } from './auth.helpers';
+import type { AuthUser } from './jwt.strategy';
 import {
+  ChangePasswordDto,
   ForgotDto,
   LoginDto,
   RefreshDto,
@@ -45,5 +48,12 @@ export class AuthController {
   @HttpCode(200)
   reset(@Body() dto: ResetDto) {
     return this.svc.reset(dto);
+  }
+
+  @Post('change-password')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  changePassword(@CurrentUser() u: AuthUser, @Body() dto: ChangePasswordDto) {
+    return this.svc.changePassword(u.id, dto);
   }
 }

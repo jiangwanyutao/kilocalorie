@@ -9,6 +9,7 @@ export interface PublicUser {
   vipLvl: string;
   emailVerified: string;
   avatarKey?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface TokenBundle {
@@ -35,6 +36,9 @@ export const authApi = {
 
   reset: (token: string, newPassword: string) =>
     http.post<{ success: true }>('/auth/reset', { token, newPassword }).then((r) => r.data),
+
+  changePassword: (oldPassword: string, newPassword: string) =>
+    http.post<{ success: true }>('/auth/change-password', { oldPassword, newPassword }).then((r) => r.data),
 
   me: () => http.get<PublicUser & Record<string, unknown>>('/user/me').then((r) => r.data),
 };

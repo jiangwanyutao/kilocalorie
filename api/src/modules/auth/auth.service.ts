@@ -19,6 +19,7 @@ import { MailService } from '@/common/mail.service';
 import { UserInfo, UserAuth, UserSession, UserVerify } from '@/entities';
 import type { JwtPayload } from './jwt.strategy';
 import type {
+  ChangePasswordDto,
   ForgotDto,
   LoginDto,
   RefreshDto,
@@ -256,6 +257,43 @@ export class AuthService {
         this.logger.warn(`重置邮件发送失败：${(e as Error).message}`);
       });
     }
+    return { success: true };
+  }
+
+  /** 登录态改密 · 旧密核对 → pwdVer+1 → 撤销所有 session（含当前 · 强制重登） */
+  async changePassword(userId: string, dto: ChangePasswordDto): Promise<{ success: true }> {
+    if (dto.oldPassword === dto.newPassword) {
+      throw new BadRequestException('新密码不能与当前密码相同');
+    }
+    const auth = await this.authRepo.findOne({ where: { id: userId, delFlag: 'N' } });
+    if (!auth) throw new UnauthorizedException('账号异常');
+
+    const ok = await bcrypt.compare(dto.oldPassword, auth.pwdHash);
+    if (!ok) throw new UnauthorizedException('当前密码错误');
+
+    const pwdHash = await bcrypt.hash(dto.newPassword, this.bcryptRounds);
+    const now = new Date();
+
+    await this.ds.transaction(async (mgr) => {
+      await mgr
+        .createQueryBuilder()
+        .update(UserAuth)
+        .set({
+          pwdHash,
+          pwdVer: () => 'pwd_ver + 1',
+          pwdResetAt: now,
+          updateBy: userId,
+          updateTime: now,
+        })
+        .where('id = :id', { id: userId })
+        .execute();
+      await mgr.update(
+        UserSession,
+        { userId, revoked: 'N' },
+        { revoked: 'Y', updateTime: now },
+      );
+    });
+
     return { success: true };
   }
 

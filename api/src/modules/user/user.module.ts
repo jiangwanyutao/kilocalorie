@@ -9,13 +9,18 @@ import {
   Module,
   NotFoundException,
   Patch,
+  PayloadTooLargeException,
   Post,
   Put,
+  Req,
+  UnsupportedMediaTypeException,
   UseGuards,
 } from '@nestjs/common';
+import type { FastifyRequest } from 'fastify';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { IsIn, IsInt, IsNumber, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 import { DataSource, Repository } from 'typeorm';
+import { MinioService } from '@/common/minio.module';
 
 import {
   AiConv,
@@ -64,6 +69,14 @@ class UpdateGoalDto {
   @IsOptional() @IsNumber() @Min(20) @Max(300) targetWt?: number;
 }
 
+const AVATAR_MAX_BYTES = 1 * 1024 * 1024;
+const AVATAR_MIME_EXT: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+};
+
 /** Mifflin-St Jeor BMR + activity 系数 · 目标类型 factor */
 const ACTIVITY_FACTOR: Record<string, number> = {
   '1': 1.2, '2': 1.375, '3': 1.55, '4': 1.725, '5': 1.9,
@@ -90,6 +103,7 @@ export class UserService {
     @InjectRepository(UserGoal) private readonly goalRepo: Repository<UserGoal>,
     private readonly ds: DataSource,
     private readonly idGen: IdGeneratorService,
+    private readonly minio: MinioService,
   ) {}
 
   /**
@@ -225,11 +239,25 @@ export class UserService {
       order: { effectiveAt: 'DESC' },
     });
 
+    let avatarUrl: string | null = null;
+    if (user.avatarKey) {
+      try {
+        const buf = await this.minio.getObjectBuffer(user.avatarKey);
+        const mime = user.avatarKey.endsWith('.png') ? 'image/png'
+          : user.avatarKey.endsWith('.webp') ? 'image/webp'
+          : 'image/jpeg';
+        avatarUrl = `data:${mime};base64,${buf.toString('base64')}`;
+      } catch {
+        avatarUrl = null;
+      }
+    }
+
     return {
       id: user.id,
       email: user.email,
       nickname: user.nickname,
       avatarKey: user.avatarKey ?? null,
+      avatarUrl,
       gender: user.gender,
       birthYear: user.birthYear ?? null,
       heightCm: user.heightCm ?? null,
@@ -327,6 +355,35 @@ export class UserService {
     return this.getMe(userId);
   }
 
+  /** 上传头像 · buffer 已由前端 resize · Content-Type 白名单校验 · 老头像删除 */
+  async uploadAvatar(userId: string, buffer: Buffer, mime: string) {
+    const ext = AVATAR_MIME_EXT[mime];
+    if (!ext) throw new UnsupportedMediaTypeException('仅支持 JPG / PNG / WebP');
+    if (buffer.length > AVATAR_MAX_BYTES) throw new PayloadTooLargeException('头像最大 1 MB');
+    const user = await this.userRepo.findOne({ where: { id: userId, delFlag: 'N' } });
+    if (!user) throw new NotFoundException('用户不存在');
+
+    const oldKey = user.avatarKey;
+    const key = `avatars/${userId}/${Date.now()}.${ext}`;
+    await this.minio.putObject(key, buffer, mime);
+    const now = new Date();
+    await this.userRepo.update({ id: userId }, { avatarKey: key, updateBy: userId, updateTime: now });
+    if (oldKey && oldKey !== key) {
+      this.minio.removeObject(oldKey).catch(() => undefined);
+    }
+    return this.getMe(userId);
+  }
+
+  async removeAvatar(userId: string) {
+    const user = await this.userRepo.findOne({ where: { id: userId, delFlag: 'N' } });
+    if (!user) throw new NotFoundException('用户不存在');
+    const oldKey = user.avatarKey;
+    const now = new Date();
+    await this.userRepo.update({ id: userId }, { avatarKey: null as unknown as string, updateBy: userId, updateTime: now });
+    if (oldKey) this.minio.removeObject(oldKey).catch(() => undefined);
+    return this.getMe(userId);
+  }
+
   async softDelete(userId: string) {
     const now = new Date();
     await this.userRepo.update(
@@ -371,6 +428,21 @@ export class UserController {
   @HttpCode(200)
   setup(@CurrentUser() u: AuthUser, @Body() dto: SetupDto) {
     return this.svc.setup(u.id, dto);
+  }
+
+  @Post('avatar')
+  @HttpCode(200)
+  async uploadAvatar(@CurrentUser() u: AuthUser, @Req() req: FastifyRequest) {
+    // @fastify/multipart 已在 main.ts 注册
+    const file = await (req as unknown as { file: () => Promise<{ mimetype: string; toBuffer: () => Promise<Buffer> } | null> }).file();
+    if (!file) throw new BadRequestException('缺少 file 字段');
+    const buffer = await file.toBuffer();
+    return this.svc.uploadAvatar(u.id, buffer, file.mimetype);
+  }
+
+  @Delete('avatar')
+  removeAvatar(@CurrentUser() u: AuthUser) {
+    return this.svc.removeAvatar(u.id);
   }
 }
 

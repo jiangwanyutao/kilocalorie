@@ -5,6 +5,7 @@ import { validateEnv } from './config/env.validation';
 import { RedisModule } from './common/redis.module';
 import { IdGeneratorModule } from './common/id-generator.module';
 import { MailModule } from './common/mail.module';
+import { MinioModule } from './common/minio.module';
 import { HealthController } from './common/health.controller';
 import { ALL_ENTITIES } from './entities';
 import { AuthModule } from './modules/auth/auth.module';
@@ -45,6 +46,7 @@ import { HealthModule } from './modules/health/health.module';
     RedisModule,
     IdGeneratorModule,
     MailModule,
+    MinioModule,
     AuthModule,
     UserModule,
     MealModule,

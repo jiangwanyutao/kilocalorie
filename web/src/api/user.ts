@@ -22,6 +22,7 @@ export interface MeResponse {
   vipLvl: string;
   emailVerified: string;
   avatarKey: string | null;
+  avatarUrl: string | null;
   goal: null | {
     id: string;
     goalType: string;
@@ -32,6 +33,15 @@ export interface MeResponse {
     fatPct: number;
     waterMl: number;
   };
+}
+
+export interface UpdateProfilePayload {
+  nickname?: string;
+  gender?: 'M' | 'F' | 'U';
+  birthYear?: number;
+  heightCm?: number;
+  activityLvl?: '1' | '2' | '3' | '4' | '5';
+  avatarKey?: string;
 }
 
 export interface UpdateGoalPayload {
@@ -58,8 +68,18 @@ export interface ExportBundle {
 export const userApi = {
   me: () => http.get<MeResponse>('/user/me').then((r) => r.data),
   setup: (dto: SetupPayload) => http.post<MeResponse>('/user/setup', dto).then((r) => r.data),
+  updateProfile: (dto: UpdateProfilePayload) => http.put<MeResponse>('/user/me', dto).then((r) => r.data),
   updateGoal: (dto: UpdateGoalPayload) => http.patch<MeResponse>('/user/goal', dto).then((r) => r.data),
   exportAll: () => http.get<ExportBundle>('/user/export').then((r) => r.data),
+  deleteAccount: () => http.delete<{ success: true; scheduledPurgeAt: string }>('/user/me').then((r) => r.data),
+  uploadAvatar: (blob: Blob, filename = 'avatar.jpg') => {
+    const fd = new FormData();
+    fd.append('file', blob, filename);
+    return http.post<MeResponse>('/user/avatar', fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((r) => r.data);
+  },
+  removeAvatar: () => http.delete<MeResponse>('/user/avatar').then((r) => r.data),
 };
 
 export interface HealthImportRow {

@@ -44,3 +44,14 @@ export class ResetDto {
   @Matches(/^(?=.*[A-Za-z])(?=.*\d).+$/, { message: '密码需含字母和数字' })
   newPassword!: string;
 }
+
+export class ChangePasswordDto {
+  @IsString()
+  @MinLength(1, { message: '请输入当前密码' })
+  oldPassword!: string;
+
+  @IsString()
+  @Length(8, 64, { message: '新密码 8-64 位' })
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d).+$/, { message: '密码需含字母和数字' })
+  newPassword!: string;
+}

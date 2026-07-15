@@ -50,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
       vipLvl: u.vipLvl,
       emailVerified: u.emailVerified,
       avatarKey: (u.avatarKey as string | null) ?? null,
+      avatarUrl: (u.avatarUrl as string | null) ?? null,
     };
     user.value = pub;
     localStorage.setItem(KEY.user, JSON.stringify(pub));

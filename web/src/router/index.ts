@@ -26,21 +26,21 @@ const routes: RouteRecordRaw[] = [
 
   { path: '/', name: 'home', component: () => import('@/views/Home.vue'), meta: { title: '首页' } },
   { path: '/log', name: 'log', component: () => import('@/views/Log.vue'), meta: { title: '记录' } },
-  { path: '/add', name: 'add', component: P, meta: { title: '中心', hideTabBar: true } },
+  { path: '/add', redirect: '/food/picker' },
   { path: '/ai', name: 'ai', component: () => import('@/views/AI.vue'), meta: { title: 'AI 搭子' } },
   { path: '/me', name: 'me', component: () => import('@/views/Me.vue'), meta: { title: '我的' } },
 
-  { path: '/meal/new', name: 'meal-new', component: P, meta: { title: '新增就餐', hideTabBar: true } },
+  { path: '/meal/new', redirect: '/food/picker' },
   { path: '/meal/photo', name: 'meal-photo', component: () => import('@/views/PhotoRecognize.vue'), meta: { title: '拍照识别', hideTabBar: true } },
-  { path: '/meal/delivery', name: 'meal-delivery', component: P, meta: { title: '外卖截图', hideTabBar: true } },
-  { path: '/food/search', name: 'food-search', component: P, meta: { title: '搜索食物', hideTabBar: true } },
+  { path: '/meal/delivery', redirect: '/meal/photo' },
+  { path: '/food/search', redirect: '/food/picker' },
   { path: '/food/picker', name: 'food-picker', component: () => import('@/views/FoodPicker.vue'), meta: { title: '食物库', hideTabBar: true } },
-  { path: '/food/user/new', name: 'food-user-new', component: P, meta: { title: '添加私人食物', hideTabBar: true } },
+  { path: '/food/user/new', name: 'food-user-new', component: () => import('@/views/FoodUserNew.vue'), meta: { title: '添加私人食物', hideTabBar: true } },
 
   { path: '/water', name: 'water', component: () => import('@/views/Water.vue'), meta: { title: '饮水', hideTabBar: true } },
   { path: '/exercise', name: 'exercise', component: () => import('@/views/Exercise.vue'), meta: { title: '运动', hideTabBar: true } },
   { path: '/exercise/history', name: 'exercise-history', component: () => import('@/views/ExerciseHistory.vue'), meta: { title: '锻炼历史', hideTabBar: true } },
-  { path: '/exercise/new', name: 'exercise-new', component: P, meta: { title: '添加运动', hideTabBar: true } },
+  { path: '/exercise/new', redirect: '/exercise' },
   { path: '/body/weight', name: 'body-weight', component: () => import('@/views/Weight.vue'), meta: { title: '体重', hideTabBar: true } },
   { path: '/body/measure', name: 'body-measure', component: () => import('@/views/Measure.vue'), meta: { title: '围度', hideTabBar: true } },
   { path: '/body/steps', name: 'body-steps', component: () => import('@/views/Steps.vue'), meta: { title: '步数', hideTabBar: true } },
@@ -48,8 +48,8 @@ const routes: RouteRecordRaw[] = [
   { path: '/fast', name: 'fast', component: () => import('@/views/Fasting.vue'), meta: { title: '轻断食', hideTabBar: true } },
 
   { path: '/goal', name: 'goal', component: () => import('@/views/Goal.vue'), meta: { title: '目标', hideTabBar: true } },
-  { path: '/stats', name: 'stats', component: P, meta: { title: '统计', hideTabBar: true } },
-  { path: '/calendar', name: 'calendar', component: P, meta: { title: '日历', hideTabBar: true } },
+  { path: '/stats', name: 'stats', component: () => import('@/views/Stats.vue'), meta: { title: '统计', hideTabBar: true } },
+  { path: '/calendar', redirect: '/' },
   { path: '/health/import', name: 'health-import', component: () => import('@/views/HealthImport.vue'), meta: { title: 'Apple Health 导入', hideTabBar: true } },
   { path: '/health/import-xml', name: 'health-import-xml', component: () => import('@/views/HealthImportXml.vue'), meta: { title: 'XML 上传', hideTabBar: true } },
   { path: '/health/shortcut', name: 'health-shortcut', component: P, meta: { title: 'Shortcuts 模板', hideTabBar: true } },
@@ -59,11 +59,14 @@ const routes: RouteRecordRaw[] = [
   { path: '/ai/memory', name: 'ai-memory', component: () => import('@/views/AIMemory.vue'), meta: { title: '记忆管理', hideTabBar: true } },
   { path: '/kb', name: 'kb', component: () => import('@/views/Knowledge.vue'), meta: { title: '知识库', hideTabBar: true } },
 
+  { path: '/profile', name: 'profile', component: () => import('@/views/Profile.vue'), meta: { title: '编辑资料', hideTabBar: true } },
+  { path: '/change-password', name: 'change-password', component: () => import('@/views/ChangePassword.vue'), meta: { title: '修改密码', hideTabBar: true } },
+  { path: '/account/delete', name: 'account-delete', component: () => import('@/views/DeleteAccount.vue'), meta: { title: '注销账号', hideTabBar: true } },
   { path: '/settings', name: 'settings', component: () => import('@/views/Settings.vue'), meta: { title: '设置', hideTabBar: true } },
   { path: '/settings/remind', redirect: '/settings' },
-  { path: '/about', name: 'about', component: P, meta: { title: '关于', hideTabBar: true } },
+  { path: '/about', name: 'about', component: () => import('@/views/About.vue'), meta: { title: '关于', hideTabBar: true } },
 
-  { path: '/:pathMatch(.*)*', name: 'not-found', component: P, meta: { title: '页面走丢', hideTabBar: true } },
+  { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFound.vue'), meta: { title: '页面走丢', hideTabBar: true } },
 ];
 
 export const router = createRouter({
