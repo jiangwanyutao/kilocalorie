@@ -15,11 +15,40 @@ if ('serviceWorker' in navigator) {
 }
 
 (function bootstrapTheme() {
-  const stored = localStorage.getItem('qk.theme');
-  const t = stored === 'dark' || stored === 'light' || stored === 'auto' ? stored : 'auto';
-  const wantDark = t === 'dark' ||
-    (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.setAttribute('data-theme', wantDark ? 'dark' : 'light');
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const readMode = (): 'auto' | 'light' | 'dark' => {
+    const s = localStorage.getItem('qk.theme');
+    return s === 'dark' || s === 'light' || s === 'auto' ? s : 'auto';
+  };
+  const apply = (): void => {
+    const t = readMode();
+    const wantDark = t === 'dark' || (t === 'auto' && mq.matches);
+    document.documentElement.setAttribute('data-theme', wantDark ? 'dark' : 'light');
+  };
+  apply();
+  mq.addEventListener?.('change', () => { if (readMode() === 'auto') apply(); });
+  window.addEventListener('storage', (e) => { if (e.key === 'qk.theme') apply(); });
+})();
+
+/**
+ * 键盘弹起时 · 让聚焦的 input/textarea 滚到视口中间
+ * 移动端浏览器不会自动做这件事 · 键盘常把输入框挡住
+ * 延时 260ms 等软键盘展开动画结束再滚 · 避免抢位
+ */
+(function bindInputScrollIntoView() {
+  const isInputEl = (el: EventTarget | null): boolean => {
+    if (!(el instanceof HTMLElement)) return false;
+    const tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || el.isContentEditable;
+  };
+  document.addEventListener('focusin', (e) => {
+    if (!isInputEl(e.target)) return;
+    const el = e.target as HTMLElement;
+    setTimeout(() => {
+      try { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+      catch { /* 老浏览器无 scrollIntoView options · 静默 */ }
+    }, 260);
+  });
 })();
 
 const app = createApp(App);

@@ -252,7 +252,6 @@ onMounted(() => {
       <section class="card">
         <header class="c-head">
           <h3 class="c-title">主题</h3>
-          <span class="perm-chip warn">深色即将上线</span>
         </header>
         <div class="theme-row">
           <button
@@ -265,7 +264,7 @@ onMounted(() => {
           </button>
         </div>
         <p class="note-line">
-          目前只提供暖色调浅色主题 · 已选择的主题偏好会记住 · 深色模式在下一个版本上线
+          浅色是暖色调纸感 · 深色是雾紫夜色 · 跟随系统会自动切换
         </p>
       </section>
 
@@ -330,15 +329,24 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 96px); display: flex; flex-direction: column; gap: var(--space-md); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(198, 75, 42, 0.06), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(120, 90, 200, 0.06), transparent 60%),
+    linear-gradient(180deg, #ecebff 0%, #f5f2ff 22%, #fbf5f0 50%, #fff8f5 100%);
+  color: var(--color-on-surface);
+}
+.body { padding: 12px 16px calc(env(safe-area-inset-bottom) + 100px); display: flex; flex-direction: column; gap: 12px; }
 
 .card {
-  padding: 14px 16px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06);
+  padding: 18px 18px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-radius: 24px;
+  box-shadow: 0 14px 30px -20px rgba(120, 90, 200, 0.20);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .c-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
