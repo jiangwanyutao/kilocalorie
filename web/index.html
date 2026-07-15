@@ -3,18 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#A53314" />
+    <meta name="theme-color" content="#7E5100" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1626" media="(prefers-color-scheme: dark)" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="千卡日记" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/pwa-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>千卡日记 · Qianka Diary</title>
+    <!-- 首屏关键 CSS · 内联 · 消除 Vue mount 前的白闪 -->
+    <style>
+      html, body { margin: 0; padding: 0; min-height: 100dvh; }
+      body {
+        background:
+          radial-gradient(1000px 500px at 100% 0%, rgba(198, 75, 42, 0.06), transparent 60%),
+          radial-gradient(800px 400px at 0% 30%, rgba(83, 101, 35, 0.05), transparent 60%),
+          linear-gradient(180deg, #ecebff 0%, #f5f2ff 22%, #fbf5f0 50%, #fff8f5 100%);
+        color: #1d1917;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+        -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+      :root[data-theme="dark"] body { background: #1a1626; color: #f5f2ff; }
+      #app { min-height: 100dvh; }
+      /* 全局键盘 focus 可见 · 鼠标点击不出圈 · Tab 键出圈 */
+      :focus:not(:focus-visible) { outline: none; }
+      :focus-visible {
+        outline: 2px solid #A53314;
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+      /* 首屏 loader · Vue mount 后 <div id="app"> 内容替换掉这里 */
+      .qk-boot { min-height: 100dvh; display: grid; place-items: center; opacity: 0.6; }
+      .qk-boot span {
+        display: inline-block; width: 40px; height: 40px; border-radius: 12px;
+        background: linear-gradient(140deg, #fff4cc, #ffcf5a);
+        animation: qkPulse 1.4s ease-in-out infinite;
+      }
+      @keyframes qkPulse { 0%, 100% { transform: scale(0.9); opacity: 0.5; } 50% { transform: scale(1); opacity: 1; } }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app"><div class="qk-boot"><span></span></div></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

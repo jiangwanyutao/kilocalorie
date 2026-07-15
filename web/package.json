@@ -8,7 +8,8 @@
     "dev": "vite --port 7110 --host",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 7110",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "gen-icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
     "@vueuse/core": "^11.1.0",
@@ -21,6 +22,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20.16.10",
     "@vitejs/plugin-vue": "^5.1.4",
     "sass": "^1.79.4",
