@@ -123,7 +123,7 @@ function typeColor(name: string): string {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
+.wrap { min-height: 100dvh; background: var(--page-gradient); color: var(--color-on-surface); }
 .body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 96px); display: flex; flex-direction: column; gap: var(--space-md); }
 .err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
 

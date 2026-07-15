@@ -318,8 +318,18 @@ const meals = computed(() =>
       <span class="fb-caret" aria-hidden="true">›</span>
     </router-link>
 
+    <!-- 首次加载骨架 · 只在 stats 未到时显示 -->
+    <section v-if="loading && !stats" class="hero-skel">
+      <div class="hs-ring" />
+      <div class="hs-bars">
+        <div class="hs-line w60" />
+        <div class="hs-line w80" />
+        <div class="hs-line w40" />
+      </div>
+    </section>
+
     <!-- 主卡 · 左环 右进度条 -->
-    <section class="hero-card">
+    <section v-else class="hero-card">
       <div class="hero-ring">
         <svg viewBox="0 0 180 180" class="ring">
           <defs>
@@ -698,6 +708,28 @@ const meals = computed(() =>
 .fb-sub { margin: 0; font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); font-family: var(--font-family-num); }
 .fast-banner.done .fb-sub { color: var(--color-on-secondary-container); font-weight: 500; }
 .fb-caret { color: var(--color-outline); font-size: 22px; font-weight: 300; }
+
+/* Hero skeleton */
+.hero-skel {
+  display: grid; grid-template-columns: minmax(140px, 42%) 1fr;
+  align-items: center; gap: 20px;
+  padding: 26px 20px;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 32px;
+  box-shadow: 0 20px 48px rgba(120, 100, 200, 0.10);
+}
+.hs-ring {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(120, 90, 200, 0.10);
+  animation: hspulse 1.4s ease-in-out infinite;
+  justify-self: center;
+}
+.hs-bars { display: flex; flex-direction: column; gap: 12px; }
+.hs-line { height: 14px; border-radius: 7px; background: rgba(120, 90, 200, 0.10); animation: hspulse 1.4s ease-in-out infinite; }
+.hs-line.w40 { width: 40%; }
+.hs-line.w60 { width: 60%; }
+.hs-line.w80 { width: 80%; }
+@keyframes hspulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
 
 /* Hero */
 /* Hero · 大白卡 + 主环 */

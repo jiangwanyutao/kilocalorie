@@ -248,7 +248,7 @@ function finish() {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
+.wrap { min-height: 100dvh; background: var(--page-gradient); color: var(--color-on-surface); }
 .body { padding: 0 var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + var(--space-xl)); }
 .hero { padding: var(--space-md) 0 var(--space-lg); }
 .hero.center { text-align: center; padding-top: var(--space-xl); }

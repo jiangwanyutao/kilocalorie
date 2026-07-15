@@ -43,7 +43,7 @@ const router = useRouter();
   position: relative;
   min-height: 100dvh;
   padding: calc(env(safe-area-inset-top) + var(--space-xl)) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + var(--space-xl));
-  background: var(--color-surface);
+  background: var(--page-gradient);
   color: var(--color-on-surface);
   overflow: hidden;
   display: grid;

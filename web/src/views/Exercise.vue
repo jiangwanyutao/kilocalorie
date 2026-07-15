@@ -198,9 +198,16 @@ function fmt(iso: string): string {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 96px); display: flex; flex-direction: column; gap: var(--space-md); }
-.err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(255, 138, 76, 0.14), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(120, 90, 200, 0.06), transparent 60%),
+    linear-gradient(180deg, #ffe6d5 0%, #ffedd8 22%, #f5f2ff 50%, #fbf5f0 100%);
+  color: var(--color-on-surface);
+}
+.body { padding: 12px 16px calc(env(safe-area-inset-bottom) + 100px); display: flex; flex-direction: column; gap: 14px; }
+.err { margin: 0; padding: 10px 14px; background: var(--color-error-container); color: var(--color-on-error-container); border-radius: 14px; font-size: 12.5px; }
 .muted { color: var(--color-on-surface-variant); }
 .center { text-align: center; padding: var(--space-lg) 0; }
 
@@ -210,11 +217,12 @@ function fmt(iso: string): string {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 16px;
-  padding: 20px 22px;
-  background: var(--color-surface-container-lowest);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-outline-variant);
-  box-shadow: 0 8px 24px rgba(29, 25, 23, 0.08), 0 2px 6px rgba(29, 25, 23, 0.04);
+  padding: 24px 22px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 32px;
+  box-shadow: 0 20px 40px -18px rgba(255, 138, 76, 0.24);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 .hero-label { margin: 0 0 4px; font-size: var(--font-size-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-on-surface-variant); }
 .hero-value { margin: 0; font-size: 46px; line-height: 1; font-weight: 600; color: var(--color-primary); font-family: var(--font-family-num); }
@@ -236,28 +244,32 @@ function fmt(iso: string): string {
 }
 .cat-row::-webkit-scrollbar { display: none; }
 .cat {
-  flex: 0 0 auto; padding: 8px 16px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-full);
+  flex: 0 0 auto; padding: 9px 18px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 0;
+  border-radius: 999px;
   color: var(--color-on-surface-variant);
-  font-size: var(--font-size-caption); font-weight: 500;
+  font-size: 12px; font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  box-shadow: 0 6px 14px -10px rgba(120, 90, 200, 0.18);
 }
 .cat.on {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
-  box-shadow: 0 4px 10px rgba(165, 51, 20, 0.2);
+  background: linear-gradient(140deg, #ff8a4c 0%, #ff5722 100%);
+  color: #fff;
+  box-shadow: 0 8px 18px -6px rgba(255, 87, 34, 0.44);
+  transform: translateY(-1px);
 }
 
 /* Recording card */
 .rec-card {
-  padding: 16px;
-  background: var(--color-surface-container-lowest);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-outline-variant);
-  border-left: 4px solid var(--color-primary);
-  box-shadow: 0 8px 24px rgba(29, 25, 23, 0.08), 0 2px 6px rgba(29, 25, 23, 0.04);
+  padding: 20px 18px;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 24px;
+  border-left: 4px solid #ff8a4c;
+  box-shadow: 0 16px 34px -18px rgba(255, 138, 76, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex; flex-direction: column; gap: 12px;
 }
 .rec-card.int-L { border-left-color: var(--color-tertiary); }
@@ -275,7 +287,7 @@ function fmt(iso: string): string {
 .rec-est { margin: 4px 0; font-size: 30px; font-weight: 600; color: var(--color-primary); line-height: 1; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .rec-est em { font-size: var(--font-size-caption); font-weight: 400; color: var(--color-on-surface-variant); font-style: normal; font-family: var(--font-family-sans); }
 .rec-est-hint { font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); font-weight: 400; font-family: var(--font-family-sans); }
-.primary { height: 48px; border-radius: var(--radius-md); background: var(--color-primary); color: var(--color-on-primary); font-size: var(--font-size-body); font-weight: 500; box-shadow: var(--shadow-card); }
+.primary { height: 50px; border: 0; border-radius: 18px; background: linear-gradient(140deg, #ff8a4c 0%, #ff5722 100%); color: #fff; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; box-shadow: 0 14px 30px -10px rgba(255, 87, 34, 0.44); cursor: pointer; transition: transform var(--duration-fast); }
 .primary:active { transform: scale(0.98); }
 
 /* Library grid */
@@ -284,15 +296,16 @@ function fmt(iso: string): string {
 .lib-hint { font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); font-weight: 400; }
 .lib-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .lib-card {
-  width: 100%; padding: 12px 14px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
+  width: 100%; padding: 14px 14px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-radius: 20px;
   display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: 2px 10px;
   align-items: center;
   text-align: left;
-  box-shadow: 0 2px 6px rgba(29, 25, 23, 0.04);
-  transition: transform 0.1s, box-shadow 0.1s, border-color 0.1s;
+  box-shadow: 0 10px 22px -16px rgba(255, 138, 76, 0.22);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
 }
 .lib-card:active { transform: scale(0.98); }
 .lib-card.on {
@@ -316,7 +329,14 @@ function fmt(iso: string): string {
 .lib-card.int-H .lib-int { background: var(--color-error-container); color: var(--color-on-error-container); }
 
 /* Log */
-.log-card { padding: 14px; background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); border: 1px solid var(--color-outline-variant); box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06); }
+.log-card {
+  padding: 18px 16px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 26px;
+  box-shadow: 0 16px 34px -22px rgba(255, 138, 76, 0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
 .log-title { margin: 0 0 8px; font-size: var(--font-size-caption); color: var(--color-on-surface-variant); font-weight: 500; }
 .log-title .num { color: var(--color-primary); font-weight: 600; }
 .log-list { list-style: none; margin: 0; padding: 0; }

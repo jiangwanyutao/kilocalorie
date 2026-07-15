@@ -511,29 +511,34 @@ function dotColor(code: string): string {
 </template>
 
 <style scoped>
-.wrap { height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); display: flex; flex-direction: column; overflow: hidden; }
+.wrap {
+  height: 100dvh;
+  background: var(--page-gradient);
+  color: var(--color-on-surface);
+  display: flex; flex-direction: column; overflow: hidden;
+}
 
 /* 顶部搜索 */
 .search-row { display: flex; gap: 8px; padding: var(--space-md) var(--space-margin-mobile) var(--space-sm); }
-.search-box { flex: 1; position: relative; height: 44px; display: flex; align-items: center; background: var(--color-surface-container-lowest); border: 1px solid var(--color-outline-variant); border-radius: var(--radius-full); padding: 0 12px; }
+.search-box { flex: 1; position: relative; height: 44px; display: flex; align-items: center; background: rgba(255, 255, 255, 0.82); border: 0; border-radius: 999px; padding: 0 14px; box-shadow: 0 8px 20px -12px rgba(120, 90, 200, 0.20); }
 .s-icon { font-size: 16px; color: var(--color-outline); margin-right: 6px; }
 .search-box input { flex: 1; background: transparent; border: 0; outline: 0; font-size: var(--font-size-body); color: var(--color-on-surface); }
 .s-clear { width: 24px; height: 24px; border-radius: 50%; background: var(--color-surface-container-high); color: var(--color-outline); font-size: 14px; padding: 0; }
-.unit-btn { flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: var(--radius-full); background: var(--color-surface-container-lowest); border: 1px solid var(--color-outline-variant); color: var(--color-on-surface); font-size: var(--font-size-caption); display: inline-flex; align-items: center; gap: 4px; }
+.unit-btn { flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.82); border: 0; color: var(--color-on-surface); font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 8px 20px -12px rgba(120, 90, 200, 0.20); }
 
 /* 主区：左侧 tabs + 右侧列表 · 各自独立滚动 · 页面 body 不滚 */
 .main { flex: 1; display: grid; grid-template-columns: 88px 1fr; gap: 0; min-height: 0; overflow: hidden; }
 
-.sidebar { display: flex; flex-direction: column; gap: 4px; padding: 8px 6px 8px 12px; background: var(--color-surface-container); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; min-height: 0; }
+.sidebar { display: flex; flex-direction: column; gap: 4px; padding: 8px 6px 8px 12px; background: rgba(255, 255, 255, 0.55); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; min-height: 0; }
 .sidebar::-webkit-scrollbar { display: none; }
-.side-tab { padding: 12px 0; background: transparent; color: var(--color-on-surface-variant); font-size: var(--font-size-caption); text-align: center; border-radius: var(--radius-md); transition: all var(--duration-fast); }
-.side-tab.on { background: var(--color-surface); color: var(--color-primary); font-weight: 600; box-shadow: 0 2px 6px rgba(29, 25, 23, 0.06); }
-.side-divider { height: 1px; background: var(--color-outline-variant); margin: 4px 12px; }
+.side-tab { padding: 12px 0; background: transparent; border: 0; color: var(--color-on-surface-variant); font-size: 12px; text-align: center; border-radius: 14px; transition: all var(--duration-fast); cursor: pointer; }
+.side-tab.on { background: rgba(255, 255, 255, 0.92); color: var(--color-primary); font-weight: 700; box-shadow: 0 6px 14px -6px rgba(165, 51, 20, 0.24); }
+.side-divider { height: 1px; background: rgba(120, 90, 200, 0.10); margin: 4px 12px; }
 
 .list-wrap { padding: 8px 12px calc(env(safe-area-inset-bottom) + 96px) 10px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
 .food-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.row { display: grid; grid-template-columns: 52px 1fr 36px; gap: 10px; align-items: center; padding: 10px 12px; background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); border: 1px solid var(--color-outline-variant); cursor: pointer; transition: background var(--duration-fast); }
-.row:active { background: var(--color-surface-container); }
+.row { display: grid; grid-template-columns: 52px 1fr 36px; gap: 10px; align-items: center; padding: 12px 14px; background: rgba(255, 255, 255, 0.82); border-radius: 18px; border: 0; cursor: pointer; transition: transform var(--duration-fast); box-shadow: 0 10px 24px -18px rgba(120, 90, 200, 0.18); }
+.row:active { transform: scale(0.98); }
 .icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.05); }
 .i-emoji { font-size: 28px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08)); }
 .row-body { min-width: 0; }

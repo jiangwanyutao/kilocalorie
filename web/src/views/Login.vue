@@ -67,7 +67,7 @@ async function submit() {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
+.wrap { min-height: 100dvh; background: var(--page-gradient); color: var(--color-on-surface); }
 .body { padding: 0 var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + var(--space-xl)); display: flex; flex-direction: column; gap: var(--space-lg); }
 .hero { padding-top: var(--space-md); }
 .eyebrow { font-size: var(--font-size-label); letter-spacing: var(--letter-spacing-label); text-transform: uppercase; color: var(--color-primary); margin: 0 0 var(--space-sm); }

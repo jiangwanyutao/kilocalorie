@@ -247,21 +247,50 @@ async function delEntry(id: string) {
     <div class="body">
       <p v-if="errMsg && !sheetOpen" class="err">{{ errMsg }}</p>
 
-      <article v-for="m in MEAL" :key="m.key" class="meal-card">
+      <!-- 加载骨架 -->
+      <template v-if="loading && !day">
+        <div v-for="i in 4" :key="i" class="meal-card skel-card">
+          <div class="skel-line w40" />
+          <div class="skel-line w70" />
+        </div>
+      </template>
+
+      <article
+        v-for="(m, i) in MEAL" :key="m.key"
+        class="meal-card" :class="`tint-${i}`"
+      >
         <header class="mhead">
-          <div>
-            <h2 class="mname">{{ m.name }}</h2>
-            <p class="mhint">{{ m.hint }}</p>
+          <div class="mleft">
+            <span class="memoji" aria-hidden="true">
+              {{ m.key === 'B' ? '🥞' : m.key === 'L' ? '🍜' : m.key === 'D' ? '🍚' : '🍎' }}
+            </span>
+            <div>
+              <h2 class="mname">{{ m.name }}</h2>
+              <p class="mhint">{{ m.hint }}</p>
+            </div>
           </div>
           <div class="mright">
-            <span class="mkcal num">{{ kcalOf(m.key) }}<span class="ukcal"> kcal</span></span>
-            <button class="cam-btn" type="button" @click="router.push(`/meal/photo?type=${m.key}`)" aria-label="拍照识别">📷</button>
+            <span class="mkcal num">{{ kcalOf(m.key) }}<span class="ukcal">kcal</span></span>
+            <button
+              class="cam-btn" type="button"
+              @click="router.push(`/meal/photo?type=${m.key}`)"
+              aria-label="拍照识别"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <path d="M4 8h3l1.5-2h7L17 8h3v11H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </button>
             <button
               class="add-btn"
               type="button"
               @click="router.push({ path: '/food/picker', query: { meal: m.key, ...(dateParam ? { date: dateParam } : {}) } })"
               aria-label="记一笔"
-            >＋</button>
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
         </header>
 
@@ -269,16 +298,14 @@ async function delEntry(id: string) {
           <div v-for="e in grouped[m.key]" :key="e.id" class="entry">
             <div v-for="it in e.items" :key="it.id" class="item">
               <span class="fn">{{ it.foodName }}</span>
-              <span class="fg num">{{ Math.round(Number(it.actualG)) }} g</span>
+              <span class="fg num">{{ Math.round(Number(it.actualG)) }}g</span>
               <span class="fk num">{{ Math.round(Number(it.kcal)) }} kcal</span>
             </div>
-            <button class="del" type="button" @click="delEntry(e.id)">删除本条</button>
+            <button class="del" type="button" @click="delEntry(e.id)">删除</button>
           </div>
         </div>
-        <p v-else class="empty">还没记录 · 点右上 ＋ 加一笔</p>
+        <p v-else class="empty">还没记录 · 点 <span class="pill">＋</span> 加一笔</p>
       </article>
-
-      <p v-if="loading" class="loading">加载中…</p>
     </div>
 
     <transition name="sheet">
@@ -425,30 +452,141 @@ async function delEntry(id: string) {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 96px); display: flex; flex-direction: column; gap: var(--space-md); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(198, 75, 42, 0.06), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(83, 101, 35, 0.05), transparent 60%),
+    linear-gradient(180deg, #ecebff 0%, #f5f2ff 22%, #fbf5f0 50%, #fff8f5 100%);
+  color: var(--color-on-surface);
+}
+.body {
+  padding: 12px 16px calc(env(safe-area-inset-bottom) + 100px);
+  display: flex; flex-direction: column; gap: 14px;
+}
 
-.meal-card { background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); box-shadow: var(--shadow-paper); overflow: hidden; }
-.mhead { display: flex; justify-content: space-between; align-items: center; padding: var(--space-md); border-bottom: 1px solid var(--color-surface-container-high); }
-.mname { margin: 0; font-size: var(--font-size-section); line-height: var(--line-height-section); font-weight: 600; }
-.mhint { margin: 2px 0 0; font-size: var(--font-size-caption); color: var(--color-outline); }
-.mright { display: flex; align-items: center; gap: 10px; }
-.mkcal { font-size: var(--font-size-section); font-weight: 600; color: var(--color-primary); font-family: var(--font-family-num); }
-.ukcal { font-size: var(--font-size-caption); font-weight: 400; color: var(--color-on-surface-variant); font-family: var(--font-family-sans); }
-.add-btn { width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--color-primary); color: var(--color-on-primary); font-size: 22px; font-weight: 300; }
-.add-btn:active { transform: scale(0.94); }
-.cam-btn { width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--color-surface-container); color: var(--color-primary); font-size: 18px; border: 1px solid var(--color-outline-variant); }
-.cam-btn:active { transform: scale(0.94); background: var(--color-primary-fixed); }
-.entries { display: flex; flex-direction: column; }
-.entry { padding: var(--space-md); border-bottom: 1px solid var(--color-surface-container-high); }
-.entry:last-child { border-bottom: 0; }
-.item { display: grid; grid-template-columns: 1fr auto auto; gap: var(--space-sm); font-size: var(--font-size-body); padding: 4px 0; }
-.fn { color: var(--color-on-surface); }
-.fg, .fk { color: var(--color-on-surface-variant); font-family: var(--font-family-num); font-size: var(--font-size-caption); }
-.del { margin-top: 6px; padding: 4px 10px; border-radius: var(--radius-full); background: transparent; color: var(--color-error); font-size: var(--font-size-caption); border: 1px solid var(--color-outline-variant); }
-.empty { margin: 0; padding: var(--space-md); text-align: center; font-size: var(--font-size-caption); color: var(--color-on-surface-variant); }
-.loading { text-align: center; font-size: var(--font-size-caption); color: var(--color-on-surface-variant); margin: 0; }
-.err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
+.err {
+  margin: 0; padding: 10px 14px;
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+  border-radius: 14px;
+  font-size: 12.5px;
+}
+
+/* ─── meal card ─── */
+.meal-card {
+  padding: 0;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 28px;
+  box-shadow: 0 18px 36px -22px rgba(120, 90, 200, 0.20);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.tint-0 { background: linear-gradient(155deg, #fff4cc 0%, rgba(255, 255, 255, 0.88) 55%); }
+.tint-1 { background: linear-gradient(155deg, #ffe0d5 0%, rgba(255, 255, 255, 0.88) 55%); }
+.tint-2 { background: linear-gradient(155deg, #eeeaff 0%, rgba(255, 255, 255, 0.88) 55%); }
+.tint-3 { background: linear-gradient(155deg, #e6f5d5 0%, rgba(255, 255, 255, 0.88) 55%); }
+
+.mhead {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 18px;
+  gap: 8px;
+}
+.mleft { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.memoji {
+  font-size: 26px; line-height: 1;
+  width: 44px; height: 44px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  display: grid; place-items: center;
+  box-shadow: 0 4px 10px -4px rgba(120, 90, 200, 0.20);
+  flex-shrink: 0;
+}
+.mname { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; }
+.mhint { margin: 1px 0 0; font-size: 11px; color: var(--color-on-surface-variant); letter-spacing: 0.03em; }
+.mright { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.mkcal {
+  font-size: 17px; font-weight: 700;
+  color: var(--color-primary);
+  font-family: var(--font-family-num);
+  letter-spacing: 0.01em;
+  display: inline-flex; align-items: baseline; gap: 3px;
+}
+.ukcal { font-size: 10px; font-weight: 500; color: var(--color-on-surface-variant); font-family: var(--font-family-sans); letter-spacing: 0.03em; }
+
+.add-btn, .cam-btn {
+  width: 38px; height: 38px; border: 0; border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: transform var(--duration-fast);
+}
+.add-btn {
+  background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+  color: var(--color-on-primary);
+  box-shadow: 0 8px 18px -6px rgba(165, 51, 20, 0.40);
+}
+.cam-btn {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-primary);
+  border: 1px solid rgba(120, 90, 200, 0.14);
+}
+.add-btn:active, .cam-btn:active { transform: scale(0.92); }
+
+/* ─── entries ─── */
+.entries { display: flex; flex-direction: column; padding: 0 6px 6px; }
+.entry {
+  padding: 12px 12px 10px;
+  margin: 0 0 6px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+}
+.entry:last-child { margin-bottom: 6px; }
+.item {
+  display: grid; grid-template-columns: 1fr auto auto;
+  gap: 10px; align-items: baseline;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.fn { color: var(--color-on-surface); font-weight: 500; }
+.fg { color: var(--color-on-surface-variant); font-family: var(--font-family-num); font-size: 11.5px; letter-spacing: 0.02em; }
+.fk { color: var(--color-primary); font-family: var(--font-family-num); font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; }
+.del {
+  margin-top: 6px; padding: 4px 12px;
+  background: transparent; color: var(--color-error);
+  font-size: 11px;
+  border: 1px solid rgba(165, 51, 20, 0.24);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.empty {
+  margin: 0; padding: 18px 16px 22px; text-align: center;
+  font-size: 12.5px; color: var(--color-on-surface-variant);
+  letter-spacing: 0.03em;
+}
+.empty .pill {
+  display: inline-block;
+  padding: 1px 8px; margin: 0 3px;
+  border-radius: 999px;
+  background: var(--color-primary-fixed);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ─── skeleton ─── */
+.skel-card {
+  padding: 20px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.skel-line {
+  height: 14px; border-radius: 7px;
+  background: rgba(120, 90, 200, 0.10);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.skel-line.w40 { width: 40%; }
+.skel-line.w70 { width: 70%; }
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
 /* Bottom Sheet */
 .sheet-mask { position: fixed; inset: 0; background: rgba(29,25,23,0.4); display: grid; align-items: end; z-index: 100; }

@@ -322,7 +322,7 @@ watch(() => route.params.convId, (v) => {
 <style scoped>
 .wrap {
   min-height: 100dvh; display: flex; flex-direction: column;
-  background: var(--color-surface); color: var(--color-on-surface);
+  background: var(--page-gradient); color: var(--color-on-surface);
 }
 .err { margin: 8px var(--space-margin-mobile); padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
 

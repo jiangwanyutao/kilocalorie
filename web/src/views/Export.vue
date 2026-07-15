@@ -112,28 +112,37 @@ const sizeKb = computed(() => {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 120px); display: flex; flex-direction: column; gap: var(--space-md); }
-.err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(198, 75, 42, 0.06), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(120, 90, 200, 0.06), transparent 60%),
+    linear-gradient(180deg, #ecebff 0%, #f5f2ff 22%, #fbf5f0 50%, #fff8f5 100%);
+  color: var(--color-on-surface);
+}
+.body { padding: 12px 16px calc(env(safe-area-inset-bottom) + 120px); display: flex; flex-direction: column; gap: 14px; }
+.err { margin: 0; padding: 10px 14px; background: var(--color-error-container); color: var(--color-on-error-container); border-radius: 14px; font-size: 12.5px; }
 
 .hero {
   display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
-  padding: 16px 18px;
-  background: linear-gradient(140deg, var(--color-primary-container) 0%, var(--color-tertiary-container) 100%);
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(29, 25, 23, 0.08);
-  box-shadow: 0 8px 24px rgba(165, 51, 20, 0.15);
+  padding: 22px 20px;
+  background: linear-gradient(140deg, #ffe0d5 0%, #fff4cc 100%);
+  border: 0;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px -18px rgba(255, 138, 76, 0.28);
 }
 .h-icon { width: 56px; height: 56px; display: grid; place-items: center; background: var(--color-surface-container-lowest); border-radius: 20px; font-size: 28px; }
 .h-title { margin: 0; font-size: var(--font-size-section); font-weight: 600; color: var(--color-on-primary-container); }
 .h-hint { margin: 4px 0 0; font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-on-primary-container); opacity: 0.85; line-height: 1.45; }
 
 .summary {
-  padding: 14px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06);
+  padding: 18px 16px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-radius: 26px;
+  box-shadow: 0 16px 34px -22px rgba(120, 90, 200, 0.20);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .s-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
 .s-title { margin: 0; font-size: var(--font-size-caption); font-weight: 600; color: var(--color-on-surface); }
@@ -148,15 +157,18 @@ const sizeKb = computed(() => {
 .item.zero .i-count { color: var(--color-outline); font-weight: 400; }
 .total { margin: 10px 0 0; text-align: right; font-size: var(--font-size-caption); font-weight: 600; color: var(--color-on-surface); }
 
-.primary { height: 52px; border-radius: var(--radius-md); background: var(--color-primary); color: var(--color-on-primary); font-size: var(--font-size-body); font-weight: 500; box-shadow: 0 8px 20px rgba(165, 51, 20, 0.32); }
+.primary { height: 52px; border: 0; border-radius: 18px; background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-primary-container) 100%); color: var(--color-on-primary); font-size: 14.5px; font-weight: 600; letter-spacing: 0.04em; box-shadow: 0 14px 30px -10px rgba(165, 51, 20, 0.40); cursor: pointer; transition: transform var(--duration-fast); }
 .primary:disabled { opacity: 0.5; box-shadow: none; }
 .primary:active:not(:disabled) { transform: scale(0.98); }
 
 .note {
-  padding: 14px 16px;
-  background: var(--color-surface-container);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-outline-variant);
+  padding: 18px 18px;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 22px;
+  border: 0;
+  box-shadow: 0 10px 24px -18px rgba(120, 90, 200, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .n-title { margin: 0 0 6px; font-size: var(--font-size-label); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-on-surface-variant); font-weight: 500; }
 .note ul { margin: 0; padding-left: 20px; }

@@ -207,17 +207,34 @@ function statusLabel(s: string): string {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 96px); display: flex; flex-direction: column; gap: var(--space-md); }
-.err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(120, 90, 200, 0.10), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(198, 75, 42, 0.06), transparent 60%),
+    linear-gradient(180deg, #ecebff 0%, #e6e0ff 22%, #f5f2ff 50%, #fff8f5 100%);
+  color: var(--color-on-surface);
+}
+.body {
+  padding: 12px 16px calc(env(safe-area-inset-bottom) + 100px);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.err {
+  margin: 0; padding: 10px 14px;
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+  border-radius: 14px;
+  font-size: 12.5px;
+}
 
 .active {
   display: flex; flex-direction: column; align-items: center; gap: 18px;
-  padding: 22px 20px 24px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 12px 32px rgba(29, 25, 23, 0.10), 0 2px 6px rgba(29, 25, 23, 0.04);
+  padding: 26px 20px 24px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 32px;
+  box-shadow: 0 20px 40px -18px rgba(120, 90, 200, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 .a-plan-chip {
   padding: 4px 14px; border-radius: var(--radius-full);
@@ -250,12 +267,17 @@ function statusLabel(s: string): string {
 
 .plans { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .plan-card {
-  padding: 16px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06);
+  padding: 18px 16px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-radius: 24px;
+  box-shadow: 0 12px 26px -18px rgba(120, 90, 200, 0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: transform var(--duration-fast);
 }
+.plan-card:active { transform: translateY(1px); }
 .pc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .pc-code { font-size: 22px; font-weight: 600; color: var(--color-primary); font-family: var(--font-family-num); letter-spacing: 0.02em; }
 .pc-int { padding: 3px 10px; border-radius: var(--radius-full); font-size: var(--font-size-label); font-weight: 500; letter-spacing: 0.05em; }
@@ -265,7 +287,14 @@ function statusLabel(s: string): string {
 .pc-window { margin: 0; font-size: var(--font-size-body); font-weight: 500; color: var(--color-on-surface); font-family: var(--font-family-num); }
 .pc-hint { margin: 4px 0 0; font-size: var(--font-size-label); letter-spacing: 0.05em; color: var(--color-outline); }
 
-.log-card { padding: 14px; background: var(--color-surface-container-lowest); border-radius: var(--radius-lg); border: 1px solid var(--color-outline-variant); box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06); }
+.log-card {
+  padding: 18px 16px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 26px;
+  box-shadow: 0 16px 34px -22px rgba(120, 90, 200, 0.20);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
 .log-title { margin: 0 0 8px; font-size: var(--font-size-caption); color: var(--color-on-surface-variant); font-weight: 500; }
 .log-title .num { color: var(--color-primary); font-weight: 600; }
 .log-list { list-style: none; margin: 0; padding: 0; }

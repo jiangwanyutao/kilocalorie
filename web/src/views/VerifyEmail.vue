@@ -49,7 +49,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-margin-mobile); background: var(--color-surface); }
+.wrap { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-margin-mobile); background: var(--page-gradient); color: var(--color-on-surface); }
 .center { display: grid; place-items: center; gap: var(--space-md); text-align: center; }
 .mark { width: 72px; height: 72px; display: grid; place-items: center; border-radius: var(--radius-full); font-size: 40px; }
 .mark.ok { background: var(--color-secondary-container); color: var(--color-on-secondary-container); }

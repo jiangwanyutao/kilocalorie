@@ -192,16 +192,25 @@ function pickGoal(t: GoalType) {
 </template>
 
 <style scoped>
-.wrap { min-height: 100dvh; background: var(--color-surface); color: var(--color-on-surface); }
-.body { padding: var(--space-md) var(--space-margin-mobile) calc(env(safe-area-inset-bottom) + 120px); display: flex; flex-direction: column; gap: var(--space-md); }
-.err { margin: 0; padding: var(--space-sm) var(--space-md); background: var(--color-error-container); color: var(--color-on-error-container); border-radius: var(--radius-default); font-size: var(--font-size-caption); }
+.wrap {
+  min-height: 100dvh;
+  background:
+    radial-gradient(1000px 500px at 100% 0%, rgba(198, 75, 42, 0.06), transparent 60%),
+    radial-gradient(800px 400px at 0% 30%, rgba(120, 90, 200, 0.06), transparent 60%),
+    linear-gradient(180deg, #ecebff 0%, #f5f2ff 22%, #fbf5f0 50%, #fff8f5 100%);
+  color: var(--color-on-surface);
+}
+.body { padding: 12px 16px calc(env(safe-area-inset-bottom) + 120px); display: flex; flex-direction: column; gap: 12px; }
+.err { margin: 0; padding: 10px 14px; background: var(--color-error-container); color: var(--color-on-error-container); border-radius: 14px; font-size: 12.5px; }
 
 .card {
-  padding: 14px 16px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(29, 25, 23, 0.06);
+  padding: 18px 18px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 0;
+  border-radius: 24px;
+  box-shadow: 0 14px 30px -20px rgba(120, 90, 200, 0.20);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex; flex-direction: column; gap: 10px;
 }
 .s-title { margin: 0; font-size: var(--font-size-caption); font-weight: 600; color: var(--color-on-surface); }
@@ -211,19 +220,22 @@ function pickGoal(t: GoalType) {
 
 .goal-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .goal-card {
-  width: 100%; padding: 12px 14px; text-align: left;
-  border-radius: var(--radius-default);
-  border: 1px solid var(--color-outline-variant);
-  background: var(--color-surface-container-lowest);
+  width: 100%; padding: 14px 14px; text-align: left;
+  border-radius: 18px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.72);
   display: flex; flex-direction: column; gap: 4px;
   transition: all var(--duration-fast) var(--ease-out-expo);
+  cursor: pointer;
+  box-shadow: 0 8px 18px -14px rgba(120, 90, 200, 0.18);
 }
 .goal-card:active { transform: scale(0.98); }
 .goal-card.on {
-  border-color: var(--color-primary);
-  background: var(--color-primary-fixed);
-  box-shadow: 0 4px 12px rgba(165, 51, 20, 0.15);
+  background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+  box-shadow: 0 12px 26px -8px rgba(165, 51, 20, 0.36);
+  transform: translateY(-1px);
 }
+.goal-card.on .gc-label, .goal-card.on .gc-factor, .goal-card.on .gc-hint { color: #fff; }
 .gc-head { display: flex; justify-content: space-between; align-items: baseline; }
 .gc-label { font-size: var(--font-size-body); font-weight: 600; color: var(--color-on-surface); }
 .goal-card.on .gc-label { color: var(--color-primary); }
@@ -254,7 +266,7 @@ function pickGoal(t: GoalType) {
 .empty-hint { margin: 0; font-size: var(--font-size-caption); color: var(--color-outline); text-align: center; padding: 8px 0; }
 .link { background: transparent; color: var(--color-primary); font-size: var(--font-size-caption); text-decoration: underline; padding: 0; }
 
-.primary { height: 52px; border-radius: var(--radius-md); background: var(--color-primary); color: var(--color-on-primary); font-size: var(--font-size-body); font-weight: 500; box-shadow: 0 8px 20px rgba(165, 51, 20, 0.28); }
+.primary { height: 52px; border: 0; border-radius: 18px; background: linear-gradient(140deg, var(--color-primary) 0%, var(--color-primary-container) 100%); color: var(--color-on-primary); font-size: 14.5px; font-weight: 600; letter-spacing: 0.04em; box-shadow: 0 14px 30px -10px rgba(165, 51, 20, 0.40); cursor: pointer; transition: transform var(--duration-fast); }
 .primary:active { transform: scale(0.98); }
 .primary:disabled { opacity: 0.5; box-shadow: none; }
 </style>
